@@ -40,7 +40,7 @@ app.post("/api/stop", (req, res)=>{
   })
 })
 
-const PORT = process.env.PORT || 3000;
+const PORT=8811;
 app.listen(PORT, () => {
   console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });
