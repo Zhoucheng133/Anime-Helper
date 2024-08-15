@@ -23,6 +23,9 @@ const dbGet=async ()=>{
 
 app.use(express.static(path.join('web/dist')))
 app.use(express.json());
+app.get("/api/status", (req, res)=>{
+  res.send(_interval==null?false:true);
+})
 app.get("/api/log", (req, res)=>{
   res.send(getLog());
 })
