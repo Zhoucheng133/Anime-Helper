@@ -4,8 +4,26 @@ import {setLs, setPrels, getLs, getPrels} from "./ls.js";
 import {addLog} from "./log.js";
 import state from "./data.js";
 
-const downloadHandler=(list)=>{
-  
+const downloadHandler=async (list)=>{
+  for(let item of list){
+    await axios.post(
+      state.get().ariaLink,
+      {
+        "jsonrpc": "2.0",
+        "method": "aria2.addUri",
+        "id": 1,
+        "params": [
+          `token:${state.get().ariaSecret}`,
+          [item.url],
+          {
+            "split": "5",
+            "max-connection-per-server": "5",
+            "seed-ratio": "0"
+          }
+        ],
+      }
+    )
+  }
 }
 
 const judge=()=>{
