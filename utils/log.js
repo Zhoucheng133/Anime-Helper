@@ -6,7 +6,8 @@ export const addLog=(ok, msg)=>{
   }
   log.push({
     "ok": ok,
-    "msg": msg
+    "msg": msg,
+    "time": Date.now()
   })
 }
 
