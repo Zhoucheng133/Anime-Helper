@@ -1,5 +1,6 @@
-function service(){
-  console.log("?");
-}
+import state from "./variables.js"
 
-export default service;
+export default function service(){
+  console.log(state.get());
+  
+}
