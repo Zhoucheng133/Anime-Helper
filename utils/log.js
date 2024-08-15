@@ -9,3 +9,7 @@ export const addLog=(ok, msg)=>{
     "msg": msg
   })
 }
+
+export const getLog=()=>{
+  return log;
+}
