@@ -1,9 +1,11 @@
 let log=[];
 
-export const getLog=()=>{
-  return log;
-}
-
-export const setLog=(val)=>{
-  log=val;
+export const addLog=(ok, msg)=>{
+  if(log.length=50){
+    log.shift();
+  }
+  log.push({
+    "ok": ok,
+    "msg": msg
+  })
 }
