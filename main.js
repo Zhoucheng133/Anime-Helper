@@ -34,7 +34,7 @@ app.post("/api/run", (req, res) => {
     return;
   }else{
     const data=req.body.data;
-    if(!(data.type && data.exclusions && data.bangumi && data.freq)){
+    if(!(data.type && data.exclusions && data.bangumi && data.freq && data.ariaLink && data.ariaSecret)){
       res.send({
         "ok": false,
         "msg": '参数不正确'

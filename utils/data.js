@@ -3,6 +3,8 @@ let data={
   'exclusions': [],
   'bangumi': [],
   'freq': 15,
+  'ariaLink': '',
+  'ariaSecret': ''
 }
 export default {
   set: (val)=>{
