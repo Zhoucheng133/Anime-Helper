@@ -1,8 +1,8 @@
 import express from "express";
 import path from "path";
 import service from './utils/service.js';
-import state from "./utils/variables.js";
-import { JSONFilePreset } from 'lowdb/node'
+import state from "./utils/data.js";
+import { JSONFilePreset } from 'lowdb/node';
 
 const app = express();
 var _interval=null;
@@ -56,6 +56,7 @@ app.post("/api/run", (req, res) => {
   _interval=setInterval(()=>{
     service()
   }, state.get().freq)
+  // 注意这里修改成分钟，即*1000*60
   res.send({
     'ok': true,
     'msg': "",
