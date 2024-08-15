@@ -1,13 +1,24 @@
 import express from "express";
 import path from "path";
 import service from './utils/service.js';
-import state from "./utils/variables.js"
+import state from "./utils/variables.js";
+import { JSONFilePreset } from 'lowdb/node'
 
 const app = express();
 var _interval=null;
 
+const dbSet=async (val)=>{
+  const db = await JSONFilePreset('db.json', { data: {} });
+  db.read();
+  db.data = val;
+  db.write();
+}
+
 app.use(express.static(path.join('web/dist')))
 app.use(express.json());
+app.get("/api/data", (req, res)=>{
+  
+})
 app.post("/api/run", (req, res) => {
   if(!req.body.data){
     res.send({
@@ -34,6 +45,7 @@ app.post("/api/run", (req, res) => {
     })
     return;
   }
+  dbSet(req.body.data)
   service()
   _interval=setInterval(()=>{
     service()
