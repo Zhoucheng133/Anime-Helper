@@ -2,9 +2,9 @@ import axios from "axios";
 import xml2js  from "xml2js"
 
 export default async function acgrip(){
-  const xml=(await axios.get('http://127.0.0.1:3000')).data;
-  const parser = new xml2js.Parser();
   try {
+    const xml=(await axios.get('http://127.0.0.1:3000')).data;
+    const parser = new xml2js.Parser();
     parser.parseString(xml, (err, result) => {
       if (err) {
         // 解析错误
@@ -17,7 +17,7 @@ export default async function acgrip(){
       }
     });
   } catch (error) {
-    // 出现错误
+    // 请求出现错误
   }
 }
 
