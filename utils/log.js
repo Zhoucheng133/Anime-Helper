@@ -1,7 +1,7 @@
 let log=[];
 
 export const addLog=(ok, msg)=>{
-  if(log.length=50){
+  if(log.length==50){
     log.shift();
   }
   log.push({
