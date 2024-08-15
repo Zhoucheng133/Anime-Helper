@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import service from './utils/service.js';
+import state from "./utils/variables.js"
 
 const app = express();
 var _interval=null;
@@ -8,6 +9,24 @@ var _interval=null;
 app.use(express.static(path.join('web/dist')))
 app.use(express.json());
 app.post("/api/run", (req, res) => {
+  if(!req.body.data){
+    res.send({
+      "ok": false,
+      "msg": '参数不正确'
+    })
+    return;
+  }else{
+    const data=req.body.data;
+    if(!(data.type && data.exclusions && data.bangumi && data.freq)){
+      res.send({
+        "ok": false,
+        "msg": '参数不正确'
+      })
+      return;
+    }
+    state.set(req.body.data)
+  }
+
   if(_interval!=null){
     res.send({
       'ok': false,
@@ -15,9 +34,10 @@ app.post("/api/run", (req, res) => {
     })
     return;
   }
+  service()
   _interval=setInterval(()=>{
     service()
-  }, 1000)
+  }, state.get().freq)
   res.send({
     'ok': true,
     'msg': "",
