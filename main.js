@@ -3,6 +3,7 @@ import path from "path";
 import service from './utils/service.js';
 import state from "./utils/data.js";
 import { JSONFilePreset } from 'lowdb/node';
+import { getLog } from "./utils/log.js";
 
 const app = express();
 var _interval=null;
@@ -22,7 +23,10 @@ const dbGet=async ()=>{
 
 app.use(express.static(path.join('web/dist')))
 app.use(express.json());
-app.get("/api/data", (req, res)=>{
+app.get("/api/log", (req, res)=>{
+  res.send(getLog());
+})
+app.get("/api/data", (_, res)=>{
   res.send(state.get());
 })
 app.post("/api/run", (req, res) => {
