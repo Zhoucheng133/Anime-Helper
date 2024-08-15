@@ -14,10 +14,16 @@ const dbSet=async (val)=>{
   db.write();
 }
 
+const dbGet=async ()=>{
+  const db = await JSONFilePreset('db.json', {data: {}});
+  db.read();
+  state.set(db.data);
+}
+
 app.use(express.static(path.join('web/dist')))
 app.use(express.json());
 app.get("/api/data", (req, res)=>{
-  
+  res.send(state.get());
 })
 app.post("/api/run", (req, res) => {
   if(!req.body.data){
@@ -72,6 +78,8 @@ app.post("/api/stop", (req, res)=>{
   })
 })
 
+// 从这里开始
+dbGet();
 const PORT=8811;
 app.listen(PORT, () => {
   console.log(`Server is running on http://127.0.0.1:${PORT}`);
