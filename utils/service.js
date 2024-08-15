@@ -4,6 +4,10 @@ import {setLs, setPrels, getLs, getPrels} from "./ls.js";
 import {addLog} from "./log.js";
 import state from "./data.js";
 
+const downloadHandler=(list)=>{
+  
+}
+
 const judge=()=>{
   const newItems=getLs().filter(lsItem => !getPrels().some(prelsItem => lsItem.title == prelsItem.title ) )
   const exclusions=state.get().exclusions;
@@ -20,6 +24,7 @@ const judge=()=>{
       filteredList.push(item);
     }
   }
+  downloadHandler(filteredList);
 }
 
 export default async function service(){
