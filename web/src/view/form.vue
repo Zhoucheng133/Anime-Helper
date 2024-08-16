@@ -28,7 +28,7 @@
     <div class="item">
       <div class="form_label">Aria 地址</div>
       <div class="form_content">
-        <a-input v-model:value="form().data.ariaLink" placeholder="http://<ip>:16800/jsonrpc" />
+        <a-input v-model:value="form().data.ariaLink" placeholder="http(s)://<ip>:16800/jsonrpc" />
       </div>
     </div>
     <div class="item">
