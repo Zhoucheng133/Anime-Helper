@@ -69,7 +69,29 @@
         </a-table>
       </a-collapse-panel>
       <a-collapse-panel key="2" header="排除关键字">
-        
+        <a-button type="link" @click="addExclusion">添加</a-button>
+        <a-table :columns="exclusionsColumn" :data-source="form().data.exclusions" :pagination="false">
+          <template #headerCell="{ column }">
+            <template v-if="column.key === 'value'">
+              <span>
+                值
+              </span>
+            </template>
+            <template v-else-if="column.key === 'action'">
+              <span>
+                操作
+              </span>
+            </template>
+          </template>
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'value'">
+              {{record}}
+            </template>
+            <template v-else-if="column.key === 'action'">
+              <a-button type="link" danger @click="delExclusions(record)">删除</a-button>
+            </template>
+          </template>
+        </a-table>
       </a-collapse-panel>
     </a-collapse>
     <a-modal v-model:open="showAddBangumiDialog" title="添加一个番剧" @ok="addBangumiOk" @cancel="onDialogCancel" centered>
@@ -86,6 +108,14 @@
         </div>
       </div>
     </a-modal>
+    <a-modal v-model:open="showAddExclusionDialog" title="添加一个排除关键字" @ok="addExclusionOk" @cancel="onDialogCancel" centered>
+      <div class="exclutionItem" style="margin-top: 10px;">
+        <div class="exclutionItem_title">关键字</div>
+        <div class="exclutionItem_content">
+          <a-input v-model:value="exclusionAddValue"></a-input>
+        </div>
+      </div>
+    </a-modal>
   </div>
 </template>
 
@@ -93,7 +123,7 @@
 <script setup lang="ts">
 import "./form_style.css";
 import form from "../states/form";
-import { addBangumiController, delBangumiController } from "./form_actions";
+import { addBangumiController, addExclusionController, delBangumiController, delExclusionController } from "./form_actions";
 import { ref } from "vue";
 import { message, Modal } from "ant-design-vue";
 
@@ -115,6 +145,50 @@ const bangumiColumn=[
     width: '70px',
   },
 ];
+
+const exclusionsColumn=[
+  {
+    "name": "值",
+    "key": "value",
+  },
+  {
+    title: '操作',
+    key: 'action',
+    width: '70px',
+  }
+];
+
+const addExclusionOk=()=>{
+  if(exclusionAddValue.value.length==0){
+    message.error("关键字不能为空");
+    return;
+  }
+  if(form().data.exclusions.includes(exclusionAddValue.value)){
+    message.error("该关键字已存在");
+    return;
+  }
+
+  addExclusionController(exclusionAddValue.value);
+  onDialogCancel();
+  message.success("添加成功");
+  showAddExclusionDialog.value=false;
+}
+
+const addExclusion=()=>{
+  showAddExclusionDialog.value=true;
+}
+
+const delExclusions=(value: string)=>{
+  Modal.confirm({
+    title: '你确定要删除这个关键字吗',
+    centered: true,
+    onOk() {
+      delExclusionController(value);
+      message.success("删除成功")
+    },
+    onCancel() {},
+  });
+}
 
 const delBangumi=(ass: string, title: string)=>{
   Modal.confirm({
@@ -153,9 +227,13 @@ const addBangumiOk=()=>{
 const onDialogCancel=()=>{
   bangumiAddAss.value="";
   bangumiAddTitle.value="";
+  exclusionAddValue.value="";
 }
 
 let showAddBangumiDialog=ref(false);
+let showAddExclusionDialog=ref(false);
+
+let exclusionAddValue=ref("");
 
 let bangumiAddTitle=ref("");
 let bangumiAddAss=ref("");

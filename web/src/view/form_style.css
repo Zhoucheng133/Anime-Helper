@@ -36,3 +36,18 @@
   display: flex;
   align-items: center;
 }
+
+.exclutionItem{
+  display: grid;
+  grid-template-columns: 50px auto;
+  column-gap: 10px;
+}
+
+.exclutionItem_title{
+  display: flex;
+  align-items: center;
+}
+.exclutionItem_content{
+  display: flex;
+  align-items: center;
+}

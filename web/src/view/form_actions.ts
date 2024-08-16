@@ -15,3 +15,16 @@ export const delBangumiController=(ass:string, title:string)=>{
     return true;
   })
 }
+
+export const delExclusionController=(value: string)=>{
+  form().data.exclusions=form().data.exclusions.filter((item)=>{
+    if(item==value){
+      return false
+    }
+    return true;
+  })
+}
+
+export const addExclusionController=(value: string)=>{
+  form().data.exclusions.push(value);
+}
