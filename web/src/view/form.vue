@@ -63,7 +63,7 @@
               <a-tag>{{ record.ass }}</a-tag>
             </template>
             <template v-else-if="column.key === 'action'">
-              <a-button type="link" danger>删除</a-button>
+              <a-button type="link" danger @click="delBangumi(record.ass, record.title)">删除</a-button>
             </template>
           </template>
         </a-table>
@@ -93,9 +93,9 @@
 <script setup lang="ts">
 import "./form_style.css";
 import form from "../states/form";
-import { addBangumiController } from "./form_actions";
+import { addBangumiController, delBangumiController } from "./form_actions";
 import { ref } from "vue";
-import { message } from "ant-design-vue";
+import { message, Modal } from "ant-design-vue";
 
 let showFold=ref(['1', '2']);
 const bangumiColumn=[
@@ -115,6 +115,18 @@ const bangumiColumn=[
     width: '70px',
   },
 ];
+
+const delBangumi=(ass: string, title: string)=>{
+  Modal.confirm({
+    title: '你确定要删除这个番剧吗',
+    centered: true,
+    onOk() {
+      delBangumiController(ass, title);
+      message.success("删除成功")
+    },
+    onCancel() {},
+  });
+}
 
 const addBangumiOk=()=>{
   if(bangumiAddAss.value.length==0){
