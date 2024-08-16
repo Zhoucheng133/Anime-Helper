@@ -1,0 +1,9 @@
+.form{
+  padding: 10px;
+  margin-top: 20px;
+}
+.item{
+  display: grid;
+  grid-template-columns: 80px auto;
+  column-gap: 10px;
+}
