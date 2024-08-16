@@ -10,10 +10,13 @@
     </div>
     <div class="item">
       <div class="form_label">RSS 来源</div>
-      <a-radio-group v-model:value="form().data.type" button-style="solid">
-        <a-radio-button value="mikan">Mikan</a-radio-button>
-        <a-radio-button value="acgrip">Acgrip</a-radio-button>
-      </a-radio-group>
+      <div class="form_content">
+        <a-radio-group v-model:value="form().data.type" button-style="solid">
+          <a-radio-button value="mikan">Mikan</a-radio-button>
+          <a-radio-button value="acgrip">Acgrip</a-radio-button>
+        </a-radio-group>
+        <i class="bi bi-box-arrow-up-right" @click="sourceLink"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -22,4 +25,12 @@
 <script setup lang="ts">
 import "./form_style.css";
 import form from "../states/form";
+
+const sourceLink=()=>{
+  if(form().data.type=='mikan'){
+    window.open("https://mikanime.tv/");
+  }else if(form().data.type=="acgrip"){
+    window.open("https://acgrip.art/")
+  }
+}
 </script>
