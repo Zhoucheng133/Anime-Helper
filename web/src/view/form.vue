@@ -136,6 +136,14 @@ const addBangumiOk=()=>{
     message.error("标题不能为空");
     return;
   }
+  const exists = form().data.bangumi.some(item => 
+    item.ass === bangumiAddAss.value && item.title === bangumiAddTitle.value
+  );
+
+  if(exists){
+    message.error("番剧表已有该数据")
+    return;
+  }
   addBangumiController(bangumiAddAss.value, bangumiAddTitle.value);
   onDialogCancel();
   message.success("添加成功");
