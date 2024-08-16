@@ -23,3 +23,16 @@
   font-weight: bold;
   cursor: pointer;
 }
+.bangumiItem{
+  display: grid;
+  grid-template-columns: 50px auto;
+  column-gap: 10px;
+}
+.bangumiItem_title{
+  display: flex;
+  align-items: center;
+}
+.bangumiItem_content{
+  display: flex;
+  align-items: center;
+}

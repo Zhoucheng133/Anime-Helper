@@ -37,9 +37,9 @@
         <a-input-password v-model:value="form().data.ariaSecret" placeholder="" />
       </div>
     </div>
-    <a-collapse style="margin-top: 20px;" v-model:activeKey="showBangumi">
+    <a-collapse style="margin-top: 20px;" v-model:activeKey="showFold">
       <a-collapse-panel key="1" header="番剧表">
-        <a-button type="link">添加</a-button>
+        <a-button type="link" @click="addBangumi">添加</a-button>
         <a-table :columns="bangumiColumn" :data-source="form().data.bangumi" :pagination="false">
           <template #headerCell="{ column }">
             <template v-if="column.key === 'ass'">
@@ -72,6 +72,20 @@
         
       </a-collapse-panel>
     </a-collapse>
+    <a-modal v-model:open="showAddBangumiDialog" title="添加一个番剧" @ok="addBangumiOk" @cancel="onDialogCancel" centered>
+      <div class="bangumiItem" style="margin-top: 10px;">
+        <div class="bangumiItem_title">字幕组</div>
+        <div class="bangumiItem_content">
+          <a-input v-model:value="bangumiAddAss"></a-input>
+        </div>
+      </div>
+      <div class="bangumiItem" style="margin-top: 10px;">
+        <div class="bangumiItem_title">标题</div>
+        <div class="bangumiItem_content">
+          <a-input v-model:value="bangumiAddTitle"></a-input>
+        </div>
+      </div>
+    </a-modal>
   </div>
 </template>
 
@@ -79,9 +93,11 @@
 <script setup lang="ts">
 import "./form_style.css";
 import form from "../states/form";
+import { addBangumiController } from "./form_actions";
 import { ref } from "vue";
+import { message } from "ant-design-vue";
 
-let showBangumi=ref(['1', '2']);
+let showFold=ref(['1', '2']);
 const bangumiColumn=[
   {
     "name": "字幕组",
@@ -98,7 +114,35 @@ const bangumiColumn=[
     key: 'action',
     width: '70px',
   },
-]
+];
+
+const addBangumiOk=()=>{
+  if(bangumiAddAss.value.length==0){
+    message.error("字幕组不能为空");
+    return;
+  }else if(bangumiAddTitle.value.length==0){
+    message.error("标题不能为空");
+    return;
+  }
+  addBangumiController(bangumiAddAss.value, bangumiAddTitle.value);
+  onDialogCancel();
+  message.success("添加成功");
+  showAddBangumiDialog.value=false;
+}
+
+const onDialogCancel=()=>{
+  bangumiAddAss.value="";
+  bangumiAddTitle.value="";
+}
+
+let showAddBangumiDialog=ref(false);
+
+let bangumiAddTitle=ref("");
+let bangumiAddAss=ref("");
+
+const addBangumi=()=>{
+  showAddBangumiDialog.value=true;
+}
 
 const sourceLink=()=>{
   if(form().data.type=='mikan'){
