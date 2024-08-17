@@ -50,6 +50,7 @@ app.post("/api/save", (req, res)=>{
       return;
     }
     state.set(req.body.data)
+    dbSet(req.body.data);
     res.send({
       "ok": true,
       "msg": ""
