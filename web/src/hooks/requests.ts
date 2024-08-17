@@ -19,3 +19,8 @@ export const saveTable=async ()=>{
     message.error("保存失败");
   }
 }
+
+export const getLog=async ()=>{
+  const response=await axios.get(BaseURL+"/api/log");
+  return response.data;
+}
