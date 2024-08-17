@@ -77,6 +77,7 @@ export default async function service(){
       }
       if(getPrels().length==0){
         setPrels(list);
+        setLs(list);
         addLog(true, "请求rss成功");
         return;
       }else{
