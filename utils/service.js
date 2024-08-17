@@ -55,9 +55,9 @@ export default async function service(){
   let url="";
   // 注意这里改成官方链接
   if(state.get().type=='mikan'){
-    url='';
+    url='https://mikanime.tv/RSS/Classic';
   }else if(state.get().type=='acgrip'){
-    url='http://127.0.0.1:3000';
+    url='https://acgrip.art/.xml';
   }
   try {
     const xml=(await axios.get(url)).data;

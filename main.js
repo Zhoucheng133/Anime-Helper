@@ -96,7 +96,7 @@ app.post("/api/run", (req, res) => {
   service()
   _interval=setInterval(()=>{
     service()
-  }, state.get().freq*1000)
+  }, state.get().freq*1000*60)
   // 注意这里修改成分钟，即*1000*60
   res.send({
     'ok': true,
