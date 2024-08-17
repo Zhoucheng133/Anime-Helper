@@ -59,7 +59,6 @@
   display: grid;
   grid-template-columns: auto 150px 10px;
   align-items: center;
-  height: 30px;
 }
 .log_label{
   overflow: hidden;
