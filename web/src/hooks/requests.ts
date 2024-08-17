@@ -24,3 +24,15 @@ export const getLog=async ()=>{
   const response=await axios.get(BaseURL+"/api/log");
   return response.data;
 }
+
+export const run=async ()=>{
+  const response=await axios.post(BaseURL+"/api/run", {
+    "data": form().data
+  });
+  return response.data;
+}
+
+export const stop=async ()=>{
+  const response=await axios.post(BaseURL+"/api/stop");
+  return response.data;
+}

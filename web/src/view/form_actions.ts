@@ -1,5 +1,6 @@
 import { message } from "ant-design-vue";
 import form from "../states/form";
+import { run, stop } from "../hooks/requests";
 
 export const addBangumiController=(ass:string, title:string)=>{
   form().data.bangumi.push({
@@ -30,10 +31,9 @@ export const addExclusionController=(value: string)=>{
   form().data.exclusions.push(value);
 }
 
-export const toggleRun=()=>{
+export const toggleRun=async ()=>{
   if(form().running){
     // 运行
-    console.log("运行");
     if(form().data.ariaLink.length==0){
       message.error("Aria 地址不能为空");
       form().running=false;
@@ -43,10 +43,19 @@ export const toggleRun=()=>{
       form().running=false;
       return;
     }
-
-    
+    const response=await run();
+    if(response.ok){
+      message.success("运行成功");
+    }else{
+      message.error("操作无效: "+response.msg);
+    }
   }else{
-    console.log("停止");
+    // 停止
+    const response=await stop();
+    if(response.ok){
+      message.success("停止成功");
+    }else{
+      message.error("操作无效: "+response.msg);
+    }
   }
-    
 }
