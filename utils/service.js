@@ -6,23 +6,29 @@ import state from "./data.js";
 
 const downloadHandler=async (list)=>{
   for(let item of list){
-    await axios.post(
-      state.get().ariaLink,
-      {
-        "jsonrpc": "2.0",
-        "method": "aria2.addUri",
-        "id": 1,
-        "params": [
-          `token:${state.get().ariaSecret}`,
-          [item.url],
-          {
-            "split": "5",
-            "max-connection-per-server": "5",
-            "seed-ratio": "0"
-          }
-        ],
-      }
-    )
+    try {
+      await axios.post(
+        state.get().ariaLink,
+        {
+          "jsonrpc": "2.0",
+          "method": "aria2.addUri",
+          "id": 1,
+          "params": [
+            `token:${state.get().ariaSecret}`,
+            [item.url],
+            {
+              "split": "5",
+              "max-connection-per-server": "5",
+              "seed-ratio": "0"
+            }
+          ],
+        }
+      );
+    } catch (error) {
+      addLog(false, `下载: ${item.title} 失败`);
+      continue;
+    }
+    addLog(true, `下载: ${item.title}`);
   }
 }
 
@@ -49,7 +55,7 @@ export default async function service(){
   let url="";
   // 注意这里改成官方链接
   if(state.get().type=='mikan'){
-    url='http://127.0.0.1:3000';
+    url='';
   }else if(state.get().type=='acgrip'){
     url='http://127.0.0.1:3000';
   }
@@ -71,11 +77,12 @@ export default async function service(){
       }
       if(getPrels().length==0){
         setPrels(list);
+        addLog(true, "请求rss成功");
         return;
       }else{
         setPrels(getLs());
         setLs(list);
-        addLog(ok, "请求rss成功");
+        addLog(true, "请求rss成功");
         judge();
       }
     });
