@@ -4,18 +4,19 @@ import service from './utils/service.js';
 import state from "./utils/data.js";
 import { JSONFilePreset } from 'lowdb/node';
 import { getLog } from "./utils/log.js";
+import { setLs, setPrels } from "./utils/ls.js";
 
 const app = express();
 var _interval=null;
 
 // 临时代码，允许跨域访问
-app.all('*', function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.header('Access-Control-Allow-Methods', '*');
-  res.header('Content-Type', 'application/json;charset=utf-8');
-  next();
-});
+// app.all('*', function (req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type');
+//   res.header('Access-Control-Allow-Methods', '*');
+//   res.header('Content-Type', 'application/json;charset=utf-8');
+//   next();
+// });
 
 const dbSet=async (val)=>{
   const db = await JSONFilePreset('db.json', { data: {} });
@@ -114,6 +115,8 @@ app.post("/api/stop", (req, res)=>{
   }
   clearInterval(_interval)
   _interval=null;
+  setPrels([]);
+  setLs([]);
   res.send({
     'ok': true,
     'msg': "",
