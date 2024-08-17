@@ -1,3 +1,4 @@
+import { message } from "ant-design-vue";
 import form from "../states/form";
 
 export const addBangumiController=(ass:string, title:string)=>{
@@ -27,4 +28,25 @@ export const delExclusionController=(value: string)=>{
 
 export const addExclusionController=(value: string)=>{
   form().data.exclusions.push(value);
+}
+
+export const toggleRun=()=>{
+  if(form().running){
+    // 运行
+    console.log("运行");
+    if(form().data.ariaLink.length==0){
+      message.error("Aria 地址不能为空");
+      form().running=false;
+      return;
+    }else if(form().data.ariaSecret.length==0){
+      message.error("Aria 密钥不能为空");
+      form().running=false;
+      return;
+    }
+
+    
+  }else{
+    console.log("停止");
+  }
+    
 }

@@ -4,7 +4,7 @@
       <div class="form_label">运行状态</div>
       <div class="form_content">
         <a-tag :color="form().running ? 'success' : 'warning'" style="margin-right: 20px;">{{ form().running ? '运行中' : "等待中" }}</a-tag>
-        <a-switch v-model:checked="form().running" />
+        <a-switch v-model:checked="form().running" @change="toggleRun" />
       </div>
     </div>
     <div class="item">
@@ -136,7 +136,7 @@
 <script setup lang="ts">
 import "./form_style.css";
 import form from "../states/form";
-import { addBangumiController, addExclusionController, delBangumiController, delExclusionController} from "./form_actions";
+import { addBangumiController, addExclusionController, delBangumiController, delExclusionController, toggleRun} from "./form_actions";
 import { ref } from "vue";
 import { message, Modal } from "ant-design-vue";
 import { saveTable } from "../hooks/requests";
