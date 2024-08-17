@@ -2,7 +2,7 @@ import axios from "axios"
 import form from "../states/form"
 import { message } from "ant-design-vue";
 
-const BaseURL="http://127.0.0.1:8811"
+const BaseURL=""
 
 export const init=async ()=>{
   form().running=(await axios.get(BaseURL+"/api/status")).data;
