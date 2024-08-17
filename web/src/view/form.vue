@@ -5,7 +5,13 @@
       <div class="form_content">
         <a-tag :color="form().running ? 'success' : 'warning'" style="margin-right: 20px;">{{ form().running ? '运行中' : "等待中" }}</a-tag>
         <a-switch v-model:checked="form().running" />
-        <a-button type="link" style="margin-left: 10px;">查看日志</a-button>
+      </div>
+    </div>
+    <div class="item">
+      <div class="form_label">系统操作</div>
+      <div class="form_content">
+        <a-button type="link">查看日志</a-button>
+        <a-button type="link" @click="saveTable">保存表单</a-button>
       </div>
     </div>
     <div class="item">
@@ -126,6 +132,7 @@ import form from "../states/form";
 import { addBangumiController, addExclusionController, delBangumiController, delExclusionController } from "./form_actions";
 import { ref } from "vue";
 import { message, Modal } from "ant-design-vue";
+import { saveTable } from "../hooks/requests";
 
 let showFold=ref(['1', '2']);
 const bangumiColumn=[
