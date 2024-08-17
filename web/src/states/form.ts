@@ -10,7 +10,7 @@ export default defineStore("form", ()=>{
   let running=ref(false);
   let data=ref({
     "type": "mikan",
-    "exclusions": ['CHT'],
+    "exclusions": [] as string[],
     "bangumi": [] as bangumi[],
     "freq": 15,
     "ariaLink": "",

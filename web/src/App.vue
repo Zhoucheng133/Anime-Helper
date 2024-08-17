@@ -10,10 +10,13 @@
 import zhCN from 'ant-design-vue/es/locale/zh_CN';
 import { ref } from 'vue';
 import Form from './view/form.vue';
+import { init } from './hooks/requests';
 const locale=zhCN;
 let width=ref(window.innerWidth);
 window.onresize=()=>{
   width.value=window.innerWidth;
 }
+
+init();
 
 </script>
