@@ -11,7 +11,7 @@
       <div class="form_label">系统操作</div>
       <div class="form_content">
         <a-button type="link" @click="showLog">查看日志</a-button>
-        <a-button type="link" @click="saveTable">保存表单</a-button>
+        <a-button type="link" @click="saveTable" :disabled="form().running">保存表单</a-button>
       </div>
     </div>
     <div class="item">
