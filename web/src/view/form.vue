@@ -155,7 +155,7 @@ let showLogDialog=ref(false);
 let logContent=ref([] as log[]);
 
 const showLog=async ()=>{
-  logContent=await getLog();
+  logContent=(await getLog()).reverse();
   showLogDialog.value=true;
 }
 
