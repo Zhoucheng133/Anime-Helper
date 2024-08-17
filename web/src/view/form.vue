@@ -17,7 +17,7 @@
     <div class="item">
       <div class="form_label">RSS 来源</div>
       <div class="form_content">
-        <a-radio-group v-model:value="form().data.type" button-style="solid">
+        <a-radio-group v-model:value="form().data.type" button-style="solid" :disabled="form().running">
           <a-radio-button value="mikan">Mikan</a-radio-button>
           <a-radio-button value="acgrip">Acgrip</a-radio-button>
         </a-radio-group>
@@ -27,25 +27,25 @@
     <div class="item">
       <div class="form_label">更新频率</div>
       <div class="form_content">
-        <a-input-number id="inputNumber" v-model:value="form().data.freq" :min="10" :max="1440" />
+        <a-input-number id="inputNumber" v-model:value="form().data.freq" :min="10" :max="1440" :disabled="form().running" />
         <div style="margin-left: 10px;">分钟</div>
       </div>
     </div>
     <div class="item">
       <div class="form_label">Aria 地址</div>
       <div class="form_content">
-        <a-input v-model:value="form().data.ariaLink" placeholder="http(s)://<ip>:16800/jsonrpc" />
+        <a-input v-model:value="form().data.ariaLink" placeholder="http(s)://<ip>:16800/jsonrpc" :disabled="form().running" />
       </div>
     </div>
     <div class="item">
       <div class="form_label">Aria 密钥</div>
       <div class="form_content">
-        <a-input-password v-model:value="form().data.ariaSecret" placeholder="" />
+        <a-input-password v-model:value="form().data.ariaSecret" placeholder="" :disabled="form().running" />
       </div>
     </div>
     <a-collapse style="margin-top: 20px;" v-model:activeKey="showFold">
       <a-collapse-panel key="1" header="番剧表">
-        <a-button type="link" @click="addBangumi">添加</a-button>
+        <a-button type="link" @click="addBangumi" :disabled="form().running">添加</a-button>
         <a-table :columns="bangumiColumn" :data-source="form().data.bangumi" :pagination="false">
           <template #headerCell="{ column }">
             <template v-if="column.key === 'ass'">
@@ -69,13 +69,13 @@
               <a-tag>{{ record.ass }}</a-tag>
             </template>
             <template v-else-if="column.key === 'action'">
-              <a-button type="link" danger @click="delBangumi(record.ass, record.title)">删除</a-button>
+              <a-button type="link" danger @click="delBangumi(record.ass, record.title)" :disabled="form().running">删除</a-button>
             </template>
           </template>
         </a-table>
       </a-collapse-panel>
       <a-collapse-panel key="2" header="排除关键字">
-        <a-button type="link" @click="addExclusion">添加</a-button>
+        <a-button type="link" @click="addExclusion" :disabled="form().running">添加</a-button>
         <a-table :columns="exclusionsColumn" :data-source="form().data.exclusions" :pagination="false">
           <template #headerCell="{ column }">
             <template v-if="column.key === 'value'">
@@ -94,7 +94,7 @@
               {{record}}
             </template>
             <template v-else-if="column.key === 'action'">
-              <a-button type="link" danger @click="delExclusions(record)">删除</a-button>
+              <a-button type="link" danger @click="delExclusions(record)" :disabled="form().running">删除</a-button>
             </template>
           </template>
         </a-table>
