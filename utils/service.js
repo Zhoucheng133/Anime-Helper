@@ -64,7 +64,7 @@ export default async function service(){
     const parser = new xml2js.Parser();
     parser.parseString(xml, (err, result) => {
       if (err) {
-        // 解析错误
+        addLog(false, "解析rss失败");
         return;
       }
       var list=[];
@@ -90,5 +90,3 @@ export default async function service(){
     addLog(false, "解析rss失败");
   }
 }
-
-judge();
