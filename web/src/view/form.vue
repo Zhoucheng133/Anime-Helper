@@ -10,7 +10,7 @@
     <div class="item">
       <div class="form_label">系统操作</div>
       <div class="form_content">
-        <a-button type="link">查看日志</a-button>
+        <a-button type="link" @click="showLog">查看日志</a-button>
         <a-button type="link" @click="saveTable">保存表单</a-button>
       </div>
     </div>
@@ -122,17 +122,42 @@
         </div>
       </div>
     </a-modal>
+    <a-modal v-model:open="showLogDialog" title="日志" :cancel-button-props="{ style: { display: 'none' } }" okText="完成" @ok="showLogDialog=false" :width="props.width<720?width-20 : 700" centered>
+      <div class="logContent">
+        <div v-for="(item, index) in logContent" :key="index" :style="item.ok ? {'color': 'green'}:{'color': 'red'}" class="logItem">
+          <div class="log_label">{{ item.msg }}</div>
+          <div class="log_time">{{ dayjs(item.time).format("YYYY-MM-DD HH:mm") }}</div>
+        </div>
+      </div>
+    </a-modal>
   </div>
 </template>
-
 
 <script setup lang="ts">
 import "./form_style.css";
 import form from "../states/form";
-import { addBangumiController, addExclusionController, delBangumiController, delExclusionController } from "./form_actions";
+import { addBangumiController, addExclusionController, delBangumiController, delExclusionController} from "./form_actions";
 import { ref } from "vue";
 import { message, Modal } from "ant-design-vue";
 import { saveTable } from "../hooks/requests";
+import { getLog } from "../hooks/requests";
+import dayjs from "dayjs";
+
+const props = defineProps(['width']);
+
+interface log{
+  ok: boolean,
+  msg: string,
+  time: number,
+};
+
+let showLogDialog=ref(false);
+let logContent=ref([] as log[]);
+
+const showLog=async ()=>{
+  logContent=await getLog();
+  showLogDialog.value=true;
+}
 
 let showFold=ref(['1', '2']);
 const bangumiColumn=[

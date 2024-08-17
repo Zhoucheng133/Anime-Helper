@@ -51,3 +51,22 @@
   display: flex;
   align-items: center;
 }
+.logContent{
+  max-height: 500px;
+  overflow: auto;
+}
+.logItem{
+  display: grid;
+  grid-template-columns: auto 150px 10px;
+  align-items: center;
+  height: 30px;
+}
+.log_label{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.log_time{
+  display: flex;
+  justify-content: flex-end;
+}

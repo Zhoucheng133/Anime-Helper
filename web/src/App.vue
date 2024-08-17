@@ -1,7 +1,7 @@
 <template>
   <a-config-provider :locale="locale">
     <div :style="{'width': width>800 ? '800px': '100vw'}" class="bg">
-      <Form></Form>
+      <Form :width="width" />
     </div>
   </a-config-provider>
 </template>
