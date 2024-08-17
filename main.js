@@ -32,6 +32,30 @@ const dbGet=async ()=>{
 
 app.use(express.static(path.join('web/dist')))
 app.use(express.json());
+
+app.post("/api/save", (req, res)=>{
+  if(!req.body.data){
+    res.send({
+      "ok": false,
+      "msg": '参数不正确'
+    })
+    return;
+  }else{
+    const data=req.body.data;
+    if(!(data.type && data.exclusions && data.bangumi && data.freq && data.ariaLink && data.ariaSecret)){
+      res.send({
+        "ok": false,
+        "msg": '参数不正确'
+      })
+      return;
+    }
+    state.set(req.body.data)
+    res.send({
+      "ok": true,
+      "msg": ""
+    })
+  }
+})
 app.get("/api/status", (req, res)=>{
   res.send(_interval==null?false:true);
 })
