@@ -16,11 +16,6 @@ const downloadHandler=async (list)=>{
           "params": [
             `token:${state.get().ariaSecret}`,
             [item.url],
-            {
-              "split": "5",
-              "max-connection-per-server": "5",
-              "seed-ratio": "0"
-            }
           ],
         }
       );
