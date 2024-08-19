@@ -16,6 +16,7 @@ const downloadHandler=async (list)=>{
           "params": [
             `token:${state.get().ariaSecret}`,
             [item.url],
+            {}
           ],
         }
       );
