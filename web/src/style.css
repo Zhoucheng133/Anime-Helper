@@ -1,9 +1,0 @@
-body{
-  margin: 0;
-  user-select: none;
-  display: flex;
-  justify-content: center;
-}
-.ant-modal div[aria-hidden="true"] {
-  display: none !important;
-}
