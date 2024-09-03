@@ -1,3 +1,4 @@
+import { JSONFilePreset } from "lowdb/node";
 import { response } from "../interface/interface";
 
 export class Token{
@@ -9,8 +10,15 @@ export class Token{
         msg: "参数不正确",
       };
     }
+
+    const db = await JSONFilePreset('account.json', {
+      username: "",
+      password: ""
+    });
+
+    db.read();
     const profile = await jwt.verify(headers.token);
-    if (profile.username) {
+    if (profile.username==db.data.username) {
       return {
         ok: true,
         msg: ""
