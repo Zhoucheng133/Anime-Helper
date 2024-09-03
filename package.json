@@ -2,7 +2,7 @@
   "name": "helper",
   "scripts": {
     "dev": "bun  --watch src/index.ts",
-    "build": "bun build src/index.ts --outdir ./build",
+    "build": "bun build src/index.ts --target=node --outdir ./build",
     "start": "NODE_ENV=production bun src/index.ts"
   },
   "dependencies": {

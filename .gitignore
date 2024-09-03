@@ -3,3 +3,4 @@ node_modules
 .env
 account.json
 test
+build/index.js
