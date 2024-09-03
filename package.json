@@ -9,6 +9,8 @@
     "@elysiajs/cors": "^1.1.0",
     "@elysiajs/jwt": "^1.1.0",
     "@types/crypto-js": "^4.2.2",
+    "axios": "^1.7.7",
+    "cheerio": "^1.0.0",
     "crypto-js": "^4.2.0",
     "elysia": "^1.1.5",
     "lowdb": "^7.0.1"
