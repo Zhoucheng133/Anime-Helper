@@ -4,6 +4,8 @@ import jwt from "@elysiajs/jwt"
 import {Account} from "./router/account";
 import { response } from "./interface/interface";
 import { Bangumi } from "./router/bangumi";
+import * as crypto from 'crypto';
+const JWT_SECRET = crypto.randomBytes(32).toString('hex');
 
 const account=new Account();
 const bangumi=new Bangumi();
@@ -11,7 +13,7 @@ const bangumi=new Bangumi();
 const app = new Elysia()
 .use(cors())
 .use(
-  jwt({name: 'jwt',secret: 'AnimeHelper', exp: "1y"})
+  jwt({name: 'jwt',secret: JWT_SECRET, exp: "1y"})
 )
 .group("api", (app)=>
   app
