@@ -1,10 +1,10 @@
 import { response } from "../interface/interface";
-import { BangumiService } from "../service/bangumi_service";
+import { ListService } from "../service/list_service";
 import { Token } from "../service/token";
 
-export class Bangumi{
+export class List{
   token=new Token();
-  list=new BangumiService();
+  list=new ListService();
 
   async getlist(jwt: any, headers: any): Promise<response>{
     const check=await this.token.verify(jwt, headers);
@@ -12,16 +12,9 @@ export class Bangumi{
       return check;
     }
     const list=await this.list.getList();
-    if(list.length!=0){
-      return {
-        ok: true,
-        msg: list,
-      };
-    }else{
-      return {
-        ok: false,
-        msg: "请求失败",
-      };
+    return {
+      ok: true,
+      msg: list,
     }
   }
 }

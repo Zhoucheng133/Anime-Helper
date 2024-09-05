@@ -4,3 +4,4 @@ node_modules
 account.json
 test
 build/index.js
+list.json

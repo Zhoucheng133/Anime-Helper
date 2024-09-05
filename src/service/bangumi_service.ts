@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as cheerio from 'cheerio';
 
-export class List{
+export class BangumiService{
   async getList(): Promise<string[][]>{
     let ls=[] as string[][];
     try {
