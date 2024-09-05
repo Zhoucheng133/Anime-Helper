@@ -28,6 +28,7 @@ const app = new Elysia()
   .get("/calendar", ({jwt, headers})=>bangumi.getlist(jwt, headers))
   // 用户表相关
   .get("/list", ({jwt, headers})=>list.getlist(jwt, headers))
+  .post("/addlist", ( {jwt, headers, body} )=>list.addlist(jwt, headers, body))
 )
 
 // 静态的页面

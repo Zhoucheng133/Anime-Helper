@@ -1,4 +1,14 @@
 import { JSONFilePreset } from "lowdb/node";
+import { response } from "../interface/interface";
+
+export interface item{
+  id: string,
+  title: string,
+  episode: number,
+  now: number,
+  onUpdate: boolean,
+  time: string,
+}
 
 export class ListService{
   async getList(){
@@ -8,6 +18,24 @@ export class ListService{
       return [];
     }else{
       return db.data;
+    }
+  }
+
+  isLegal(obj: any): obj is item {
+    return typeof obj.id === 'string' && typeof obj.title === 'string' && typeof obj.episode === 'number'  && typeof obj.now === 'number' && typeof obj.onUpdate === 'boolean' && typeof obj.time === 'string' && obj.now<=obj.episode;
+  }
+
+  addList(data: item): response{
+    if(this.isLegal(data)){
+      return {
+        ok: true,
+        msg: ""
+      }
+    }else{
+      return {
+        ok: false,
+        msg: "参数不合法"
+      }
     }
   }
 }

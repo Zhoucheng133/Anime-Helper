@@ -1,11 +1,13 @@
 import { response } from "../interface/interface";
-import { ListService } from "../service/list_service";
+import { item, ListService } from "../service/list_service";
 import { Token } from "../service/token";
 
 export class List{
   token=new Token();
   list=new ListService();
-
+  
+  
+  // 【GET】获取数据
   async getlist(jwt: any, headers: any): Promise<response>{
     const check=await this.token.verify(jwt, headers);
     if(!check.ok){
@@ -15,6 +17,29 @@ export class List{
     return {
       ok: true,
       msg: list,
+    }
+  }
+
+  // 【POST】添加数据
+  async addlist(jwt: any, headers: any, body: any): Promise<response>{
+    const check=await this.token.verify(jwt, headers);
+    if(!check.ok){
+      return check;
+    }
+    if (!body || !body.data) {
+      return {
+        ok: false,
+        msg: "参数不正确",
+      };
+    }
+    try {
+      const data:item=body.data as item;
+      return this.list.addList(data);
+    } catch (_) {
+      return {
+        ok: false,
+        msg: "参数不合法",
+      };
     }
   }
 }
