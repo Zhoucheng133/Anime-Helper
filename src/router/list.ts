@@ -34,7 +34,7 @@ export class List{
     }
     try {
       const data:item=body.data as item;
-      return this.list.addList(data);
+      return await this.list.addList(data);
     } catch (_) {
       return {
         ok: false,

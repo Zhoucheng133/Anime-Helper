@@ -25,8 +25,15 @@ export class ListService{
     return typeof obj.id === 'string' && typeof obj.title === 'string' && typeof obj.episode === 'number'  && typeof obj.now === 'number' && typeof obj.onUpdate === 'boolean' && typeof obj.time === 'string' && obj.now<=obj.episode;
   }
 
-  addList(data: item): response{
+  async addList(data: item): Promise<response>{
     if(this.isLegal(data)){
+      const db = await JSONFilePreset<item[]>('list.json', []);
+      await db.read();
+      let dbData: item[]=db.data;
+      dbData.push(data);
+      db.data=dbData;
+      db.write();
+
       return {
         ok: true,
         msg: ""
