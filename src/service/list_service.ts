@@ -6,7 +6,6 @@ export interface item{
   title: string,
   episode: number,
   now: number,
-  onUpdate: boolean,
   time: number,
 }
 
@@ -22,7 +21,7 @@ export class ListService{
   }
 
   isLegal(obj: any): obj is item {
-    return typeof obj.id === 'string' && typeof obj.title === 'string' && typeof obj.episode === 'number'  && typeof obj.now === 'number' && typeof obj.onUpdate === 'boolean' && typeof obj.time === 'number' && obj.now<=obj.episode;
+    return typeof obj.id === 'string' && typeof obj.title === 'string' && typeof obj.episode === 'number'  && typeof obj.now === 'number' && typeof obj.time === 'number' && obj.now<=obj.episode;
   }
 
   async addList(data: item): Promise<response>{
