@@ -44,4 +44,35 @@ export class ListService{
       }
     }
   }
+
+  async changeList(data: item): Promise<response>{
+    if(this.isLegal(data)){
+      const db = await JSONFilePreset<item[]>('list.json', []);
+      await db.read();
+      let dbData: item[]=db.data;
+      // dbData.push(data);
+      const index=dbData.findIndex((item)=>item.id==data.id);
+      if(index==-1){
+        return {
+          ok: false,
+          msg: "没有找到对应项"
+        }
+      }else{
+        dbData[index]=data;
+      }
+
+      db.data=dbData;
+      await db.write();
+
+      return {
+        ok: true,
+        msg: ""
+      }
+    }else{
+      return {
+        ok: false,
+        msg: "参数不合法"
+      }
+    }
+  }
 }

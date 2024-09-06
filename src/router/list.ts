@@ -42,4 +42,19 @@ export class List{
       };
     }
   }
+
+  // 【POST】修改数据
+  async changelist(jwt: any, headers: any, body: any): Promise<response>{
+    const check=await this.token.verify(jwt, headers);
+    if(!check.ok){
+      return check;
+    }
+    if (!body || !body.data) {
+      return {
+        ok: false,
+        msg: "参数不正确",
+      };
+    }
+    return await this.list.changeList(body.data);
+  }
 }
