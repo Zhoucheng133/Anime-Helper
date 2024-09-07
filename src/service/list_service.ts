@@ -75,4 +75,26 @@ export class ListService{
       }
     }
   }
+
+  async delList(id: string): Promise<response>{
+    const db = await JSONFilePreset<item[]>('list.json', []);
+    await db.read();
+    let dbData: item[]=db.data;
+    const index=dbData.findIndex((item)=>item.id==id);
+    if(index==-1){
+      return {
+        ok: false,
+        msg: "没有找到对应项"
+      }
+    }else{
+      dbData.splice(index, 1);
+    }
+    db.data=dbData;
+    await db.write();
+
+    return {
+      ok: true,
+      msg: ""
+    }
+  }
 }

@@ -57,4 +57,19 @@ export class List{
     }
     return await this.list.changeList(body.data);
   }
+
+  // 【POST】删除数据
+  async dellist(jwt: any, headers: any, body: any): Promise<response>{
+    const check=await this.token.verify(jwt, headers);
+    if(!check.ok){
+      return check;
+    }
+    if (!body || !body.id) {
+      return {
+        ok: false,
+        msg: "参数不正确",
+      };
+    }
+    return this.list.delList(body.id);
+  }
 }
