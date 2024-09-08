@@ -6,11 +6,13 @@ import { response } from "./interface/interface";
 import { Bangumi } from "./router/bangumi";
 import * as crypto from 'crypto';
 import { List } from "./router/list";
+import { Downloader } from "./router/downloader";
 const JWT_SECRET = crypto.randomBytes(32).toString('hex');
 
 const account=new Account();
 const bangumi=new Bangumi();
 const list=new List();
+const dl=new Downloader();
 
 const app = new Elysia()
 .use(cors())
@@ -31,6 +33,11 @@ const app = new Elysia()
   .post("/addlist", ( {jwt, headers, body} )=>list.addlist(jwt, headers, body))
   .post("/changeitem", ({jwt, headers, body})=>list.changelist(jwt, headers, body))
   .post("/dellist", ({jwt, headers, body})=>list.dellist(jwt, headers, body))
+  // 下载器相关
+  .get("/dl", ({jwt, headers})=>dl.getlist(jwt, headers))
+  .post("dl/run", ({jwt, headers})=>dl.run(jwt, headers))
+  .post("dl/stop", ({jwt, headers})=>dl.stop(jwt, headers))
+  .post("dl/load", ({jwt, headers, body})=>dl.load(jwt, headers, body))
 )
 
 // 静态的页面
