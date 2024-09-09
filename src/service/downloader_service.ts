@@ -84,7 +84,18 @@ export class DownloadService{
     }
   }
 
-  load(data: dl): response{
+  async load(data: dl): Promise<response>{
+    const db = await JSONFilePreset<dl>('dl.json', {
+      type: "mikan",
+      exclusions: [],
+      bangumi: [],
+      freq: 15,
+      ariaLink: "",
+      ariaSecret: ""
+    });
+    db.read();
+    db.data=data;
+    db.write();
     return {
       ok: true,
       msg: ""
