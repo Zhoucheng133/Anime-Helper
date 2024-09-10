@@ -38,6 +38,7 @@ const app = new Elysia()
   .post("dl/run", ({jwt, headers})=>dl.run(jwt, headers))
   .post("dl/stop", ({jwt, headers})=>dl.stop(jwt, headers))
   .post("dl/load", ({jwt, headers, body})=>dl.load(jwt, headers, body))
+  .post("dl/add", ({jwt, headers, body})=>dl.add(jwt, headers, body))
 )
 
 // 静态的页面

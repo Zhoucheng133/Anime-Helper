@@ -42,4 +42,17 @@ export class Downloader{
     }
     return this.dl.load(body.data);
   }
+
+  async add(jwt: any, headers: any, body: any): Promise<response>{
+    const check=await this.token.verify(jwt, headers);
+    if(!check.ok){
+      return check;
+    }else if (!body || !body.data) {
+      return {
+        ok: false,
+        msg: "参数不正确",
+      };
+    }
+    return this.dl.add(body.data);
+  }
 }

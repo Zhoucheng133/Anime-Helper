@@ -101,4 +101,28 @@ export class DownloadService{
       msg: ""
     }
   }
+
+  async add(data: bangumi): Promise<response>{
+    if(!(data.title && data.title)){
+      return {
+        ok: false,
+        msg: "参数不正确"
+      }
+    }
+    const db = await JSONFilePreset<dl>('dl.json', {
+      type: "mikan",
+      exclusions: [],
+      bangumi: [],
+      freq: 15,
+      ariaLink: "",
+      ariaSecret: ""
+    });
+    db.read();
+    db.data.bangumi.push(data);
+    db.write();
+    return {
+      ok: true,
+      msg: ""
+    }
+  }
 }
