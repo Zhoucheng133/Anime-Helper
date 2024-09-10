@@ -11,7 +11,7 @@ export interface item{
 
 export class ListService{
   async getList(){
-    const db = await JSONFilePreset('list.json', []);
+    const db = await JSONFilePreset('db/list.json', []);
     db.read();
     if(db.data.length==0){
       return [];
@@ -26,7 +26,7 @@ export class ListService{
 
   async addList(data: item): Promise<response>{
     if(this.isLegal(data)){
-      const db = await JSONFilePreset<item[]>('list.json', []);
+      const db = await JSONFilePreset<item[]>('db/list.json', []);
       await db.read();
       let dbData: item[]=db.data;
       dbData.push(data);
@@ -47,7 +47,7 @@ export class ListService{
 
   async changeList(data: item): Promise<response>{
     if(this.isLegal(data)){
-      const db = await JSONFilePreset<item[]>('list.json', []);
+      const db = await JSONFilePreset<item[]>('db/list.json', []);
       await db.read();
       let dbData: item[]=db.data;
       // dbData.push(data);
@@ -77,7 +77,7 @@ export class ListService{
   }
 
   async delList(id: string): Promise<response>{
-    const db = await JSONFilePreset<item[]>('list.json', []);
+    const db = await JSONFilePreset<item[]>('db/list.json', []);
     await db.read();
     let dbData: item[]=db.data;
     const index=dbData.findIndex((item)=>item.id==id);

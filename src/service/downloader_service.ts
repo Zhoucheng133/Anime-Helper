@@ -140,7 +140,7 @@ export class DownloadService{
   }
 
   async getList(): Promise<response>{
-    const db = await JSONFilePreset<dl>('dl.json', {
+    const db = await JSONFilePreset<dl>('db/dl.json', {
       type: "mikan",
       exclusions: [],
       bangumi: [],
@@ -157,7 +157,7 @@ export class DownloadService{
 
   async run(): Promise<response>{
     if(this.interval==null){
-      const db = await JSONFilePreset<dl>('dl.json', {
+      const db = await JSONFilePreset<dl>('db/dl.json', {
         type: "mikan",
         exclusions: [],
         bangumi: [],
@@ -202,7 +202,7 @@ export class DownloadService{
   }
 
   async load(data: dl): Promise<response>{
-    const db = await JSONFilePreset<dl>('dl.json', {
+    const db = await JSONFilePreset<dl>('db/dl.json', {
       type: "mikan",
       exclusions: [],
       bangumi: [],
@@ -226,7 +226,7 @@ export class DownloadService{
         msg: "参数不正确"
       }
     }
-    const db = await JSONFilePreset<dl>('dl.json', {
+    const db = await JSONFilePreset<dl>('db/dl.json', {
       type: "mikan",
       exclusions: [],
       bangumi: [],

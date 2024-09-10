@@ -15,7 +15,7 @@ export class Account {
 
   // 【GET】是否需要初始化
   async checkInit() {
-    const db = await JSONFilePreset('account.json', {
+    const db = await JSONFilePreset('db/account.json', {
       username: "",
       password: ""
     });
@@ -42,7 +42,7 @@ export class Account {
 
     const { username, password } = body;
 
-    const db = await JSONFilePreset('account.json', {
+    const db = await JSONFilePreset('db/account.json', {
       username: "",
       password: ""
     });
@@ -85,7 +85,7 @@ export class Account {
 
     const { username, password } = body;
 
-    const db = await JSONFilePreset('account.json', {
+    const db = await JSONFilePreset('db/account.json', {
       username: "",
       password: ""
     });
