@@ -20,7 +20,8 @@ export class DownloadService{
   interval: null | Timer=null;
 
   mainloop(){
-
+    console.log("测试内容...");
+    
   }
 
   async getList(): Promise<response>{
@@ -72,6 +73,7 @@ export class DownloadService{
     if(this.interval!=null){
       console.log("结束");
       clearInterval(this.interval);
+      this.interval=null;
       return {
         ok: true,
         msg: "",
