@@ -39,7 +39,8 @@ const app = new Elysia()
   .post("dl/stop", ({jwt, headers})=>dl.stop(jwt, headers))
   .post("dl/load", ({jwt, headers, body})=>dl.load(jwt, headers, body))
   .post("dl/add", ({jwt, headers, body})=>dl.add(jwt, headers, body))
-  .get("dl/status", ({jwt, headers, body})=>dl.status(jwt, headers))
+  .get("dl/status", ({jwt, headers})=>dl.status(jwt, headers))
+  .get("dl/log", ({jwt, headers})=>dl.log(jwt, headers))
 )
 
 // 静态的页面
