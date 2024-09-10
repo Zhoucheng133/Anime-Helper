@@ -55,4 +55,12 @@ export class Downloader{
     }
     return this.dl.add(body.data);
   }
+
+  async status(jwt: any, headers: any): Promise<response>{
+    const check=await this.token.verify(jwt, headers);
+    if(!check.ok){
+      return check;
+    }
+    return this.dl.status();
+  }
 }

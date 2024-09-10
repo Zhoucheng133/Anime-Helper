@@ -127,4 +127,11 @@ export class DownloadService{
       msg: ""
     }
   }
+
+  status(): response{
+    return {
+      ok: true,
+      msg: this.interval==null ? false : true
+    }
+  }
 }
