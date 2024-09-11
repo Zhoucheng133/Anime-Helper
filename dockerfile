@@ -1,15 +1,11 @@
-FROM node:18.20.4
+FROM oven/bun
 
 WORKDIR /app
 
 COPY . .
 
-RUN npm config set registry https://registry.npmmirror.com
-RUN npm install
-RUN npm install pm2 -g
-
 ENV TZ=Asia/Shanghai
 
-EXPOSE 8811
+EXPOSE 3000
 
-CMD ["pm2-runtime", "main.js"]
+CMD ["bun", "index.js"]

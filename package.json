@@ -1,19 +1,27 @@
 {
-  "name": "anime-helper",
-  "version": "1.0.0",
-  "description": "",
-  "type": "module",
-  "main": "index.js",
+  "name": "helper",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "bun  --watch src/index.ts",
+    "build": "bun build src/index.ts --target=node --outdir ./build",
+    "start": "NODE_ENV=production bun src/index.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "axios": "^1.7.4",
-    "express": "^4.19.2",
+    "@elysiajs/cors": "^1.1.0",
+    "@elysiajs/jwt": "^1.1.0",
+    "@types/xml2js": "^0.4.14",
+    "axios": "^1.7.7",
+    "cheerio": "^1.0.0",
+    "crypto-js": "^4.2.0",
+    "elysia": "^1.1.5",
     "lowdb": "^7.0.1",
     "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "@types/bun": "^1.1.6",
+    "@types/lowdb": "^1.0.15",
+    "@types/axios": "^0.14.0",
+    "@types/cheerio": "^0.22.35",
+    "@types/crypto-js": "^4.2.2"
   }
 }

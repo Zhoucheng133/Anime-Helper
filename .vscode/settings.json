@@ -1,4 +1,7 @@
 {
   "files.autoSave": "off",
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "code-runner.executorMap": {
+    "typescript": "bun",
+  }
 }
