@@ -15,7 +15,7 @@ const list=new List();
 const dl=new Downloader();
 
 const app = new Elysia()
-.use(cors())
+// .use(cors())
 .use(
   jwt({name: 'jwt',secret: JWT_SECRET, exp: "1y"})
 )
