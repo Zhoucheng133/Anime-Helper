@@ -5,10 +5,9 @@
 ![](https://img.shields.io/badge/ElysiaJS-1.1.5-white?)
 ![](https://img.shields.io/badge/bun-1.1.26-yellow)
 ![](https://img.shields.io/badge/axios-1.7.7-blue)
-![](https://img.shields.io/badge/cheerio-1.0.0-purple)
-![](https://img.shields.io/badge/crypto_js-4.2.0-pink)
-![](https://img.shields.io/badge/lowdb-7.0.1-red)
-![](https://img.shields.io/badge/xml2js-0.6.2-orange)
+![](https://img.shields.io/badge/crypto_js-4.2.0-purple)
+![](https://img.shields.io/badge/lowdb-7.0.1-pink)
+![](https://img.shields.io/badge/xml2js-0.6.2-red)
 
 ![License](https://img.shields.io/badge/License-MIT-dark_green)
 
