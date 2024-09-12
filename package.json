@@ -10,18 +10,16 @@
     "@elysiajs/jwt": "^1.1.0",
     "@types/xml2js": "^0.4.14",
     "axios": "^1.7.7",
-    "cheerio": "^1.0.0",
     "crypto-js": "^4.2.0",
     "elysia": "^1.1.5",
     "lowdb": "^7.0.1",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
-    "typescript": "^5.5.4",
-    "@types/bun": "^1.1.6",
-    "@types/lowdb": "^1.0.15",
     "@types/axios": "^0.14.0",
-    "@types/cheerio": "^0.22.35",
-    "@types/crypto-js": "^4.2.2"
+    "@types/bun": "^1.1.6",
+    "@types/crypto-js": "^4.2.2",
+    "@types/lowdb": "^1.0.15",
+    "typescript": "^5.5.4"
   }
 }
