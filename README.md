@@ -111,3 +111,21 @@
 
 #### 使用Motrix下载器 (不推荐)
 你也可以通过[Motrix](https://motrix.app/zh-CN)作为Aria下载器，其下载端口和密码在该软件的设置中
+
+## 更新日志
+
+### 1.0.1 (2024/9/12)
+- 切换到bgm官方api
+- 精简了一些代码
+
+<details>
+<summary>过去的版本</summary>
+
+### 1.0.0 (2024/9/11)
+- 第一个版本
+
+</details>
+
+## 一些API
+
+[Bangumi API](https://bangumi.github.io/api/)
