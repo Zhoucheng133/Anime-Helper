@@ -42,6 +42,9 @@ export class DownloadService{
   ls: any[]=[];
 
   addLog(status: boolean, msg: string){
+    if(this.log.length>=50){
+      this.log.shift();
+    }
     this.log.push({
       ok: status,
       msg: msg,
