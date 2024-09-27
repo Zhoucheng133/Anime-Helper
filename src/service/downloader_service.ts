@@ -170,7 +170,7 @@ export class DownloadService{
       });
       db.read();
       this.form=db.data;
-      console.log("开始");
+      // console.log("开始");
       this.mainloop()
       this.interval=setInterval(()=>{
         this.mainloop()
@@ -189,7 +189,7 @@ export class DownloadService{
 
   stop(): response{
     if(this.interval!=null){
-      console.log("结束");
+      // console.log("结束");
       clearInterval(this.interval);
       this.interval=null;
       return {
