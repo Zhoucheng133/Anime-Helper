@@ -5,7 +5,44 @@ export interface Calendar{
   title: string,
 }
 
+export interface CalendarItem{
+  eps: number,
+  updates: number,
+}
+
 export class BangumiService{
+
+  isDatePassed(dateString: string): boolean {
+    const inputDate = new Date(dateString);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return inputDate <= today;
+  }
+
+  async getItem(id: string): Promise<CalendarItem>{
+    let data: CalendarItem={
+      updates: 0,
+      eps: 0,
+    }
+    try {
+      const response=(await axios.get(`https://api.bgm.tv/v0/episodes?subject_id=${id}`, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+      })).data;
+      const ls=response['data'];
+      data.eps=response.total;
+      for(let item of ls){
+        if(this.isDatePassed(item['airdate'])){
+          data.updates+=1;
+        }else{
+          break;
+        }
+      }
+    }catch(_){}
+    return data;
+  }
+
   async getList(): Promise<Calendar[][]>{
     let ls=[] as Calendar[][];
     try {

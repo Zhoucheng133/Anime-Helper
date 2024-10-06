@@ -28,6 +28,7 @@ const app = new Elysia()
   .get("/auth", ({ jwt, headers})=>account.auth(jwt, headers))
   // 更新表相关
   .get("/calendar", ({jwt, headers})=>bangumi.getlist(jwt, headers))
+  .get("/calendar/item/:id", ({jwt, headers, params: {id}})=>bangumi.getsub(jwt, headers, id))
   // 用户表相关
   .get("/list", ({jwt, headers})=>list.getlist(jwt, headers))
   .post("/addlist", ( {jwt, headers, body} )=>list.addlist(jwt, headers, body))
