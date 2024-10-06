@@ -44,10 +44,4 @@ const app = new Elysia()
   .get("dl/log", ({jwt, headers})=>dl.log(jwt, headers))
 )
 
-// 静态的页面
-.get("*", () => Bun.file("web/index.html"))
-.get("/assets/:path", ({params: { path }}) => Bun.file("web/assets/"+path))
-.get("/icon.svg", () => Bun.file("web/icon.svg"))
-
-
 app.listen('3000', () => console.log(`🦊 Server started at ${app.server?.url.origin}`))
