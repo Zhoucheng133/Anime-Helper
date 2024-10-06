@@ -15,7 +15,7 @@ const list=new List();
 const dl=new Downloader();
 
 const app = new Elysia()
-// .use(cors())
+.use(cors())
 .use(
   jwt({name: 'jwt',secret: JWT_SECRET, exp: "1y"})
 )
@@ -49,4 +49,4 @@ const app = new Elysia()
 .get("/icon.svg", () => Bun.file("web/icon.svg"))
 
 
-app.listen(process.env.PORT as string, () => console.log(`🦊 Server started at ${app.server?.url.origin}`))
+app.listen('3000', () => console.log(`🦊 Server started at ${app.server?.url.origin}`))
