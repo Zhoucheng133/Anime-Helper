@@ -44,4 +44,4 @@ const app = new Elysia()
   .get("dl/log", ({jwt, headers})=>dl.log(jwt, headers))
 )
 
-app.listen('3000', () => console.log(`🦊 Server started at ${app.server?.url.origin}`))
+app.listen('8080', () => console.log(`🦊 Server started at ${app.server?.url.origin}`))
