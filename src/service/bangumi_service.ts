@@ -31,12 +31,13 @@ export class BangumiService{
         }
       })).data;
       const ls=response['data'];
-      data.eps=response.total;
+      // data.eps=response.total;
       for(let item of ls){
+        if(item.type==0){
+          data.eps+=1;
+        }
         if(this.isDatePassed(item['airdate'])){
           data.updates+=1;
-        }else{
-          break;
         }
       }
     }catch(_){}
