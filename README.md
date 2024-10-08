@@ -2,13 +2,6 @@
 
 <img src="assets/icon.svg" width=100></img>
 
-![](https://img.shields.io/badge/ElysiaJS-1.1.5-white?)
-![](https://img.shields.io/badge/bun-1.1.26-yellow)
-![](https://img.shields.io/badge/axios-1.7.7-blue)
-![](https://img.shields.io/badge/crypto_js-4.2.0-purple)
-![](https://img.shields.io/badge/lowdb-7.0.1-pink)
-![](https://img.shields.io/badge/xml2js-0.6.2-red)
-
 ![License](https://img.shields.io/badge/License-MIT-dark_green)
 
 一个追番&自动下载工具，如需在本地搭建，务必先阅读[使用说明](#使用说明)
@@ -37,6 +30,8 @@
 ![下载器](assets/下载器.png)
 
 ## 使用说明
+
+这个项目由ElysiaJS (后端)和Nuxt (前端)开发
 
 这个项目需要将前端页面和后端分开搭建，并且需要使用Docker搭建在服务器上
 
