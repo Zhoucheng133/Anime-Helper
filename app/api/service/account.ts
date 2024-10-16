@@ -13,8 +13,18 @@ export class Account{
       username: "",
       password: ""
     })){
-      return db.data;
+      return true;
     }
-    return db.data;
+    return false;
+  }
+
+  // 【POST】注册
+  register(){
+
+  }
+
+  // 【POST】登录
+  login(){
+
   }
 }
