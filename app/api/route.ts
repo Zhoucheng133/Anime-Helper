@@ -1,8 +1,10 @@
-import { Elysia, t } from 'elysia'
+import { Elysia } from 'elysia'
+import { Account } from './service/account';
 
 const app = new Elysia({ prefix: '/api' })
 
-app.get('/', () => 'hello Next')
+const account=new Account();
 
-export const GET = app.handle 
-export const POST = app.handle 
+app.get('/init', () => account.checkInit())
+export const GET = app.handle;
+export const POST = app.handle;
