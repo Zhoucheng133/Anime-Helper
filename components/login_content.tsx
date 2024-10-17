@@ -23,14 +23,12 @@ export function LoginContent(){
       setOpen(true);
       return;
     }
-    const {data: res}=await axios.post('login', {
+    const {data: res}=await axios.post('/api/login', {
       username: name,
       password: password,
     })
     if(res.ok){
-      // router.push('/home');
-      console.log("~");
-      
+      console.log(res.msg);
     }else{
       setMessage(`登录失败: ${res.msg}`);
       setOpen(true);
