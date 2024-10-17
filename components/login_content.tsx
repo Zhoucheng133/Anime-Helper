@@ -28,8 +28,8 @@ export function LoginContent(){
       password: password,
     })
     if(res.ok){
-      // console.log(res.msg);
       Cookies.set('token', res.msg, { expires: 365 });
+      router.push("/home");
     }else{
       setMessage(`登录失败: ${res.msg}`);
       setOpen(true);

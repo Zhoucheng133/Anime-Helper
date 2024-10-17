@@ -4,6 +4,36 @@ import { response } from "./_interface";
 import CryptoJS from "crypto-js";
 
 export class Account{
+
+  // 【FUNC】检查Token有效性
+  async checkAuth(jwt: any, headers: any): Promise<response>{
+    if (!headers || !headers.token) {
+      return {
+        ok: false,
+        msg: "参数不正确",
+      };
+    }
+    const profile = await jwt.verify(headers.token);
+    if (profile.username) {
+      return {
+        ok: true,
+        msg: ""
+      };
+    } else {
+      // 如果验证失败，但没有抛出错误
+      return {
+        ok: false,
+        msg: "无效的令牌"
+      };
+    }
+  }
+
+  // 【GET】自动登录
+  async auth(jwt: any, headers: any): Promise<response>{
+    return this.checkAuth(jwt, headers);
+  }
+
+
   // 【GET】是否需要初始化
   async checkInit(): Promise<boolean>{
     const db = await JSONFilePreset('db/account.json', {

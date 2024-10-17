@@ -13,6 +13,7 @@ const app = new Elysia({ prefix: '/api' })
 .get('/init', () => account.checkInit())
 .post('/register', ({body}) => account.register(body))
 .post('/login', ({jwt, body})=>account.login(body, jwt))
+.get('/auth', ({jwt, headers})=>account.auth(jwt, headers))
 
 export const GET = app.handle;
 export const POST = app.handle;
