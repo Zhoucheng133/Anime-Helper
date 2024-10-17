@@ -1,9 +1,8 @@
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Input, Snackbar } from "@mui/joy";
+import { Button, Input } from "@mui/joy";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from 'next/router'
+import { Snacker } from "./snack";
 
 export default function RegisterContent(){
 
@@ -61,16 +60,6 @@ export default function RegisterContent(){
       <Input value={repassword} onChange={(e)=>setRepassword(e.target.value)} type="password"/>
     </div>
     <Button style={{marginTop: 30, width: '100%'}} onClick={()=>hanlder()}>注册</Button>
-    <Snackbar 
-      open={open} 
-      onClose={(_, __) => {setOpen(false); }} 
-      autoHideDuration={1500}
-      color={'danger'}
-      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      style={{display: 'flex'}}
-    >
-      <FontAwesomeIcon icon={ faXmark } />
-      <div>{message}</div>
-    </Snackbar>
+    <Snacker open={open} message={message} setOpen={setOpen} />
   </div>
 }

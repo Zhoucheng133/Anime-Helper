@@ -1,10 +1,9 @@
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Input, Snackbar } from "@mui/joy";
+import { Button, Input } from "@mui/joy";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Cookies from 'js-cookie';
+import { Snacker } from "./snack";
 
 export function LoginContent(){
   const router=useRouter();
@@ -49,16 +48,6 @@ export function LoginContent(){
       <Input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} style={{'marginBottom': 20}}/>
     </div>
     <Button style={{marginTop: 30, width: '100%'}} onClick={()=>hanlder()}>登录</Button>
-    <Snackbar 
-      open={open} 
-      onClose={(_, __) => {setOpen(false); }} 
-      autoHideDuration={1500}
-      color={'danger'}
-      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      style={{display: 'flex'}}
-    >
-      <FontAwesomeIcon icon={ faXmark } />
-      <div>{message}</div>
-    </Snackbar>
+    <Snacker open={open} message={message} setOpen={setOpen} />
   </div>
 }
