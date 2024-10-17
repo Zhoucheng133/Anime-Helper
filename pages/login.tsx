@@ -5,8 +5,15 @@ import "@/styles/global.css"
 import "@/styles/login.css";
 import Header from "@/components/header";
 import { LoginContent } from "@/components/login_content";
+import { useEffect } from "react";
+import Cookies from 'js-cookie';
 
 export default function Login(){
+
+  useEffect(()=>{
+    Cookies.remove('token')
+  }, [])
+
   return <div className="page">
     <Head>
       <title>AnimeHelper | 登录</title>
