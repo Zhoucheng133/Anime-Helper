@@ -2,7 +2,7 @@ import { host } from '@/hooks/env';
 import axios from 'axios';
 import { parse } from 'cookie';
 
-export default function Index({param}: any){
+export default function Index(){
 
   return <div>
 
