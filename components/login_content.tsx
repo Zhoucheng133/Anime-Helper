@@ -1,12 +1,10 @@
 import { Button, Input } from "@mui/joy";
 import axios from "axios";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import Cookies from 'js-cookie';
 import { Snacker } from "./snack";
 
 export function LoginContent(){
-  const router=useRouter();
 
   const [name, setName]=useState('');
   const [password, setPassword]=useState('');
@@ -29,7 +27,7 @@ export function LoginContent(){
     })
     if(res.ok){
       Cookies.set('token', res.msg, { expires: 365 });
-      router.push("/home");
+      window.location.href='/home';
     }else{
       setMessage(`登录失败: ${res.msg}`);
       setOpen(true);

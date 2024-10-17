@@ -1,12 +1,9 @@
 import { Button, Input } from "@mui/joy";
 import axios from "axios";
 import { useState } from "react";
-import { useRouter } from 'next/router'
 import { Snacker } from "./snack";
 
 export default function RegisterContent(){
-
-  const router=useRouter();
 
   const [name, setName]=useState('');
   const [password, setPassword]=useState('');
@@ -37,7 +34,7 @@ export default function RegisterContent(){
       password: password,
     })
     if(res.ok){
-      router.replace('login');
+      window.location.href='/login';
     }else{
       setMessage(`注册失败: ${res.msg}`);
       setOpen(true);
