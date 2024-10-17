@@ -69,7 +69,7 @@ export default function RegisterContent(){
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       style={{display: 'flex'}}
     >
-      <FontAwesomeIcon icon={ faXmark} />
+      <FontAwesomeIcon icon={ faXmark } />
       <div>{message}</div>
     </Snackbar>
   </div>
