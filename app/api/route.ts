@@ -5,7 +5,8 @@ import * as crypto from 'crypto';
 
 const account=new Account();
 
-const JWT_SECRET = crypto.randomBytes(32).toString('hex');
+// const JWT_SECRET = crypto.randomBytes(32).toString('hex');
+const JWT_SECRET = "JWT_SECRET";
 const app = new Elysia({ prefix: '/api' })
 .use(
   jwt({name: 'jwt',secret: JWT_SECRET, exp: "1y"})
