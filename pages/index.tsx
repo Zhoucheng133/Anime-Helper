@@ -10,10 +10,6 @@ export default function Index(){
 }
 
 export async function getServerSideProps(context: any){
-  // 测试内容: 获取cookie
-  // const { req } = context;
-  // const cookies = parse(req.headers.cookie || '');
-  
   const {data: init}=await axios.get(`${host}/api/init`);
 
   if(init){
