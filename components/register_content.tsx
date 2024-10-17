@@ -1,9 +1,13 @@
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Input, Snackbar } from "@mui/joy";
+import axios from "axios";
 import { useState } from "react";
+import { useRouter } from 'next/router'
 
 export default function RegisterContent(){
+
+  const router=useRouter();
 
   const [name, setName]=useState('');
   const [password, setPassword]=useState('');
@@ -11,7 +15,7 @@ export default function RegisterContent(){
   const [open, setOpen]=useState(false);
   const [message, setMessage]=useState('');
 
-  function hanlder(){
+  async function hanlder(){
     if(name.length==0){
       setMessage('用户名不能为空');
       setOpen(true);
@@ -29,7 +33,16 @@ export default function RegisterContent(){
       setOpen(true);
       return;
     }
-    
+    const {data: res}=await axios.post("/api/register", {
+      username: name,
+      password: password,
+    })
+    if(res.ok){
+      router.replace('login');
+    }else{
+      setMessage(`注册失败: ${res.msg}`);
+      setOpen(true);
+    }
   }
 
   return <div className="panel">
@@ -56,7 +69,7 @@ export default function RegisterContent(){
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       style={{display: 'flex'}}
     >
-      <FontAwesomeIcon icon={faXmark} />
+      <FontAwesomeIcon icon={ faXmark} />
       <div>{message}</div>
     </Snackbar>
   </div>
