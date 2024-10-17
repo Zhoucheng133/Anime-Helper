@@ -4,6 +4,7 @@ import { Button, Input, Snackbar } from "@mui/joy";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import Cookies from 'js-cookie';
 
 export function LoginContent(){
   const router=useRouter();
@@ -28,7 +29,8 @@ export function LoginContent(){
       password: password,
     })
     if(res.ok){
-      console.log(res.msg);
+      // console.log(res.msg);
+      Cookies.set('token', res.msg, { expires: 365 });
     }else{
       setMessage(`登录失败: ${res.msg}`);
       setOpen(true);
