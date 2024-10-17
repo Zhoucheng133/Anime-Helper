@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@elysiajs/jwt": "^1.1.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
