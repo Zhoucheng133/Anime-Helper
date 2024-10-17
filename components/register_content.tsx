@@ -1,32 +1,30 @@
 import { Button, Input } from "@mui/joy";
 import axios from "axios";
 import { useState } from "react";
-import { Snacker } from "./snack";
+import { useSnack } from "./snack";
+import { useRouter } from "next/router";
 
 export default function RegisterContent(){
 
   const [name, setName]=useState('');
   const [password, setPassword]=useState('');
   const [repassword, setRepassword]=useState('');
-  const [open, setOpen]=useState(false);
-  const [message, setMessage]=useState('');
+
+  const showSnack=useSnack();
+  const router=useRouter();
 
   async function hanlder(){
     if(name.length==0){
-      setMessage('用户名不能为空');
-      setOpen(true);
+      showSnack(false, '用户名不能为空')
       return;
     }else if(password.length==0){
-      setMessage('密码不能为空');
-      setOpen(true);
+      showSnack(false, '密码不能为空')
       return;
     }else if(repassword.length==0){
-      setMessage('重复密码不能为空')
-      setOpen(true);
+      showSnack(false, '重复密码不能为空')
       return;
     }else if(password!==repassword){
-      setMessage('两次密码不相符')
-      setOpen(true);
+      showSnack(false, '两次密码不相符')
       return;
     }
     const {data: res}=await axios.post("/api/register", {
@@ -36,8 +34,7 @@ export default function RegisterContent(){
     if(res.ok){
       window.location.href='/login';
     }else{
-      setMessage(`注册失败: ${res.msg}`);
-      setOpen(true);
+      showSnack(false, `注册失败: ${res.msg}`)
     }
   }
 
@@ -57,6 +54,6 @@ export default function RegisterContent(){
       <Input value={repassword} onChange={(e)=>setRepassword(e.target.value)} type="password"/>
     </div>
     <Button style={{marginTop: 30, width: '100%'}} onClick={()=>hanlder()}>注册</Button>
-    <Snacker open={open} message={message} setOpen={setOpen} />
+    {/* <Snacker open={open} message={message} setOpen={setOpen} /> */}
   </div>
 }

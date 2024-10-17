@@ -2,23 +2,23 @@ import { Button, Input } from "@mui/joy";
 import axios from "axios";
 import { useState } from "react";
 import Cookies from 'js-cookie';
-import { Snacker } from "./snack";
+import { useSnack } from "./snack";
+import { useRouter } from "next/router";
 
 export function LoginContent(){
 
   const [name, setName]=useState('');
   const [password, setPassword]=useState('');
-  const [open, setOpen]=useState(false);
-  const [message, setMessage]=useState('');
+  const router=useRouter();
+
+  const showSnack=useSnack();
 
   async function hanlder(){
     if(name.length==0){
-      setMessage('用户名不能为空');
-      setOpen(true);
+      showSnack(false, '用户名不能为空')
       return;
     }else if(password.length==0){
-      setMessage('密码不能为空');
-      setOpen(true);
+      showSnack(false, '密码不能为空')
       return;
     }
     const {data: res}=await axios.post('/api/login', {
@@ -29,8 +29,7 @@ export function LoginContent(){
       Cookies.set('token', res.msg, { expires: 365 });
       window.location.href='/home';
     }else{
-      setMessage(`登录失败: ${res.msg}`);
-      setOpen(true);
+      showSnack(false, `登录失败: ${res.msg}`)
     }
   }
 
@@ -46,6 +45,6 @@ export function LoginContent(){
       <Input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} style={{'marginBottom': 20}}/>
     </div>
     <Button style={{marginTop: 30, width: '100%'}} onClick={()=>hanlder()}>登录</Button>
-    <Snacker open={open} message={message} setOpen={setOpen} />
+    {/* <Snacker open={open} message={message} setOpen={setOpen} /> */}
   </div>
 }
