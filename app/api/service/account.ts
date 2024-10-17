@@ -56,7 +56,40 @@ export class Account{
   }
 
   // 【POST】登录
-  login(){
-
+  async login(body: any, jwt: any): Promise<response>{
+    if (!body || !body.username || !body.password) {
+      return {
+        ok: false,
+        msg: "参数不正确",
+      }
+    }
+    const { username, password } = body;
+    const db = await JSONFilePreset('db/account.json', {
+      username: "",
+      password: ""
+    });
+    db.read();
+    if (JSON.stringify(db.data) == JSON.stringify({
+      username: "",
+      password: ""
+    })) {
+      return {
+        ok: false,
+        msg: "没有注册任何账户",
+      };
+    }
+    const account = db.data;
+    if (username == account.username && CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex) == account.password) {
+      const token = await jwt.sign({ username });
+      return {
+        ok: true,
+        msg: token,
+      };
+    } else {
+      return {
+        ok: false,
+        msg: "用户名或者密码不正确"
+      }
+    }
   }
 }
