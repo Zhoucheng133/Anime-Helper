@@ -14,6 +14,7 @@
     "@mui/joy": "^5.0.0-beta.48",
     "@types/lodash": "^4.17.10",
     "axios": "^1.7.7",
+    "cookie": "^1.0.1",
     "elysia": "^1.1.22",
     "lodash": "^4.17.21",
     "lowdb": "^7.0.1",
