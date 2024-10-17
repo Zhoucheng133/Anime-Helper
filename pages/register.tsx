@@ -5,7 +5,6 @@ import Head from "next/head";
 import "@/styles/global.css"
 import "@/styles/register.css";
 import RegisterContent from "@/components/register_content";
-import { parse } from "cookie";
 
 export default function Register(){
 
@@ -26,9 +25,8 @@ export default function Register(){
 }
 
 export async function getServerSideProps(context: any){
-  const { req } = context;
-  const cookies = parse(req.headers.cookie || '');
-  console.log(cookies.token);
+  // const { req } = context;
+  // const cookies = parse(req.headers.cookie || '');
   
   const {data: init}=await axios.get(`${host}/api/init`);
   if(!init){

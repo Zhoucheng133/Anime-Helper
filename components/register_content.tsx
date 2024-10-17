@@ -47,7 +47,7 @@ export default function RegisterContent(){
       <div className="label">重复密码</div>
       <Input value={repassword} onChange={(e)=>setRepassword(e.target.value)} type="password"/>
     </div>
-    <Button className="button" onClick={()=>hanlder()}>注册</Button>
+    <Button style={{marginTop: 30, width: '100%'}} onClick={()=>hanlder()}>注册</Button>
     <Snackbar 
       open={open} 
       onClose={(_, __) => {setOpen(false); }} 
