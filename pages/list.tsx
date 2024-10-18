@@ -1,7 +1,9 @@
 import Header from "@/components/header";
 import { initPage } from "@/hooks/init";
 import Head from "next/head";
-import "@/styles/global.css"
+import "@/styles/global.css";
+import "@/styles/list.css";
+import ListContent from "@/components/list_content";
 
 export default function Home({val}: any){
   return <div>
@@ -9,6 +11,7 @@ export default function Home({val}: any){
       <title>AnimeHelper | 列表</title>
     </Head>
     <Header login={true} page="list" />
+    <ListContent/>
   </div>
 }
 

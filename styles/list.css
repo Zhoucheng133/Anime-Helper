@@ -1,0 +1,26 @@
+.page{
+  margin: auto;
+  width: 1000px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 20px;
+}
+@media screen and (max-width: 1000px) {
+  .page {
+    width: 100%
+  }
+}
+.tool_bar{
+  display: flex;
+}
+.selector{
+  margin-left: 10px;
+  width: 120px;
+}
+/* .search_box{
+  width: 100%;
+} */
+.search_box{
+  margin-left: 10px;
+}
