@@ -2,6 +2,7 @@
   margin-left: 30px;
   display: flex;
   align-items: center;
+  width: 200px;
 }
 .head_title{
   margin-left: 15px;
@@ -22,6 +23,8 @@
 }
 .logout_area{
   display: flex;
+  width: 200px;
+  justify-content: flex-end;
   align-items: center;
   margin-right: 30px;
   transition: color linear .2s;
@@ -54,4 +57,7 @@
 }
 .head_menu_label{
   margin-left: 5px;
+}
+.head_mobile{
+  margin-right: 30px;
 }
