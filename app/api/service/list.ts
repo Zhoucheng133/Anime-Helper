@@ -12,12 +12,12 @@ export class List{
       db.read();
       if(db.data.length==0){
         return {
-          ok: false,
+          ok: true,
           msg: []
         }
       }else{
         return {
-          ok: false,
+          ok: true,
           msg: db.data,
         }
       }
