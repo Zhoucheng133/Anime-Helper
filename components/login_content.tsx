@@ -3,13 +3,11 @@ import axios from "axios";
 import { useState } from "react";
 import Cookies from 'js-cookie';
 import { useSnack } from "./snack";
-import { useRouter } from "next/router";
 
 export function LoginContent(){
 
   const [name, setName]=useState('');
   const [password, setPassword]=useState('');
-  const router=useRouter();
 
   const showSnack=useSnack();
 
@@ -27,7 +25,7 @@ export function LoginContent(){
     })
     if(res.ok){
       Cookies.set('token', res.msg, { expires: 365 });
-      window.location.href='/home';
+      window.location.href='/list';
     }else{
       showSnack(false, `登录失败: ${res.msg}`)
     }
