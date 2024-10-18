@@ -38,6 +38,8 @@ export default function ListContent(){
           <tr>
             <th style={{ width: 250 }}>标题</th>
             <th style={{ width: 60 }}>状态</th>
+            <th style={{ width: 40 }}>集数</th>
+            <th style={{ width: 40 }}>看至</th>
             <th style={{ width: 170 }}>进度</th>
             <th style={{ width: 170 }}>操作</th>
           </tr>

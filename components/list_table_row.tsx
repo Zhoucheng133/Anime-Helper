@@ -30,26 +30,21 @@ export default function ListTableRow({data}: props){
   return <React.Fragment>
     <tr>
       <td>{data.title}</td>
-      <td className="no_select">{calculateEpisodesReleased(data.time)<data.episode ? <Chip color="success" style={{fontSize: 13}}>更新中</Chip> : <Chip style={{fontSize: 13}}>已完结</Chip>}</td>
+      <td className="no_select">{calculateEpisodesReleased(data.time)<data.episode ? <Chip color="success" variant="solid" style={{fontSize: 13}}>更新中</Chip> : <Chip style={{fontSize: 13}}>已完结</Chip>}</td>
+      <td className="no_select">{analyseEpisode(data as ListItem)}</td>
+      <td className="no_select">{data.now}</td>
       <td className="no_select">
-        {/* <LinearProgress
+        <LinearProgress
           determinate
-          variant="outlined"
-          color="primary"
+          variant="soft"
+          color={ value==100 ? 'success' : "primary"}
           size="sm"
           value={Number(value!)}
           sx={{
             "--LinearProgress-thickness": "8px"
           }}
         >
-          <Typography
-            level="body-xs"
-            // textColor="common.black"
-            sx={{ fontWeight: 'xl', mixBlendMode: 'difference' }}
-          >
-            {`${data.now}/${analyseEpisode(data)}`}
-          </Typography>
-        </LinearProgress> */}
+        </LinearProgress>
       </td>
       <td></td>
     </tr>
