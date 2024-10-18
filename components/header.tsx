@@ -41,15 +41,15 @@ export default function Header({login=false, page='list'}: HeaderProps){
     </div>
     {(login && width>800) && (<div className="head_menu">
       <div className={ page=='list' ? "head_menu_item_selected" : 'head_menu_item'} onClick={()=>toPage('list')}>
-        <FontAwesomeIcon icon={faList} style={{'width': 15}}/>
+        <FontAwesomeIcon icon={faList} style={{'width': 12}}/>
         <div className="head_menu_label">列表</div>
       </div>
       <div className={ page=='calendar' ? "head_menu_item_selected" : 'head_menu_item'} style={{marginLeft: 30}} onClick={()=>toPage('calendar')}>
-        <FontAwesomeIcon icon={faCalendar} style={{'width': 15}}/>
-        <div className="head_menu_label">每日更新</div>
+        <FontAwesomeIcon icon={faCalendar} style={{'width': 12}}/>
+        <div className="head_menu_label">每日放送</div>
       </div>
       <div className={ page=='downloader' ? "head_menu_item_selected" : 'head_menu_item'} style={{marginLeft: 30}} onClick={()=>toPage('downloader')}>
-        <FontAwesomeIcon icon={faDownload} style={{'width': 15}}/>
+        <FontAwesomeIcon icon={faDownload} style={{'width': 12}}/>
         <div className="head_menu_label">下载器</div>
       </div>
     </div>)}
@@ -73,7 +73,7 @@ export default function Header({login=false, page='list'}: HeaderProps){
             <ListItemButton onClick={()=>toPage('list')}>列表</ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton onClick={()=>toPage('calendar')}>每日更新</ListItemButton>
+            <ListItemButton onClick={()=>toPage('calendar')}>每日放送</ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton onClick={()=>toPage('downloader')}>下载器</ListItemButton>
