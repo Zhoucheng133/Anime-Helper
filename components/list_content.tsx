@@ -1,10 +1,15 @@
-import { Button, Select, Option, Input } from "@mui/joy";
+import { listStore } from "@/hooks/list";
+import { Button, Select, Option, Input, Table, Sheet } from "@mui/joy";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
+import ListTableRow from "./list_table_row";
 
 export default function ListContent(){
 
   const [type, setType]=useState('进行中');
   const [searchKey, setSearchKey]=useState('');
+
+  const [list, setList]=useRecoilState(listStore);
 
   const handleTypeChange=(_: any, option: any)=>{
     setType(option);
@@ -23,5 +28,26 @@ export default function ListContent(){
       </Select>
       <Input className="search_box" disabled={type!='搜索'} value={searchKey} onChange={(e)=>setSearchKey(e.target.value)}></Input>
     </div>
+    {/* {list.map((item)=><div key={item.id}>{item.title}</div>)} */}
+    <Sheet sx={(_) => ({
+      overflow: 'auto',
+      backgroundColor: 'transparent'
+    })}>
+      <Table className="table">
+        <thead>
+          <tr>
+            <th style={{ width: 250 }}>标题</th>
+            <th style={{ width: 60 }}>状态</th>
+            <th style={{ width: 170 }}>进度</th>
+            <th style={{ width: 170 }}>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          {list.map((item)=>(
+            <ListTableRow key={item.id} data={item} />
+          ))}
+        </tbody>
+      </Table>
+    </Sheet>
   </div>
 }

@@ -6,7 +6,7 @@ import "@/styles/global.css"
 export default function Home({val}: any){
   return <div>
     <Head>
-      <title>AnimeHelper | 每日更新</title>
+      <title>AnimeHelper | 每日放送</title>
     </Head>
     <Header login={true} page="calendar" />
   </div>

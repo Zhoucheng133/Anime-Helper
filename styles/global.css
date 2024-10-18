@@ -61,3 +61,7 @@
 .head_mobile{
   margin-right: 30px;
 }
+.no_select{
+  user-select: none;
+  -webkit-user-drag: none;
+}
