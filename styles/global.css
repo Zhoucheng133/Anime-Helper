@@ -20,3 +20,16 @@
   user-select: none;
   justify-content: space-between;
 }
+.logoutArea{
+  display: flex;
+  align-items: center;
+  margin-right: 30px;
+  transition: color linear .2s;
+  cursor: pointer;
+}
+.logouLabel{
+  margin-left: 5px;
+}
+.logoutArea:hover{
+  color: red;
+}
