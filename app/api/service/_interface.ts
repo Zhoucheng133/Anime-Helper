@@ -1,4 +1,4 @@
 export interface response{
   ok: boolean,
-  msg: string
+  msg: any
 }
