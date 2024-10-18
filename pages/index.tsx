@@ -32,7 +32,7 @@ export async function getServerSideProps(context: any){
       if(res.ok){
         return {
           redirect: {
-            destination: '/home',
+            destination: '/list',
             permanent: false,
           }
         }

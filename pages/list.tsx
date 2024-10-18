@@ -6,9 +6,9 @@ import "@/styles/global.css"
 export default function Home(){
   return <div>
     <Head>
-      <title>AnimeHelper | 主页</title>
+      <title>AnimeHelper | 列表</title>
     </Head>
-    <Header/>
+    <Header login={true} />
   </div>
 }
 
