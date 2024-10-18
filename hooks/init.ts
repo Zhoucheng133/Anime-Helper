@@ -22,9 +22,7 @@ export async function initPage(context: any){
         }
       });
       if(res.ok){
-        return {
-          props: {}
-        }
+        return true;
       }else{
         return {
           redirect: {

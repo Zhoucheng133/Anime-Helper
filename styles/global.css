@@ -20,16 +20,38 @@
   user-select: none;
   justify-content: space-between;
 }
-.logoutArea{
+.logout_area{
   display: flex;
   align-items: center;
   margin-right: 30px;
   transition: color linear .2s;
   cursor: pointer;
 }
-.logouLabel{
+.logout_label{
   margin-left: 5px;
 }
-.logoutArea:hover{
+.logout_area:hover{
   color: red;
+}
+.head_menu{
+  display: flex;
+  align-items: center;
+}
+.head_menu_item{
+  cursor: pointer;
+  transition: color linear .2s;
+}
+.head_menu_item, .head_menu_item_selected{
+  display: flex;
+  align-items: center;
+}
+.head_menu_item_selected{
+  color: lightgrey;
+  cursor: default;
+}
+.head_menu_item:hover{
+  color: skyblue;
+}
+.head_menu_label{
+  margin-left: 5px;
 }
