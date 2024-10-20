@@ -1,4 +1,5 @@
 import { ListItemInterface } from "@/hooks/interface";
+import { useAddEp, useMinusEp } from "@/hooks/list";
 import { faMinus, faPlus, faRemove, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Button, ButtonGroup, Chip, Dropdown, IconButton, LinearProgress, Menu, MenuButton, MenuItem, Typography } from "@mui/joy";
@@ -25,6 +26,7 @@ export function calculateEpisodesReleased(firstEpisodeTimestamp: number): number
   return Math.max(weeksPassed, 0) + 1;
 }
 
+// 计算周几
 function WeekdayChip(timestamp: number){
   if(timestamp==0){
     return <Chip>/</Chip>
@@ -38,6 +40,8 @@ function WeekdayChip(timestamp: number){
 export default function ListTableRow({data}: props){
 
   let value=data.now/analyseEpisode(data as ListItemInterface)*100;
+  const addEp=useAddEp();
+  const minusEp=useMinusEp();
 
   return <React.Fragment>
     <tr>
@@ -62,10 +66,10 @@ export default function ListTableRow({data}: props){
       <td>
       <ButtonGroup size="sm">
         <Button>编辑</Button>
-        <IconButton>
+        <IconButton onClick={()=>minusEp(data)}>
           <FontAwesomeIcon icon={faMinus} />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={()=>addEp(data)}>
           <FontAwesomeIcon icon={faPlus} />
         </IconButton>
         <Button>添加到</Button>
