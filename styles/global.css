@@ -65,3 +65,6 @@
   user-select: none;
   -webkit-user-drag: none;
 }
+.Mui-focused{
+  --Input-focusedHighlight:#0EA5E9 !important;
+}
