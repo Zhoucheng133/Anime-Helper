@@ -3,6 +3,7 @@ import '@/styles/_app.css';
 import Head from 'next/head';
 import { Snacker } from '@/components/snack';
 import { extendTheme, ThemeProvider } from '@mui/joy/styles';
+import { Providers } from '../components/providers';
 
 const mantineTheme = extendTheme({
   colorSchemes: {
@@ -58,9 +59,12 @@ function MyApp({ Component, pageProps }: any) {
       <Head>
         <link rel="icon" href="/icon.svg" />
       </Head>
-      <ThemeProvider theme={mantineTheme}>
+      {/* <ThemeProvider theme={mantineTheme}>
+        
+      </ThemeProvider> */}
+      <Providers>
         <Component {...pageProps} />
-      </ThemeProvider>
+      </Providers>
       <Snacker/>
     </RecoilRoot>
   );
