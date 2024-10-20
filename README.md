@@ -56,7 +56,7 @@
     ```
 3. 使用下面的命令来部署
     ```bash
-    sudo docker run -d --restart always -p <服务器主机端口号*>:3000 helper_web helper_web
+    sudo docker run -d --restart always -p <服务器主机端口号*>:3000 --name helper_web helper_web
     ```
     \*这个端口号不要与后端端口号冲突
 
