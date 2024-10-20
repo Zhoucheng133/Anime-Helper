@@ -2,7 +2,8 @@ import { listStore } from "@/hooks/list";
 import { Button, Select, Option, Input, Table, Sheet } from "@mui/joy";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import ListTableRow from "./list_table_row";
+import ListTableRow, { calculateEpisodesReleased } from "./list_table_row";
+import { ListItemInterface } from "@/hooks/interface";
 
 export default function ListContent(){
 
@@ -13,6 +14,22 @@ export default function ListContent(){
 
   const handleTypeChange=(_: any, option: any)=>{
     setType(option);
+  }
+
+  const show=(item: ListItemInterface): boolean=>{
+    if(type=='所有'){
+      return true;
+    }else if(type=='进行中'){
+      return !(calculateEpisodesReleased(item.time)>=item.episode && item.now==item.episode);
+    }else if(type=='更新中'){
+      return calculateEpisodesReleased(item.time)<item.episode;
+    }else if(type=='已完结'){
+      return calculateEpisodesReleased(item.time)>=item.episode;
+    }else if(type=='已看完'){
+      return calculateEpisodesReleased(item.time)>=item.episode && item.now==item.episode;
+    }else{
+      return item.title.includes(searchKey);
+    }
   }
 
   return <div className="page">
@@ -28,7 +45,6 @@ export default function ListContent(){
       </Select>
       <Input className="search_box" disabled={type!='搜索'} value={searchKey} onChange={(e)=>setSearchKey(e.target.value)}></Input>
     </div>
-    {/* {list.map((item)=><div key={item.id}>{item.title}</div>)} */}
     <Sheet sx={(_) => ({
       overflow: 'auto',
       backgroundColor: 'transparent'
@@ -38,16 +54,17 @@ export default function ListContent(){
           <tr>
             <th style={{ width: 250 }}>标题</th>
             <th style={{ width: 60 }}>状态</th>
-            <th style={{ width: 40 }}>集数</th>
-            <th style={{ width: 40 }}>看至</th>
-            <th style={{ width: 170 }}>进度</th>
-            <th style={{ width: 170 }}>操作</th>
+            <th style={{ width: 60 }}>更新周</th>
+            <th style={{ width: 200 }}>进度</th>
+            <th style={{ width: 210 }}>操作</th>
           </tr>
         </thead>
         <tbody>
-          {list.map((item)=>(
-            <ListTableRow key={item.id} data={item} />
-          ))}
+          {list.map((item)=>{
+            if(show(item)){
+              return <ListTableRow key={item.id} data={item} />
+            }
+          })}
         </tbody>
       </Table>
     </Sheet>

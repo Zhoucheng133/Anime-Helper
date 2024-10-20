@@ -1,4 +1,4 @@
-export interface ListItem{
+export interface ListItemInterface{
   id: string,
   title: string,
   episode: number,

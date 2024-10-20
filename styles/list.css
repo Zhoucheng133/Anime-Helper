@@ -28,3 +28,11 @@ td{
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.progress_slot{
+  display: flex;
+  align-items: center;
+}
+.progress_label{
+  width: 80px;
+  margin-left: 10px;
+}
