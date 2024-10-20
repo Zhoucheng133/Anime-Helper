@@ -19,6 +19,7 @@ const app = new Elysia({ prefix: '/api' })
 .get('/auth', ({jwt, headers})=>account.auth(jwt, headers))
 
 .get('list/get', ({jwt, headers})=>list.getList(jwt, headers))
+.post('list/edit', ({jwt, headers, body})=>list.edit(jwt, headers, body))
 
 export const GET = app.handle;
 export const POST = app.handle;
