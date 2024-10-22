@@ -1,6 +1,6 @@
-import { listStore } from "@/hooks/list";
+import { listStore, tableColumn } from "@/hooks/list";
 // import { Button, Select, Option, Input, Table, Sheet } from "@mui/joy";
-import {Button, Input, Select, SelectItem} from "@nextui-org/react";
+import {Button, Input, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import ListTableRow, { calculateEpisodesReleased } from "./list_table_row";
@@ -46,28 +46,21 @@ export default function ListContent(){
       </Select>
       <Input placeholder={ type=='搜索' ? '输入关键词搜索' : '需要在左侧选择搜索'} className="search_box" disabled={type!='搜索'} value={searchKey} onChange={(e)=>setSearchKey(e.target.value)}></Input>
     </div>
-    {/* <Sheet sx={(_) => ({
-      overflow: 'auto',
-      backgroundColor: 'transparent'
-    })}>
-      <Table className="table">
-        <thead>
-          <tr>
-            <th style={{ width: 250 }}>标题</th>
-            <th style={{ width: 60 }}>状态</th>
-            <th style={{ width: 60 }}>更新周</th>
-            <th style={{ width: 200 }}>进度</th>
-            <th style={{ width: 210 }}>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          {list.map((item)=>{
-            if(show(item)){
-              return <ListTableRow key={item.id} data={item} />
-            }
-          })}
-        </tbody>
-      </Table>
-    </Sheet> */}
+    <Table aria-label="content">
+      <TableHeader columns={tableColumn}>
+        {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
+      </TableHeader>
+      <TableBody items={list.filter((item)=>show(item))}>
+        {(item)=>(
+          <TableRow key={item.key}>
+            {(columnKey) => (
+              <TableCell>
+                {ListTableRow({item, key: columnKey})}
+              </TableCell>
+            )}
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   </div>
 }

@@ -10,6 +10,29 @@ export const listStore=atom<any[]>({
   default: [],
 })
 
+export const tableColumn=[
+  {
+    key: 'title',
+    label: '标题',
+  },
+  {
+    key: 'status',
+    label: '状态',
+  },
+  {
+    key: 'weekday',
+    label: '更新周',
+  },
+  {
+    key: 'progress',
+    label: '进度',
+  },
+  {
+    key: 'op',
+    label: '操作'
+  }
+];
+
 const useGet=()=>{
   const [_, setList]=useRecoilState(listStore);
   const get=async ()=>{

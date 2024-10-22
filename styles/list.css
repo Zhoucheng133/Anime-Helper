@@ -2,11 +2,9 @@
   margin: auto;
   width: 1000px;
   padding-top: 10px;
-  padding-bottom: 20px;
-  padding-right: 20px;
-  padding-left: 20px;
+  padding-bottom: 10px;
 }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1040px) {
   .page {
     width: calc(100% - 40px)
   }
@@ -17,22 +15,9 @@
   gap: 10px;
   margin-bottom: 10px;
 }
-.table{
-  background-color: transparent;
-}
-th{
-  user-select: none;
-}
-td{
+.table_title{
+  min-width: 200px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-.progress_slot{
-  display: flex;
-  align-items: center;
-}
-.progress_label{
-  width: 80px;
-  margin-left: 10px;
 }

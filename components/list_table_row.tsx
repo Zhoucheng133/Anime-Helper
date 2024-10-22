@@ -3,9 +3,10 @@ import { useAddEp, useMinusEp } from "@/hooks/list";
 import { faMinus, faPlus, faRemove, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {Progress, Chip, Button, ButtonGroup} from "@nextui-org/react";
-import React, { useState } from "react";
+import React from "react";
 interface props{
-  data: ListItemInterface,
+  item: ListItemInterface,
+  key: any,
 }
 
 // 判定是否实际上显示多少集
@@ -37,47 +38,63 @@ function WeekdayChip(timestamp: number){
   }
 }
 
-export default function ListTableRow({data}: props){
-
-  let value=data.now/analyseEpisode(data as ListItemInterface)*100;
-  const addEp=useAddEp();
-  const minusEp=useMinusEp();
-
-  return <React.Fragment>
-    <tr>
-      <td>{data.title}</td>
-      <td className="no_select">{calculateEpisodesReleased(data.time)<data.episode ? <Chip color="success" variant="flat"  size="sm">更新中</Chip> : <Chip size="sm" variant="flat">已完结</Chip>}</td>
-      <td className="no_select">{WeekdayChip(data.time)}</td>
-      <td className="no_select">
-        <div className="progress_slot">
-          <Progress value={Number(value!)} color={ value==100 ? 'success' : "primary" } size='sm' />
-          <div className="progress_label">{data.now} / {analyseEpisode(data as ListItemInterface)}</div>
-        </div>
-      </td>
-      <td>
-      {/* <ButtonGroup size="sm">
-        <Button>编辑</Button>
-        <IconButton onClick={()=>minusEp(data)}>
-          <FontAwesomeIcon icon={faMinus} />
-        </IconButton>
-        <IconButton onClick={()=>addEp(data)}>
-          <FontAwesomeIcon icon={faPlus} />
-        </IconButton>
-        <Button>添加到</Button>
-        <IconButton>
-          <FontAwesomeIcon icon={faTrash} />
-        </IconButton>
-      </ButtonGroup> */}
-      <ButtonGroup size="sm">
-        <Button>编辑</Button>
-        <Button isIconOnly>
-          <FontAwesomeIcon icon={faMinus} />
-        </Button>
-        <Button isIconOnly>
-        <FontAwesomeIcon icon={faPlus} />
-        </Button>
-      </ButtonGroup>
-      </td>
-    </tr>
-  </React.Fragment>
+export default function ListTableRow({item, key}: props){
+  if(key=='title'){
+    return <div className="table_title">{item.title}</div>
+  }else if(key=='status'){
+    return <div>{calculateEpisodesReleased(item.time)<item.episode ? <Chip color="success" variant="flat"  size="sm">更新中</Chip> : <Chip size="sm" variant="flat">已完结</Chip>}</div>
+  }else if(key=='weekday'){
+    return <div>{WeekdayChip(item.time)}</div>
+  }else if(key=='progress'){
+    let value=item.now/analyseEpisode(item as ListItemInterface)*100;
+    return <div style={{width: 220}}>
+      <Progress value={Number(value!)} aria-label={`${value}%`} color={ value==100 ? 'success' : "primary" } size='sm' />
+    </div>
+  }
+  return <div></div>
 }
+
+// export default function ListTableRow({data}: props){
+
+//   let value=data.now/analyseEpisode(data as ListItemInterface)*100;
+//   const addEp=useAddEp();
+//   const minusEp=useMinusEp();
+
+//   return <React.Fragment>
+//     <tr>
+//       <td>{data.title}</td>
+//       <td className="no_select">{calculateEpisodesReleased(data.time)<data.episode ? <Chip color="success" variant="flat"  size="sm">更新中</Chip> : <Chip size="sm" variant="flat">已完结</Chip>}</td>
+//       <td className="no_select">{WeekdayChip(data.time)}</td>
+//       <td className="no_select">
+//         <div className="progress_slot">
+//           <Progress value={Number(value!)} color={ value==100 ? 'success' : "primary" } size='sm' />
+//           <div className="progress_label">{data.now} / {analyseEpisode(data as ListItemInterface)}</div>
+//         </div>
+//       </td>
+//       <td>
+//       {/* <ButtonGroup size="sm">
+//         <Button>编辑</Button>
+//         <IconButton onClick={()=>minusEp(data)}>
+//           <FontAwesomeIcon icon={faMinus} />
+//         </IconButton>
+//         <IconButton onClick={()=>addEp(data)}>
+//           <FontAwesomeIcon icon={faPlus} />
+//         </IconButton>
+//         <Button>添加到</Button>
+//         <IconButton>
+//           <FontAwesomeIcon icon={faTrash} />
+//         </IconButton>
+//       </ButtonGroup> */}
+//       <ButtonGroup size="sm">
+//         <Button>编辑</Button>
+//         <Button isIconOnly>
+//           <FontAwesomeIcon icon={faMinus} />
+//         </Button>
+//         <Button isIconOnly>
+//         <FontAwesomeIcon icon={faPlus} />
+//         </Button>
+//       </ButtonGroup>
+//       </td>
+//     </tr>
+//   </React.Fragment>
+// }
