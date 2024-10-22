@@ -1,5 +1,6 @@
 import { listStore } from "@/hooks/list";
-import { Button, Select, Option, Input, Table, Sheet } from "@mui/joy";
+// import { Button, Select, Option, Input, Table, Sheet } from "@mui/joy";
+import {Button, Input, Select, SelectItem} from "@nextui-org/react";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import ListTableRow, { calculateEpisodesReleased } from "./list_table_row";
@@ -12,8 +13,8 @@ export default function ListContent(){
 
   const [list, setList]=useRecoilState(listStore);
 
-  const handleTypeChange=(_: any, option: any)=>{
-    setType(option);
+  const handleTypeChange=(e: any)=>{
+    setType(e.target.value);
   }
 
   const show=(item: ListItemInterface): boolean=>{
@@ -34,18 +35,18 @@ export default function ListContent(){
 
   return <div className="page">
     <div className="tool_bar">
-      <Button>添加</Button>
-      <Select className='selector' defaultValue="进行中" onChange={handleTypeChange}>
-        <Option value="所有">所有</Option>
-        <Option value="进行中">进行中</Option>
-        <Option value="更新中">更新中</Option>
-        <Option value="已完结">已完结</Option>
-        <Option value="已看完">已看完</Option>
-        <Option value="搜索">搜索</Option>
+      <Button color='primary'>添加</Button>
+      <Select className='selector' aria-label='筛选' label={null} onChange={handleTypeChange} defaultSelectedKeys={'all'}>
+        <SelectItem key="所有">所有</SelectItem>
+        <SelectItem key="进行中">进行中</SelectItem>
+        <SelectItem key="更新中">更新中</SelectItem>
+        <SelectItem key="已完结">已完结</SelectItem>
+        <SelectItem key="已看完">已看完</SelectItem>
+        <SelectItem key="搜索">搜索</SelectItem>
       </Select>
-      <Input className="search_box" disabled={type!='搜索'} value={searchKey} onChange={(e)=>setSearchKey(e.target.value)}></Input>
+      <Input placeholder={ type=='搜索' ? '输入关键词搜索' : '需要在左侧选择搜索'} className="search_box" disabled={type!='搜索'} value={searchKey} onChange={(e)=>setSearchKey(e.target.value)}></Input>
     </div>
-    <Sheet sx={(_) => ({
+    {/* <Sheet sx={(_) => ({
       overflow: 'auto',
       backgroundColor: 'transparent'
     })}>
@@ -67,6 +68,6 @@ export default function ListContent(){
           })}
         </tbody>
       </Table>
-    </Sheet>
+    </Sheet> */}
   </div>
 }

@@ -10,7 +10,6 @@ import { parse } from "cookie";
 import { useRecoilState } from "recoil";
 import { listStore } from "@/hooks/list";
 import { useEffect } from "react";
-import {Button} from "@nextui-org/react";
 
 interface listInterface{
   data: any[]

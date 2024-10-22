@@ -13,7 +13,7 @@
 }
 .tool_bar{
   display: grid;
-  grid-template-columns: 60px 120px auto;
+  grid-template-columns: 80px 120px auto;
   gap: 10px;
   margin-bottom: 10px;
 }

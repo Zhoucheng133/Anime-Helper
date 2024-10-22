@@ -1,4 +1,4 @@
-import { Button, Input } from "@mui/joy";
+import {Input, Button} from "@nextui-org/react";
 import axios from "axios";
 import { useState } from "react";
 import Cookies from 'js-cookie';
@@ -36,13 +36,12 @@ export function LoginContent(){
     <div className="sub">Hi, 欢迎回来👋</div>
     <div className="item">
       <div className="label">用户名</div>
-      <Input value={name} onChange={(e)=>setName(e.target.value)}  style={{'marginBottom': 20}} />
+      <Input value={name} onChange={(e)=>setName(e.target.value)} />
     </div>
     <div className="item">
       <div className="label">密码</div>
-      <Input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} style={{'marginBottom': 20}}/>
+      <Input type="password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
     </div>
-    <Button style={{marginTop: 30, width: '100%'}} onClick={()=>hanlder()}>登录</Button>
-    {/* <Snacker open={open} message={message} setOpen={setOpen} /> */}
+    <Button color="primary" style={{marginTop: 30, width: '100%'}} onClick={()=>hanlder()}>登录</Button>
   </div>
 }
