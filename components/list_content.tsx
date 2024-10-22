@@ -1,4 +1,4 @@
-import { listStore, tableColumn } from "@/hooks/list";
+import { listStore, tableColumn, useAddEp, useMinusEp } from "@/hooks/list";
 // import { Button, Select, Option, Input, Table, Sheet } from "@mui/joy";
 import {Button, Input, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
 import { useState } from "react";
@@ -12,6 +12,21 @@ export default function ListContent(){
   const [searchKey, setSearchKey]=useState('');
 
   const [list, setList]=useRecoilState(listStore);
+
+  const addEp=useAddEp();
+  const minusEp=useMinusEp();
+
+  const edit=(item: ListItemInterface)=>{
+    console.log(item);
+  }
+
+  const addDownloader=(item: ListItemInterface)=>{
+    console.log(item);
+  }
+
+  const del=(item: ListItemInterface)=>{
+    console.log(item);
+  }
 
   const handleTypeChange=(e: any)=>{
     setType(e.target.value);
@@ -55,7 +70,7 @@ export default function ListContent(){
           <TableRow key={item.key}>
             {(columnKey) => (
               <TableCell>
-                {ListTableRow({item, key: columnKey})}
+                {ListTableRow({item, key: columnKey, minusEp, addEp, edit, addDownloader, del})}
               </TableCell>
             )}
           </TableRow>
