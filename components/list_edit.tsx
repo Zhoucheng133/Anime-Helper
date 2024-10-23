@@ -127,13 +127,13 @@ export default function ListEdit({ isOpen, onClose, data }: props) {
               }
             }} />
             <Input label={'观看至'} type="number" value={now.toString()} onChange={(e) => {
-              if (e.target.value && parseInt(e.target.value) >= 0) {
+              if (e.target.value && parseInt(e.target.value) >= 0 && parseInt(e.target.value)<=updateTo) {
                 setNow(parseInt(e.target.value))
               }
             }} />
             {
               onUpdate && <Input label={'更新至'} type="number" value={updateTo.toString()} onChange={(e) => {
-                if (e.target.value && parseInt(e.target.value) >= 0) {
+                if (e.target.value && parseInt(e.target.value) >= 0 && parseInt(e.target.value)<=ep) {
                   setUpdateTo(parseInt(e.target.value))
                 }
               }} />
