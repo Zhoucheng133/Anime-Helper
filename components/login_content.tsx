@@ -2,21 +2,28 @@ import {Input, Button} from "@nextui-org/react";
 import axios from "axios";
 import { useState } from "react";
 import Cookies from 'js-cookie';
-import { useSnack } from "./snack";
+import Dialog from "./dialog";
 
 export function LoginContent(){
 
   const [name, setName]=useState('');
   const [password, setPassword]=useState('');
+  const [openMsg, setOpenMsg]=useState(false);
+  const [msg, setMsg]=useState('');
 
-  const showSnack=useSnack();
+  const closeMsg=()=>{
+    setOpenMsg(false);
+  }
+
 
   async function hanlder(){
     if(name.length==0){
-      showSnack(false, '用户名不能为空')
+      setOpenMsg(true);
+      setMsg('用户名不能为空')
       return;
     }else if(password.length==0){
-      showSnack(false, '密码不能为空')
+      setOpenMsg(true);
+      setMsg('密码不能为空')
       return;
     }
     const {data: res}=await axios.post('/api/login', {
@@ -27,7 +34,8 @@ export function LoginContent(){
       Cookies.set('token', res.msg, { expires: 365 });
       window.location.href='/list';
     }else{
-      showSnack(false, `登录失败: ${res.msg}`)
+      setOpenMsg(true);
+      setMsg(`登录失败: ${res.msg}`)
     }
   }
 
@@ -43,5 +51,6 @@ export function LoginContent(){
       <Input type="password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
     </div>
     <Button color="primary" style={{marginTop: 30, width: '100%'}} onClick={()=>hanlder()}>登录</Button>
+    <Dialog title="登录失败" isOpen={openMsg} msg={msg} onClose={()=>closeMsg()}/>
   </div>
 }

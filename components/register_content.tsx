@@ -1,9 +1,7 @@
-// import { Button, Input } from "@mui/joy";
 import {Input, Button} from "@nextui-org/react";
 import axios from "axios";
 import { useState } from "react";
-import { useSnack } from "./snack";
-import { useRouter } from "next/router";
+import Dialog from "./dialog";
 
 export default function RegisterContent(){
 
@@ -11,21 +9,29 @@ export default function RegisterContent(){
   const [password, setPassword]=useState('');
   const [repassword, setRepassword]=useState('');
 
-  const showSnack=useSnack();
-  const router=useRouter();
+  const [openMsg, setOpenMsg]=useState(false);
+  const [msg, setMsg]=useState('');
+
+  const closeMsg=()=>{
+    setOpenMsg(false);
+  }
 
   async function hanlder(){
     if(name.length==0){
-      showSnack(false, '用户名不能为空')
+      setOpenMsg(true);
+      setMsg('用户名不能为空')
       return;
     }else if(password.length==0){
-      showSnack(false, '密码不能为空')
+      setOpenMsg(true);
+      setMsg('密码不能为空')
       return;
     }else if(repassword.length==0){
-      showSnack(false, '重复密码不能为空')
+      setOpenMsg(true);
+      setMsg('重复密码不能为空')
       return;
     }else if(password!==repassword){
-      showSnack(false, '两次密码不相符')
+      setOpenMsg(true);
+      setMsg('两次密码不相符')
       return;
     }
     const {data: res}=await axios.post("/api/register", {
@@ -35,7 +41,8 @@ export default function RegisterContent(){
     if(res.ok){
       window.location.href='/login';
     }else{
-      showSnack(false, `注册失败: ${res.msg}`)
+      setOpenMsg(true);
+      setMsg(`注册失败: ${res.msg}`)
     }
   }
 
@@ -55,5 +62,6 @@ export default function RegisterContent(){
       <Input value={repassword} onChange={(e)=>setRepassword(e.target.value)} type="password"/>
     </div>
     <Button color="primary" style={{marginTop: 30, width: '100%'}} onClick={()=>hanlder()}>注册</Button>
+    <Dialog title="登录失败" isOpen={openMsg} msg={msg} onClose={()=>closeMsg()}/>
   </div>
 }

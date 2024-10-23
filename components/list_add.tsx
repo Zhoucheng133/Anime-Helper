@@ -8,6 +8,13 @@ export function ListAdd({isOpen, onClose}: any){
   const [ep, setEp]=useState(1);
   const [now, setNow]=useState(0);
   const [updateTo, setUpdateTo]=useState(1);
+  const [weekday, setWeekday]=useState('星期一');
+
+  function onAdd(){
+    if(title.length==0){
+      
+    }
+  }
 
   function beforeClose(){
     setTitle('');
@@ -15,7 +22,12 @@ export function ListAdd({isOpen, onClose}: any){
     setEp(1);
     setNow(0);
     setUpdateTo(1);
+    setWeekday('星期一');
     onClose();
+  }
+
+  const handleWeekday=(e: any)=>{
+    setWeekday(e.target.value);
   }
 
   return <Modal size="md" isOpen={isOpen} onClose={()=>beforeClose()} >
@@ -43,8 +55,14 @@ export function ListAdd({isOpen, onClose}: any){
             }} />
           }
           {
-            onUpdate && <Select label={'更新周'}>
+            onUpdate && <Select label={'更新周'} defaultSelectedKeys={['星期一']} onChange={handleWeekday}>
               <SelectItem key={'星期一'}>星期一</SelectItem>
+              <SelectItem key={'星期二'}>星期二</SelectItem>
+              <SelectItem key={'星期三'}>星期三</SelectItem>
+              <SelectItem key={'星期四'}>星期四</SelectItem>
+              <SelectItem key={'星期五'}>星期五</SelectItem>
+              <SelectItem key={'星期六'}>星期六</SelectItem>
+              <SelectItem key={'星期日'}>星期日</SelectItem>
             </Select>
           }
         </ModalBody>
@@ -52,7 +70,7 @@ export function ListAdd({isOpen, onClose}: any){
           <Button color="danger" variant="light" onPress={()=>beforeClose()}>
             取消
           </Button>
-          <Button color="primary" onPress={()=>beforeClose()}>
+          <Button color="primary" onPress={()=>onAdd()}>
             添加
           </Button>
         </ModalFooter>

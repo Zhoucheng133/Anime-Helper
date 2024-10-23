@@ -3,7 +3,6 @@ import { ListItemInterface } from "./interface";
 import { analyseEpisode } from "@/components/list_table_row";
 import Cookies from 'js-cookie';
 import axios from "axios";
-import { useSnack } from "@/components/snack";
 
 export const listStore=atom<any[]>({
   key: 'list',
@@ -67,8 +66,8 @@ export const changeItem=async (item: ListItemInterface): Promise<boolean>=>{
   if(response.ok){
     return true;
   }else{
-    const showSnack=useSnack();
-    showSnack(false, `修改失败: ${response.msg}`)
+    // const showSnack=useSnack();
+    // showSnack(false, `修改失败: ${response.msg}`)
     return false;
   }
 }
