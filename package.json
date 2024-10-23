@@ -23,7 +23,7 @@
     "cookie": "^1.0.1",
     "crypto-js": "^4.2.0",
     "elysia": "^1.1.22",
-    "framer-motion": "^11.11.9",
+    "framer-motion": "~11.1.1",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "lowdb": "^7.0.1",

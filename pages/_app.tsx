@@ -1,7 +1,7 @@
 import { RecoilEnv, RecoilRoot } from 'recoil';
 import '@/styles/_app.css';
 import Head from 'next/head';
-import { Providers } from '../components/providers';
+import { NextUIProvider } from '@nextui-org/react';
 
 function MyApp({ Component, pageProps }: any) {
   RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
@@ -10,9 +10,9 @@ function MyApp({ Component, pageProps }: any) {
       <Head>
         <link rel="icon" href="/icon.svg" />
       </Head>
-      <Providers>
+      <NextUIProvider>
         <Component {...pageProps} />
-      </Providers>
+      </NextUIProvider>
     </RecoilRoot>
   );
 }
