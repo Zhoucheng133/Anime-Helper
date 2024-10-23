@@ -6,6 +6,7 @@ import ListTableRow, { calculateEpisodesReleased } from "./list_table_row";
 import { ListItemInterface } from "@/hooks/interface";
 import { ListAdd } from "./list_add";
 import { ListDel } from "./list_del";
+import ListEdit from "./list_edit";
 
 export default function ListContent(){
 
@@ -15,6 +16,7 @@ export default function ListContent(){
   const list=useRecoilValue(listStore);
   const {isOpen: openAdd, onOpen: onOpenAdd, onClose: onCloseAdd} = useDisclosure();
   const {isOpen: openDel, onOpen: onOpenDel, onClose: onCloseDel} = useDisclosure();
+  const {isOpen: openEdit, onOpen: onOpenEdit, onClose: onCloseEdit} = useDisclosure();
 
   const [item, setItem]=useState<ListItemInterface>()
 
@@ -22,7 +24,8 @@ export default function ListContent(){
   const minusEp=useMinusEp();
 
   const edit=(item: ListItemInterface)=>{
-    console.log(item);
+    setItem(item);
+    onOpenEdit();
   }
 
   const addDownloader=(item: ListItemInterface)=>{
@@ -30,7 +33,6 @@ export default function ListContent(){
   }
 
   const del=(item: ListItemInterface)=>{
-    // console.log(item);
     setItem(item);
     onOpenDel();
   }
@@ -90,5 +92,8 @@ export default function ListContent(){
     </Table>
     <ListAdd onClose={onCloseAdd} isOpen={openAdd} />
     <ListDel isOpen={openDel} onClose={onCloseDel} data={item}/>
+    {
+      item!=undefined && <ListEdit isOpen={openEdit} onClose={onCloseEdit} data={item} />
+    }
   </div>
 }

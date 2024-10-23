@@ -64,6 +64,7 @@ export const changeItem=async (item: ListItemInterface, token: string): Promise<
       token: token
     }
   })).data;
+  
   if(response.ok){
     return {
       ok: true,
@@ -77,10 +78,9 @@ export const changeItem=async (item: ListItemInterface, token: string): Promise<
   }
 }
 
-export const useChange=()=>{
-  // const list=useRecoilValue(listStore);
+export const useEdit=()=>{
   const get=useGet();
-  const change=async (item: ListItemInterface): Promise<Response>=>{
+  const edit=async (item: ListItemInterface): Promise<Response>=>{
     const token=Cookies.get('token')
     if(!token){
       return {
@@ -88,7 +88,8 @@ export const useChange=()=>{
         msg: "获取token失败"
       };
     }
-    if(await changeItem(item, token)){
+    const res=await changeItem(item, token);
+    if(res.ok){
       get();
       return {
         ok: true,
@@ -97,11 +98,11 @@ export const useChange=()=>{
     }else{
       return {
         ok: false,
-        msg: ''
+        msg: res.msg
       }
     }
   }
-  return change;
+  return edit;
 }
 
 export const useAddEp=()=>{

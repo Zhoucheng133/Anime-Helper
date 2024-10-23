@@ -1,10 +1,8 @@
 import { Button, Checkbox, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from "@nextui-org/react";
 import { useState } from "react";
 import Dialog from "./dialog";
-import Cookies from 'js-cookie';
 import { ListItemInterface } from "@/hooks/interface";
 import { nanoid } from "nanoid";
-import axios from "axios";
 import { useAdd } from "@/hooks/list";
 
 function resetToMidnight(date: Date): Date {
