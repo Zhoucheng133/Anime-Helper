@@ -56,11 +56,7 @@ const useGet=()=>{
   return get;
 }
 
-export const changeItem=async (item: ListItemInterface): Promise<boolean>=>{
-  const token=Cookies.get('token')
-  if(!token){
-    return false;
-  }
+export const changeItem=async (item: ListItemInterface, token: string): Promise<Response>=>{
   const response=(await axios.post(`/api/list/edit`, {
     data: item,
   }, {
@@ -69,16 +65,56 @@ export const changeItem=async (item: ListItemInterface): Promise<boolean>=>{
     }
   })).data;
   if(response.ok){
-    return true;
+    return {
+      ok: true,
+      msg: ''
+    };
   }else{
-    return false;
+    return {
+      ok: false,
+      msg: response.msg,
+    };
   }
+}
+
+export const useChange=()=>{
+  // const list=useRecoilValue(listStore);
+  const get=useGet();
+  const change=async (item: ListItemInterface): Promise<Response>=>{
+    const token=Cookies.get('token')
+    if(!token){
+      return {
+        ok: false,
+        msg: "获取token失败"
+      };
+    }
+    if(await changeItem(item, token)){
+      get();
+      return {
+        ok: true,
+        msg: ''
+      }
+    }else{
+      return {
+        ok: false,
+        msg: ''
+      }
+    }
+  }
+  return change;
 }
 
 export const useAddEp=()=>{
   const list=useRecoilValue(listStore);
   const get=useGet();
   const addEp=async (item: ListItemInterface)=>{
+    const token=Cookies.get('token')
+    if(!token){
+      return {
+        ok: false,
+        msg: "获取token失败"
+      };
+    }
     if(item.now>=analyseEpisode(item)){
       return;
     }
@@ -89,7 +125,8 @@ export const useAddEp=()=>{
       const newList = list.map((i, idx) => 
         idx === index ? { ...i, now: i.now + 1 } : i
       );
-      if(await changeItem(newList[index])){
+      const res=await changeItem(newList[index], token);
+      if(res.ok){
         get();
       }
     }
@@ -101,6 +138,13 @@ export const useMinusEp=()=>{
   const list=useRecoilValue(listStore);
   const get=useGet();
   const minusEp=async (item: ListItemInterface)=>{
+    const token=Cookies.get('token')
+    if(!token){
+      return {
+        ok: false,
+        msg: "获取token失败"
+      };
+    }
     if(item.now<=0){
       return;
     }
@@ -111,7 +155,8 @@ export const useMinusEp=()=>{
       const newList = list.map((i, idx) => 
         idx === index ? { ...i, now: i.now - 1 } : i
       );
-      if(await changeItem(newList[index])){
+      const res=await changeItem(newList[index], token);
+      if(res.ok){
         get();
       }
     }
