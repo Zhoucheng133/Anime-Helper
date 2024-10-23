@@ -124,7 +124,7 @@ export function ListAdd({isOpen, onClose}: any){
               }} />
             }
             {
-              onUpdate && <Select label={'更新周'} defaultSelectedKeys={['星期一']} onChange={handleWeekday}>
+              onUpdate && <Select label={'更新周'} selectedKeys={[weekday]} onChange={handleWeekday}>
                 <SelectItem key={'星期一'}>星期一</SelectItem>
                 <SelectItem key={'星期二'}>星期二</SelectItem>
                 <SelectItem key={'星期三'}>星期三</SelectItem>

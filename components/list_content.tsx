@@ -64,7 +64,7 @@ export default function ListContent(){
   return <div className="page">
     <div className="tool_bar">
       <Button color='primary' onClick={()=>add()}>添加</Button>
-      <Select className='selector' aria-label='筛选' label={null} onChange={handleTypeChange} defaultSelectedKeys={['进行中']}>
+      <Select className='selector' aria-label='筛选' label={null} onChange={handleTypeChange} selectedKeys={[type]} defaultSelectedKeys={['进行中']}>
         <SelectItem key="所有">所有</SelectItem>
         <SelectItem key="进行中">进行中</SelectItem>
         <SelectItem key="更新中">更新中</SelectItem>
