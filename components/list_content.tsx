@@ -1,10 +1,11 @@
 import { listStore, tableColumn, useAddEp, useMinusEp } from "@/hooks/list";
 // import { Button, Select, Option, Input, Table, Sheet } from "@mui/joy";
-import {Button, Input, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
+import {Button, Input, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure} from "@nextui-org/react";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import ListTableRow, { calculateEpisodesReleased } from "./list_table_row";
 import { ListItemInterface } from "@/hooks/interface";
+import { ListAdd } from "./list_add";
 
 export default function ListContent(){
 
@@ -12,6 +13,7 @@ export default function ListContent(){
   const [searchKey, setSearchKey]=useState('');
 
   const [list, setList]=useRecoilState(listStore);
+  const {isOpen: openAdd, onOpen: onOpenAdd, onClose: onCloseAdd} = useDisclosure();
 
   const addEp=useAddEp();
   const minusEp=useMinusEp();
@@ -32,6 +34,10 @@ export default function ListContent(){
     setType(e.target.value);
   }
 
+  const add=()=>{
+    onOpenAdd();
+  }
+
   const show=(item: ListItemInterface): boolean=>{
     if(type=='所有'){
       return true;
@@ -50,7 +56,7 @@ export default function ListContent(){
 
   return <div className="page">
     <div className="tool_bar">
-      <Button color='primary'>添加</Button>
+      <Button color='primary' onClick={()=>add()}>添加</Button>
       <Select className='selector' aria-label='筛选' label={null} onChange={handleTypeChange} defaultSelectedKeys={['进行中']}>
         <SelectItem key="所有">所有</SelectItem>
         <SelectItem key="进行中">进行中</SelectItem>
@@ -77,5 +83,6 @@ export default function ListContent(){
         )}
       </TableBody>
     </Table>
+    <ListAdd onClose={onCloseAdd} isOpen={openAdd} />
   </div>
 }
