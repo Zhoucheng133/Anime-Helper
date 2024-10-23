@@ -119,6 +119,39 @@ export const useMinusEp=()=>{
   return minusEp;
 }
 
+export const useDel=()=>{
+  const get=useGet();
+  const del=async (id: string): Promise<Response>=>{
+    const token=Cookies.get('token')
+    if(!token){
+      return {
+        ok: false,
+        msg: "获取token失败"
+      };
+    }
+    const response=(await axios.post(`/api/list/del`, {
+      id: id
+    }, {
+      headers: {
+        token: token,
+      }
+    })).data;
+    if(response.ok){
+      get();
+      return {
+        ok: true,
+        msg: '',
+      };
+    }else{
+      return {
+        ok: false,
+        msg: response.msg
+      }
+    }
+  }
+  return del;
+}
+
 export const useAdd=()=>{
   const get=useGet();
   const add=async (item: ListItemInterface): Promise<Response>=>{

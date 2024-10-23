@@ -118,4 +118,37 @@ export class List{
       msg: ""
     }
   }
+
+  // 【POST】删除
+  async del(jwt: any, headers: any, body: any): Promise<response>{
+    const check=await this.account.auth(jwt, headers);
+    if(!check.ok){
+      return check;
+    }
+    if (!body || !body.id) {
+      return {
+        ok: false,
+        msg: "参数不正确",
+      };
+    }
+    const db = await JSONFilePreset<item[]>('db/list.json', []);
+    await db.read();
+    let dbData: item[]=db.data;
+    const index=dbData.findIndex((item)=>item.id==body.id);
+    if(index==-1){
+      return {
+        ok: false,
+        msg: "没有找到对应项"
+      }
+    }else{
+      dbData.splice(index, 1);
+    }
+    db.data=dbData;
+    await db.write();
+
+    return {
+      ok: true,
+      msg: ""
+    }
+  }
 }

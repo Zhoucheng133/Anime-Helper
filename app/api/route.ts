@@ -21,6 +21,7 @@ const app = new Elysia({ prefix: '/api' })
 .get('list/get', ({jwt, headers})=>list.getList(jwt, headers))
 .post('list/edit', ({jwt, headers, body})=>list.edit(jwt, headers, body))
 .post('list/add', ({jwt, headers, body})=>list.add(jwt, headers, body))
+.post('list/del', ({jwt, headers, body})=>list.del(jwt, headers, body))
 
 export const GET = app.handle;
 export const POST = app.handle;

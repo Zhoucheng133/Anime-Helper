@@ -1,24 +1,56 @@
+import { ListItemInterface } from "@/hooks/interface";
+import { useDel } from "@/hooks/list";
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
+import Dialog from "./dialog";
+import { useState } from "react";
 
-export function ListDel({isOpen, onClose}: any){
-  return <Modal size="md" isOpen={isOpen} onClose={onClose} >
-    <ModalContent>
-      {(onClose)=>(
-        <>
-          <ModalHeader className="flex flex-col gap-1">添加番剧</ModalHeader>
+interface props{
+  isOpen: any,
+  onClose: any,
+  data: ListItemInterface | undefined
+}
+
+export function ListDel({isOpen, onClose, data}: props){
+  const [msg, setMsg]=useState('');
+    const [openDialog, setOpenDialog]=useState(false);
+
+    const onCloseDialog=()=>{
+      setOpenDialog(false);
+    }
+    
+    const del=useDel();
+    const delHandler=async ()=>{
+      if(data){
+        const res=await del(data.id);
+        if(res.ok){
+          onClose();
+        }else{
+          setOpenDialog(true);
+          setMsg(res.msg);
+        }
+      }
+    }
+  if(data){
+    return <>
+      <Modal size="md" isOpen={isOpen} onClose={onClose} >
+        <ModalContent>
+          <ModalHeader className="flex flex-col gap-1">删除《{data.title}》</ModalHeader>
           <ModalBody>
-            hello
+            你确定要删除它吗？
           </ModalBody>
           <ModalFooter>
-            <Button color="danger" variant="light" onPress={onClose}>
+            <Button variant="light" onPress={onClose}>
               取消
             </Button>
-            <Button color="primary" onPress={onClose}>
-              添加
+            <Button color="danger" onPress={()=>delHandler()}>
+              删除
             </Button>
           </ModalFooter>
-        </>
-      )}
-    </ModalContent>
-  </Modal>
+        </ModalContent>
+      </Modal>
+      <Dialog title={"删除失败"} msg={msg} isOpen={openDialog} onClose={()=>onCloseDialog()}/>
+    </>
+  }else{
+    return <></>
+  }
 }

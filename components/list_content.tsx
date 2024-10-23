@@ -1,18 +1,22 @@
 import { listStore, tableColumn, useAddEp, useMinusEp } from "@/hooks/list";
 import {Button, Input, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure} from "@nextui-org/react";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import ListTableRow, { calculateEpisodesReleased } from "./list_table_row";
 import { ListItemInterface } from "@/hooks/interface";
 import { ListAdd } from "./list_add";
+import { ListDel } from "./list_del";
 
 export default function ListContent(){
 
   const [type, setType]=useState('进行中');
   const [searchKey, setSearchKey]=useState('');
 
-  const [list, setList]=useRecoilState(listStore);
+  const list=useRecoilValue(listStore);
   const {isOpen: openAdd, onOpen: onOpenAdd, onClose: onCloseAdd} = useDisclosure();
+  const {isOpen: openDel, onOpen: onOpenDel, onClose: onCloseDel} = useDisclosure();
+
+  const [item, setItem]=useState<ListItemInterface>()
 
   const addEp=useAddEp();
   const minusEp=useMinusEp();
@@ -26,7 +30,9 @@ export default function ListContent(){
   }
 
   const del=(item: ListItemInterface)=>{
-    console.log(item);
+    // console.log(item);
+    setItem(item);
+    onOpenDel();
   }
 
   const handleTypeChange=(e: any)=>{
@@ -83,5 +89,6 @@ export default function ListContent(){
       </TableBody>
     </Table>
     <ListAdd onClose={onCloseAdd} isOpen={openAdd} />
+    <ListDel isOpen={openDel} onClose={onCloseDel} data={item}/>
   </div>
 }

@@ -138,7 +138,7 @@ export function ListAdd({isOpen, onClose}: any){
             }
           </ModalBody>
           <ModalFooter>
-            <Button color="danger" variant="light" onPress={()=>beforeClose()}>
+            <Button variant="light" onPress={()=>beforeClose()}>
               取消
             </Button>
             <Button color="primary" onPress={()=>onAdd()}>
