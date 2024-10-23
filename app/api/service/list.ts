@@ -35,7 +35,51 @@ export class List{
     }
   }
 
-  // 【POST】添加集数
+  isLegal(obj: any): obj is item {
+    return typeof obj.id === 'string' && typeof obj.title === 'string' && typeof obj.episode === 'number'  && typeof obj.now === 'number' && typeof obj.time === 'number' && obj.now<=obj.episode;
+  }
+
+  // 【POST】添加
+  async add(jwt: any, headers: any, body: any): Promise<response>{
+    const check=await this.account.auth(jwt, headers);
+    if(!check.ok){
+      return check;
+    }
+    if (!body || !body.data) {
+      return {
+        ok: false,
+        msg: "参数不正确",
+      };
+    }
+    try {
+      const data:item=body.data as item;
+      if(this.isLegal(data)){
+        const db = await JSONFilePreset<item[]>('db/list.json', []);
+        await db.read();
+        let dbData: item[]=db.data;
+        dbData.push(data);
+        db.data=dbData;
+        db.write();
+  
+        return {
+          ok: true,
+          msg: ""
+        }
+      }else{
+        return {
+          ok: false,
+          msg: "参数不合法"
+        }
+      }
+    } catch (_) {
+      return {
+        ok: false,
+        msg: "参数不合法",
+      };
+    }
+  }
+
+  // 【POST】编辑
   async edit(jwt: any, headers: any, body: any): Promise<response>{
     const check=await this.account.auth(jwt, headers);
     if(!check){

@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { ListItemInterface } from "@/hooks/interface";
 import { nanoid } from "nanoid";
 import axios from "axios";
+import { useAdd } from "@/hooks/list";
 
 function resetToMidnight(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -29,7 +30,8 @@ export function ListAdd({isOpen, onClose}: any){
   const [now, setNow]=useState(0);
   const [updateTo, setUpdateTo]=useState(1);
   const [weekday, setWeekday]=useState('星期一');
-  
+
+  const add=useAdd();
 
   const [msg, setMsg]=useState('');
   const [openDialog, setOpenDialog]=useState(false);
@@ -59,16 +61,10 @@ export function ListAdd({isOpen, onClose}: any){
     }
   }
   
-
   async function onAdd(){
-    const token=Cookies.get('token')
     if(title.length==0){
       setOpenDialog(true);
       setMsg("标题不能为空");
-      return;
-    }else if(!token){
-      setOpenDialog(true);
-      setMsg("获取token失败");
       return;
     }
     const todayTimestamp = Date.now();
@@ -80,16 +76,13 @@ export function ListAdd({isOpen, onClose}: any){
       now: now,
       time: onUpdate ? getTimestampOfFirstEpisode(todayTimestamp, wd, updateTo) : 0
     }
-    const response=(await axios.post(`/api/list/add`, {
-      data: jsonItem,
-    }, {
-      headers: {
-        "token": token
-      }
-    })).data;
-    if(!response.ok){
+    const res=await add(jsonItem);
+    if(!res.ok){
       setOpenDialog(true);
-      setMsg(response.msg);
+      setMsg(res.msg);
+      return;
+    }else{
+      beforeClose();
     }
   }
 

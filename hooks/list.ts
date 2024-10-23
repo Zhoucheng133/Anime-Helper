@@ -9,6 +9,11 @@ export const listStore=atom<any[]>({
   default: [],
 })
 
+interface Response{
+  ok: boolean,
+  msg: any,
+}
+
 export const tableColumn=[
   {
     key: 'title',
@@ -66,8 +71,6 @@ export const changeItem=async (item: ListItemInterface): Promise<boolean>=>{
   if(response.ok){
     return true;
   }else{
-    // const showSnack=useSnack();
-    // showSnack(false, `修改失败: ${response.msg}`)
     return false;
   }
 }
@@ -114,4 +117,37 @@ export const useMinusEp=()=>{
     }
   }
   return minusEp;
+}
+
+export const useAdd=()=>{
+  const get=useGet();
+  const add=async (item: ListItemInterface): Promise<Response>=>{
+    const token=Cookies.get('token')
+    if(!token){
+      return {
+        ok: false,
+        msg: "获取token失败"
+      };
+    }
+    const response=(await axios.post(`/api/list/add`, {
+      data: item,
+    }, {
+      headers: {
+        "token": token
+      }
+    })).data;
+    if(!response.ok){
+      return {
+        ok: false,
+        msg: response.msg
+      }
+    }else{
+      get();
+      return {
+        ok: true,
+        msg: '',
+      };
+    }
+  }
+  return add
 }
