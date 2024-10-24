@@ -5,7 +5,6 @@ import { Accordion, AccordionItem, Chip, useDisclosure } from "@nextui-org/react
 import { useRecoilValue } from "recoil";
 import { CalendarAdd } from "./calendar_add";
 import { useState } from "react";
-import { CalendarItem } from "@/app/api/service/calendar";
 
 export interface CalendarItemInterface{
   id: number,
@@ -16,7 +15,7 @@ export default function CalendarContent(){
 
   const {isOpen, onOpen, onClose} = useDisclosure();
 
-  const [item, setItem]=useState<CalendarItem>()
+  const [item, setItem]=useState<CalendarItemInterface>()
 
   const add=(data: CalendarItemInterface)=>{
     setItem(data);

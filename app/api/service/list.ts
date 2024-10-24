@@ -2,7 +2,7 @@ import { JSONFilePreset } from "lowdb/node";
 import { response } from "./_interface";
 import { Account } from "./account"
 
-export interface item{
+interface item{
   id: string,
   title: string,
   episode: number,
