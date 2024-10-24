@@ -1,17 +1,24 @@
 import { calendarStore } from "@/hooks/calendar";
 import { ListItemInterface } from "@/hooks/interface";
 import { listStore } from "@/hooks/list";
-import { Accordion, AccordionItem, Chip } from "@nextui-org/react";
+import { Accordion, AccordionItem, Chip, useDisclosure } from "@nextui-org/react";
 import { useRecoilValue } from "recoil";
+import { CalendarAdd } from "./calendar_add";
 
-interface CalendarItem{
+interface CalendarItemInterface{
   id: number,
   title: string,
 }
 
 export default function CalendarContent(){
 
-  const isFollow=(data: CalendarItem): boolean=>{
+  const {isOpen, onOpen, onClose} = useDisclosure();
+
+  const add=(item: CalendarItemInterface)=>{
+    onOpen();
+  }
+
+  const isFollow=(data: CalendarItemInterface): boolean=>{
     const index=list.find((item)=>item.title==data.title)
     if(index){
       return true;
@@ -40,7 +47,7 @@ export default function CalendarContent(){
     }
   }
 
-  const calendar: CalendarItem[][]=useRecoilValue(calendarStore);
+  const calendar: CalendarItemInterface[][]=useRecoilValue(calendarStore);
   const list: ListItemInterface[]=useRecoilValue(listStore);
 
   return <div className="page">
@@ -50,11 +57,11 @@ export default function CalendarContent(){
           <AccordionItem key={cindex} aria-label={toWeekday(cindex)} title={toWeekday(cindex)}>
             { citem.map((item)=>{
               if(isFollow(item)){
-                return <Chip variant="solid" color="primary" className="item_follow" key={item.id}>
+                return <Chip variant="solid" color="primary" className="item_follow" key={item.id} onClick={()=>add(item)}>
                   {item.title}
                 </Chip>
               }else{
-                return <Chip variant="bordered" className="item_default" key={item.id}>
+                return <Chip variant="bordered" className="item_default" key={item.id} onClick={()=>add(item)}>
                   {item.title}
                 </Chip>
               }
@@ -63,5 +70,6 @@ export default function CalendarContent(){
         ))
       }
     </Accordion>
+    <CalendarAdd isOpen={isOpen} onClose={onClose} />
   </div>
 }
