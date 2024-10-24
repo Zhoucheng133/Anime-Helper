@@ -4,8 +4,10 @@ import { listStore } from "@/hooks/list";
 import { Accordion, AccordionItem, Chip, useDisclosure } from "@nextui-org/react";
 import { useRecoilValue } from "recoil";
 import { CalendarAdd } from "./calendar_add";
+import { useState } from "react";
+import { CalendarItem } from "@/app/api/service/calendar";
 
-interface CalendarItemInterface{
+export interface CalendarItemInterface{
   id: number,
   title: string,
 }
@@ -14,7 +16,10 @@ export default function CalendarContent(){
 
   const {isOpen, onOpen, onClose} = useDisclosure();
 
-  const add=(item: CalendarItemInterface)=>{
+  const [item, setItem]=useState<CalendarItem>()
+
+  const add=(data: CalendarItemInterface)=>{
+    setItem(data);
     onOpen();
   }
 
@@ -70,6 +75,6 @@ export default function CalendarContent(){
         ))
       }
     </Accordion>
-    <CalendarAdd isOpen={isOpen} onClose={onClose} />
+    { item!=undefined && <CalendarAdd isOpen={isOpen} onClose={onClose} data={item} />}
   </div>
 }

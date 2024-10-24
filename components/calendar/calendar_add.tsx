@@ -1,19 +1,30 @@
 import { Button, Checkbox, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from "@nextui-org/react"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dialog from "../dialog";
 import { useAdd } from "@/hooks/list";
 import { nanoid } from "nanoid";
 import { getTimestampOfFirstEpisode } from "../list/list_add";
 import { ListItemInterface } from "@/hooks/interface";
+import { CalendarItemInterface } from "./calendar_content";
 
-export function CalendarAdd({isOpen, onClose}: any){
+interface props{
+  isOpen: any,
+  onClose: any,
+  data: CalendarItemInterface
+}
+
+export function CalendarAdd({isOpen, onClose, data}: props){
 
   const [title, setTitle]=useState('');
-  const [onUpdate, setUpdate]=useState(false);
+  const [onUpdate, setUpdate]=useState(true);
   const [ep, setEp]=useState(1);
   const [now, setNow]=useState(0);
   const [updateTo, setUpdateTo]=useState(1);
   const [weekday, setWeekday]=useState('星期一');
+
+  useEffect(()=>{
+    setTitle(data.title);
+  }, [data])
 
   const handleWeekday=(e: any)=>{
     setWeekday(e.target.value);
