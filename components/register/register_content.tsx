@@ -1,20 +1,20 @@
 import {Input, Button} from "@nextui-org/react";
 import axios from "axios";
 import { useState } from "react";
-import Cookies from 'js-cookie';
-import Dialog from "./dialog";
+import Dialog from "../dialog";
 
-export function LoginContent(){
+export default function RegisterContent(){
 
   const [name, setName]=useState('');
   const [password, setPassword]=useState('');
+  const [repassword, setRepassword]=useState('');
+
   const [openMsg, setOpenMsg]=useState(false);
   const [msg, setMsg]=useState('');
 
   const closeMsg=()=>{
     setOpenMsg(false);
   }
-
 
   async function hanlder(){
     if(name.length==0){
@@ -25,23 +25,30 @@ export function LoginContent(){
       setOpenMsg(true);
       setMsg('密码不能为空')
       return;
+    }else if(repassword.length==0){
+      setOpenMsg(true);
+      setMsg('重复密码不能为空')
+      return;
+    }else if(password!==repassword){
+      setOpenMsg(true);
+      setMsg('两次密码不相符')
+      return;
     }
-    const {data: res}=await axios.post('/api/login', {
+    const {data: res}=await axios.post("/api/register", {
       username: name,
       password: password,
     })
     if(res.ok){
-      Cookies.set('token', res.msg, { expires: 365 });
-      window.location.href='/list';
+      window.location.href='/login';
     }else{
       setOpenMsg(true);
-      setMsg(`登录失败: ${res.msg}`)
+      setMsg(`注册失败: ${res.msg}`)
     }
   }
 
   return <div className="panel">
-    <div className="title">登录</div>
-    <div className="sub">Hi, 欢迎回来👋</div>
+    <div className="title">注册</div>
+    <div className="sub">Hi, 从这里开始吧👋</div>
     <div className="item">
       <div className="label">用户名</div>
       <Input value={name} onChange={(e)=>setName(e.target.value)} />
@@ -50,7 +57,11 @@ export function LoginContent(){
       <div className="label">密码</div>
       <Input type="password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
     </div>
-    <Button color="primary" style={{marginTop: 30, width: '100%'}} onClick={()=>hanlder()}>登录</Button>
+    <div className="item">
+      <div className="label">重复密码</div>
+      <Input value={repassword} onChange={(e)=>setRepassword(e.target.value)} type="password"/>
+    </div>
+    <Button color="primary" style={{marginTop: 30, width: '100%'}} onClick={()=>hanlder()}>注册</Button>
     <Dialog title="登录失败" isOpen={openMsg} msg={msg} onClose={()=>closeMsg()}/>
   </div>
 }

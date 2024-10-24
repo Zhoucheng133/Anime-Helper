@@ -1,6 +1,6 @@
 import { Button, Checkbox, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from "@nextui-org/react"
 import { useEffect, useState } from "react";
-import Dialog from "./dialog";
+import Dialog from "../dialog";
 import { ListItemInterface } from "@/hooks/interface";
 import { analyseEpisode, calculateEpisodesReleased } from "./list_table_row";
 import { getTimestampOfFirstEpisode } from "./list_add";

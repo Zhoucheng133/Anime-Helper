@@ -4,7 +4,7 @@ import Head from "next/head";
 import "@/styles/global.css"
 import "@/styles/login.css";
 import Header from "@/components/header";
-import { LoginContent } from "@/components/login_content";
+import { LoginContent } from "@/components/login/login_content";
 import { useEffect } from "react";
 import Cookies from 'js-cookie';
 

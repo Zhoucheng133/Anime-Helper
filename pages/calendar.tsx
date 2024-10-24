@@ -9,7 +9,7 @@ import { host } from "@/hooks/env";
 import { useRecoilState } from "recoil";
 import { calendarStore } from "@/hooks/calendar";
 import { listStore } from "@/hooks/list";
-import CalendarContent from "@/components/calendar_content";
+import CalendarContent from "@/components/calendar/calendar_content";
 import { useEffect } from "react";
 
 export default function Calendar({list, calendar}: any){

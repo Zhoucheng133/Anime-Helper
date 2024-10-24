@@ -1,6 +1,6 @@
 import { atom, useRecoilState, useRecoilValue } from "recoil";
 import { ListItemInterface } from "./interface";
-import { analyseEpisode } from "@/components/list_table_row";
+import { analyseEpisode } from "@/components/list/list_table_row";
 import Cookies from 'js-cookie';
 import axios from "axios";
 

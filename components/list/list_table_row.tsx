@@ -1,6 +1,5 @@
 import { ListItemInterface } from "@/hooks/interface";
-import { listStore, useAddEp, useMinusEp } from "@/hooks/list";
-import { faMinus, faPlus, faRemove, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {Progress, Chip, Button, ButtonGroup} from "@nextui-org/react";
 import React from "react";

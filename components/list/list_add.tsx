@@ -1,6 +1,6 @@
 import { Button, Checkbox, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from "@nextui-org/react";
 import { useState } from "react";
-import Dialog from "./dialog";
+import Dialog from "../dialog";
 import { ListItemInterface } from "@/hooks/interface";
 import { nanoid } from "nanoid";
 import { useAdd } from "@/hooks/list";

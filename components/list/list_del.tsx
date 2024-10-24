@@ -1,7 +1,7 @@
 import { ListItemInterface } from "@/hooks/interface";
 import { useDel } from "@/hooks/list";
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
-import Dialog from "./dialog";
+import Dialog from "../dialog";
 import { useState } from "react";
 
 interface props{

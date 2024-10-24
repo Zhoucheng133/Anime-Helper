@@ -4,7 +4,7 @@ import axios from "axios";
 import Head from "next/head";
 import "@/styles/global.css"
 import "@/styles/register.css";
-import RegisterContent from "@/components/register_content";
+import RegisterContent from "@/components/register/register_content";
 
 export default function Register(){
 

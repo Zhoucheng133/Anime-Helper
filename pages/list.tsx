@@ -3,7 +3,7 @@ import { initPage } from "@/hooks/init";
 import Head from "next/head";
 import "@/styles/global.css";
 import "@/styles/list.css";
-import ListContent from "@/components/list_content";
+import ListContent from "@/components/list/list_content";
 import axios from "axios";
 import { host } from "@/hooks/env";
 import { parse } from "cookie";
