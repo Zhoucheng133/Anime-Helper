@@ -6,14 +6,24 @@ import { nanoid } from "nanoid";
 import { getTimestampOfFirstEpisode } from "../list/list_add";
 import { ListItemInterface } from "@/hooks/interface";
 import { CalendarItemInterface } from "./calendar_content";
+import axios from "axios";
+import CalendarLoading from "./calendar_loading";
+import Cookies from 'js-cookie';
+
+interface CalendarSub{
+  eps: number,
+  updates: number,
+}
+
 
 interface props{
   isOpen: any,
   onClose: any,
-  data: CalendarItemInterface
+  data: CalendarItemInterface,
+  day: string
 }
 
-export function CalendarAdd({isOpen, onClose, data}: props){
+export function CalendarAdd({isOpen, onClose, data, day}: props){
 
   const [title, setTitle]=useState('');
   const [onUpdate, setUpdate]=useState(true);
@@ -22,8 +32,36 @@ export function CalendarAdd({isOpen, onClose, data}: props){
   const [updateTo, setUpdateTo]=useState(1);
   const [weekday, setWeekday]=useState('星期一');
 
+  const [openLoading, setOpenLoading]=useState(false);
+
+  async function initData(){
+    const token=Cookies.get('token')
+    if(!token){
+      setMsg('无效的token');
+      setOpenDialog(true);
+      return;
+    }
+    const {data: res}=await axios.get(`/api/calendar/sub/${data.id}`, {
+      headers: {
+        token: token,
+      }
+    });
+    if(res.ok){
+      const info=res.msg as CalendarSub;
+      setEp(info.eps);
+      setUpdateTo(info.updates);
+    }else{
+      setMsg(res.msg);
+      setOpenDialog(true);
+    }
+    setOpenLoading(false);
+  }
+
   useEffect(()=>{
     setTitle(data.title);
+    initData();
+    setOpenLoading(true);
+    setWeekday(day);
   }, [data])
 
   const handleWeekday=(e: any)=>{
@@ -80,6 +118,8 @@ export function CalendarAdd({isOpen, onClose, data}: props){
       setOpenDialog(true);
       setMsg(res.msg);
       return;
+    }else{
+      onClose();
     }
   }
 
@@ -132,5 +172,6 @@ export function CalendarAdd({isOpen, onClose, data}: props){
       </ModalContent>
     </Modal>
     <Dialog title={"添加失败"} msg={msg} isOpen={openDialog} onClose={()=>onCloseDialog()}/>
+    <CalendarLoading isOpen={openLoading} onClose={()=>setOpenDialog(false)}/>
   </>
 }

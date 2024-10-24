@@ -50,8 +50,6 @@ export default function ListEdit({ isOpen, onClose, data }: props) {
     setNow(data.now);
     setUpdate(calculateEpisodesReleased(data.time) < data.episode);
     setUpdateTo(analyseEpisode(data));
-    console.log(data);
-    
   }, [data])
 
   const [msg, setMsg] = useState('');

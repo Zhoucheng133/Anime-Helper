@@ -16,8 +16,10 @@ export default function CalendarContent(){
   const {isOpen, onOpen, onClose} = useDisclosure();
 
   const [item, setItem]=useState<CalendarItemInterface>()
+  const [weekday, setWeekday]=useState('星期日');
 
-  const add=(data: CalendarItemInterface)=>{
+  const add=(data: CalendarItemInterface, wd: number)=>{
+    setWeekday(toWeekday(wd));
     setItem(data);
     onOpen();
   }
@@ -61,11 +63,11 @@ export default function CalendarContent(){
           <AccordionItem key={cindex} aria-label={toWeekday(cindex)} title={toWeekday(cindex)}>
             { citem.map((item)=>{
               if(isFollow(item)){
-                return <Chip variant="solid" color="primary" className="item_follow" key={item.id} onClick={()=>add(item)}>
+                return <Chip variant="solid" color="primary" className="item_follow" key={item.id} onClick={()=>add(item, cindex)}>
                   {item.title}
                 </Chip>
               }else{
-                return <Chip variant="bordered" className="item_default" key={item.id} onClick={()=>add(item)}>
+                return <Chip variant="bordered" className="item_default" key={item.id} onClick={()=>add(item, cindex)}>
                   {item.title}
                 </Chip>
               }
@@ -74,6 +76,6 @@ export default function CalendarContent(){
         ))
       }
     </Accordion>
-    { item!=undefined && <CalendarAdd isOpen={isOpen} onClose={onClose} data={item} />}
+    { item!=undefined && <CalendarAdd isOpen={isOpen} onClose={onClose} data={item} day={weekday} />}
   </div>
 }
