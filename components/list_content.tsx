@@ -1,7 +1,7 @@
 import { listStore, tableColumn, useAddEp, useMinusEp } from "@/hooks/list";
 import {Button, Input, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure} from "@nextui-org/react";
 import { useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import ListTableRow, { calculateEpisodesReleased } from "./list_table_row";
 import { ListItemInterface } from "@/hooks/interface";
 import { ListAdd } from "./list_add";
