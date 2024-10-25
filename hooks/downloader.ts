@@ -30,3 +30,29 @@ export const dlStatusStore=atom<boolean>({
   key: 'dlStatus',
   default: false,
 })
+
+export const bangumiTableColumn=[
+  {
+    key: 'ass',
+    label: '字幕组'
+  },
+  {
+    key: 'title',
+    label: '标题'
+  },
+  {
+    key: 'op',
+    label: '操作'
+  }
+]
+
+export const exclusionTableColumn=[
+  {
+    key: 'value',
+    label: '值',
+  },
+  {
+    key: 'op',
+    label: '操作'
+  }
+]
