@@ -1,11 +1,28 @@
 .page{
   margin: auto;
-  width: 1000px;
+  width: 800px;
   padding-top: 10px;
   padding-bottom: 10px;
 }
-@media screen and (max-width: 1040px) {
+@media screen and (max-width: 840px) {
   .page {
     width: calc(100% - 40px)
   }
+}
+.item{
+  display: grid;
+  align-items: center;
+  height: 35px;
+  margin-top: 10px;
+  grid-template-columns: 100px auto;
+  user-select: none;
+}
+.content{
+  display: flex;
+}
+.selector{
+  width: 120px;
+}
+.freq_input{
+  width: 120px;
 }

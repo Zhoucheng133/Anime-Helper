@@ -14,9 +14,16 @@ export interface dlFormInterface{
   ariaSecret: string
 }
 
-export const dlFormStore=atom<dlFormInterface[]>({
+export const dlFormStore=atom<dlFormInterface>({
   key: 'dlForm',
-  default: [],
+  default: {
+    type: "mikan",
+    exclusions: [],
+    bangumi: [],
+    freq: 15,
+    ariaLink: "",
+    ariaSecret: ""
+  },
 })
 
 export const dlStatusStore=atom<boolean>({

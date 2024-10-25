@@ -8,6 +8,8 @@ import { host } from "@/hooks/env";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { dlFormStore, dlStatusStore } from "@/hooks/downloader";
+import DownloaderContent from "@/components/downloader/downloader_content";
+import "@/styles/downloader.css";
 
 export default function Home({data}: any){
 
@@ -24,6 +26,7 @@ export default function Home({data}: any){
       <title>AnimeHelper | 下载器</title>
     </Head>
     <Header login={true} page="downloader" />
+    <DownloaderContent/>
   </div>
 }
 
