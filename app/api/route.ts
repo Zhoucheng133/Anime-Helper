@@ -4,10 +4,12 @@ import { jwt } from '@elysiajs/jwt'
 import * as crypto from 'crypto';
 import { List } from './service/list';
 import { Calendar } from './service/calendar';
+import { Downloader } from './service/downloader';
 
 const account=new Account();
 const list=new List();
 const calendar=new Calendar();
+const dl=new Downloader();
 
 // const JWT_SECRET = crypto.randomBytes(32).toString('hex');
 const JWT_SECRET = "JWT_SECRET";
@@ -27,6 +29,8 @@ const app = new Elysia({ prefix: '/api' })
 
 .get('calendar/get', ({jwt, headers})=>calendar.get(jwt, headers))
 .get('calendar/sub/:id',  ({jwt, headers, params: {id}})=>calendar.info(jwt, headers, id))
+
+.get('dl/get', ({jwt, headers})=>dl.get(jwt, headers))
 
 export const GET = app.handle;
 export const POST = app.handle;
