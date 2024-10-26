@@ -4,6 +4,7 @@ import { useRecoilState } from "recoil";
 import { bangumiTableColumn } from "@/hooks/downloader";
 import DownloaderAddBangumi from "./downloader_add_bangumi";
 import DownloadDelBangumi from "./download_del_bangumi";
+import DownloadAddExclusion from "./download_add_exclusion";
 import { useState } from "react";
 
 export default function DownloaderContent(){
@@ -12,6 +13,7 @@ export default function DownloaderContent(){
   const [form, setForm]=useRecoilState(dlFormStore);
 
   const {isOpen: openAddBangumi, onOpen: onOpenAddBangumi, onClose: onCloseAddBangumi} = useDisclosure();
+  const {isOpen: openAddExclusion, onOpen: onOpenAddExclusion, onClose: onCloseAddExclusion} = useDisclosure();
   const {isOpen: openDelBangumi, onOpen: onOpenDelBangumi, onClose: onCloseDelBangumi} = useDisclosure();
 
   const [bangumiItem, setBangumiItem]=useState<bangumi>({title: '', ass: ''});
@@ -62,6 +64,10 @@ export default function DownloaderContent(){
     setBangumiItem(item);
     onOpenDelBangumi();
   }
+
+  // const addExclusion=()=>{
+  //   onOpenAddExclusion()
+  // }
 
   return <div className="page">
     <div className="item">
@@ -134,7 +140,7 @@ export default function DownloaderContent(){
         </Table>
       </AccordionItem>
       <AccordionItem key="2" aria-label="exclude" title="排除关键字">
-        <Button size="sm" color="primary" style={{marginBottom: 10}}>添加</Button>
+        <Button size="sm" color="primary" style={{marginBottom: 10}} onPress={()=>onOpenAddExclusion()}>添加</Button>
         <Table aria-label='exclusion list'>
           <TableHeader columns={exclusionTableColumn}>
             {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
@@ -159,6 +165,7 @@ export default function DownloaderContent(){
       </AccordionItem>
     </Accordion>
     <DownloaderAddBangumi isOpen={openAddBangumi} onClose={onCloseAddBangumi} />
+    <DownloadAddExclusion isOpen={openAddExclusion} onClose={onCloseAddExclusion}/>
     <DownloadDelBangumi isOpen={openDelBangumi} onClose={onCloseDelBangumi} data={bangumiItem} />
   </div>
 }
