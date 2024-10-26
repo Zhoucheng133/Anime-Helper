@@ -8,25 +8,66 @@ export default function DownloaderContent(){
   const [status, setStatus]=useRecoilState(dlStatusStore);
   const [form, setForm]=useRecoilState(dlFormStore);
 
+  const showLog=()=>{
+    console.log(form);
+  }
+
+  const typeChange=(e: any)=>{
+    const type=e.target.value;
+    setForm({
+      ...form,
+      type
+    })
+  }
+
+  const freqChange=(e: any)=>{
+    const freq=parseInt(e.target.value);
+    if(freq<15){
+      return;
+    }
+    setForm({
+      ...form,
+      freq
+    })
+  }
+
+  const ariaChange=(e: any)=>{
+    setForm({
+      ...form,
+      ariaLink: e.target.value
+    })
+  }
+
+  const secretChange=(e: any)=>{
+    setForm({
+      ...form,
+      ariaSecret: e.target.value,
+    })
+  }
+
+  const toggle=(value: boolean)=>{
+    // TODO 这里是切换运行状态
+  }
+
   return <div className="page">
     <div className="item">
       <div className="label">运行状态</div>
       <div className="content">
         <Chip variant="flat" size="sm" color={ status ? 'success' : 'warning' }>{ status ? '运行中' : '等待中' }</Chip>
-        <Switch aria-label="switcher" size="sm" style={{marginLeft: 20}}/>
+        <Switch aria-label="switcher" size="sm" style={{marginLeft: 20}} isSelected={status} onValueChange={(value)=>toggle(value)}/>
       </div>
     </div>
     <div className="item">
       <div className="label">系统操作</div>
       <div className="content">
-        <Button size="sm" variant="flat">显示日志</Button>
+        <Button size="sm" variant="flat" onClick={()=>showLog()}>显示日志</Button>
         <Button size="sm" variant="flat" style={{marginLeft: 20}}>保存表单</Button>
       </div>
     </div>
     <div className="item">
       <div className="label">RSS来源</div>
       <div className="content">
-        <Select aria-label='筛选' size="sm" label={null} defaultSelectedKeys={[form.type]} className="selector">
+        <Select aria-label='筛选' size="sm" label={null} defaultSelectedKeys={[form.type]} className="selector" onChange={(e)=>typeChange(e)}>
           <SelectItem key={'mikan'}>Mikan</SelectItem>
           <SelectItem key={'acgrip'}>Acgrip</SelectItem>
         </Select>
@@ -35,19 +76,20 @@ export default function DownloaderContent(){
     <div className="item">
       <div className="label">更新频率</div>
       <div className="content">
-        <Input size="sm" type="number" className="freq_input" value={form.freq.toString()}></Input>
+        <Input size="sm" type="number" className="freq_input" value={form.freq.toString()} onChange={(e)=>freqChange(e)}></Input>
+        <div style={{marginLeft: 5}}>分钟</div>
       </div>
     </div>
     <div className="item">
       <div className="label">Aria2 地址</div>
       <div className="content">
-        <Input size="sm" placeholder="http(s)://" value={form.ariaLink}></Input>
+        <Input size="sm" placeholder="http(s)://" value={form.ariaLink} onChange={(e)=>ariaChange(e)}></Input>
       </div>
     </div>
     <div className="item">
       <div className="label">Aria2 密钥</div>
       <div className="content">
-      <Input size="sm" type="password" value={form.ariaSecret}></Input>
+      <Input size="sm" type="password" value={form.ariaSecret} onChange={(e)=>secretChange(e)}></Input>
       </div>
     </div>
     <Accordion selectionMode="multiple" defaultExpandedKeys={['1', '2']}>
