@@ -3,8 +3,9 @@ import { Accordion, AccordionItem, Button, Chip, Input, Select, SelectItem, Swit
 import { useRecoilState } from "recoil";
 import { bangumiTableColumn } from "@/hooks/downloader";
 import DownloaderAddBangumi from "./downloader_add_bangumi";
-import DownloadDelBangumi from "./download_del_bangumi";
-import DownloadAddExclusion from "./download_add_exclusion";
+import DownloaderDelBangumi from "./downloader_del_bangumi";
+import DownloaderAddExclusion from "./downloader_add_exclusion";
+import DownloaderDelExclusion from "./downloader_del_exclusion";
 import { useState } from "react";
 
 export default function DownloaderContent(){
@@ -15,8 +16,10 @@ export default function DownloaderContent(){
   const {isOpen: openAddBangumi, onOpen: onOpenAddBangumi, onClose: onCloseAddBangumi} = useDisclosure();
   const {isOpen: openAddExclusion, onOpen: onOpenAddExclusion, onClose: onCloseAddExclusion} = useDisclosure();
   const {isOpen: openDelBangumi, onOpen: onOpenDelBangumi, onClose: onCloseDelBangumi} = useDisclosure();
+  const {isOpen: openDelExclusion, onOpen: onOpenDelExclusion, onClose: onCloseDelExclusion} = useDisclosure();
 
   const [bangumiItem, setBangumiItem]=useState<bangumi>({title: '', ass: ''});
+  const [exclusionItem, setExclusionItem]=useState<string>('');
 
   const showLog=()=>{
     console.log(form);
@@ -65,9 +68,10 @@ export default function DownloaderContent(){
     onOpenDelBangumi();
   }
 
-  // const addExclusion=()=>{
-  //   onOpenAddExclusion()
-  // }
+  const delExclusion=(item: string)=>{
+    setExclusionItem(item);
+    onOpenDelExclusion()
+  }
 
   return <div className="page">
     <div className="item">
@@ -154,7 +158,7 @@ export default function DownloaderContent(){
                       return <TableCell>{item}</TableCell>
                     }
                     return <TableCell style={{userSelect: 'none', width: 90}}>
-                      <Button size="sm" variant="flat" color="danger">删除</Button>
+                      <Button size="sm" variant="flat" color="danger" onPress={()=>delExclusion(item)}>删除</Button>
                     </TableCell>
                   }}
                 </TableRow>
@@ -165,7 +169,8 @@ export default function DownloaderContent(){
       </AccordionItem>
     </Accordion>
     <DownloaderAddBangumi isOpen={openAddBangumi} onClose={onCloseAddBangumi} />
-    <DownloadAddExclusion isOpen={openAddExclusion} onClose={onCloseAddExclusion}/>
-    <DownloadDelBangumi isOpen={openDelBangumi} onClose={onCloseDelBangumi} data={bangumiItem} />
+    <DownloaderAddExclusion isOpen={openAddExclusion} onClose={onCloseAddExclusion}/>
+    <DownloaderDelBangumi isOpen={openDelBangumi} onClose={onCloseDelBangumi} data={bangumiItem} />
+    <DownloaderDelExclusion isOpen={openDelExclusion} onClose={onCloseDelExclusion} data={exclusionItem} />
   </div>
 }
