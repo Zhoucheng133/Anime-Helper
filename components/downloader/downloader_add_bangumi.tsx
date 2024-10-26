@@ -30,6 +30,8 @@ export default function({isOpen, onClose}: any){
         {title, ass}
       ],
     })
+    setTitle('');
+    setAss('');
     onClose();
   }
 

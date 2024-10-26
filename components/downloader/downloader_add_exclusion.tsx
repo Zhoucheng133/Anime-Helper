@@ -23,6 +23,7 @@ export default function({isOpen, onClose}: any){
         key,
       ]
     })
+    setKey('');
     onClose();
   }
 
