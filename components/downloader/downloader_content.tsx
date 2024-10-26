@@ -2,7 +2,7 @@ import { dlFormStore, dlStatusStore, exclusionTableColumn } from "@/hooks/downlo
 import { Accordion, AccordionItem, Button, Chip, Input, Select, SelectItem, Switch, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react";
 import { useRecoilState } from "recoil";
 import { bangumiTableColumn } from "@/hooks/downloader";
-import DownloaderAddBangumi from "./downloader_add_b";
+import DownloaderAddBangumi from "./downloader_add_bangumi";
 
 export default function DownloaderContent(){
 
