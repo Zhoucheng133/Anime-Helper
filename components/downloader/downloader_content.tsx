@@ -1,12 +1,15 @@
 import { dlFormStore, dlStatusStore, exclusionTableColumn } from "@/hooks/downloader"
-import { Accordion, AccordionItem, Button, Chip, Input, Select, SelectItem, Switch, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import { Accordion, AccordionItem, Button, Chip, Input, Select, SelectItem, Switch, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react";
 import { useRecoilState } from "recoil";
 import { bangumiTableColumn } from "@/hooks/downloader";
+import DownloaderAddBangumi from "./downloader_add_b";
 
 export default function DownloaderContent(){
 
   const [status, setStatus]=useRecoilState(dlStatusStore);
   const [form, setForm]=useRecoilState(dlFormStore);
+
+  const {isOpen: openAddBangumi, onOpen: onOpenAddBangumi, onClose: onCloseAddBangumi} = useDisclosure();
 
   const showLog=()=>{
     console.log(form);
@@ -95,7 +98,7 @@ export default function DownloaderContent(){
     </div>
     <Accordion selectionMode="multiple" defaultExpandedKeys={['1', '2']}>
       <AccordionItem key="1" aria-label="list" title="番剧表">
-        <Button size="sm" color="primary" style={{marginBottom: 10}}>添加</Button>
+        <Button size="sm" color="primary" style={{marginBottom: 10}} onClick={()=>onOpenAddBangumi()}>添加</Button>
         <Table aria-label='bangumi list'>
           <TableHeader columns={bangumiTableColumn}>
             {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
@@ -145,5 +148,6 @@ export default function DownloaderContent(){
         </Table>
       </AccordionItem>
     </Accordion>
+    <DownloaderAddBangumi isOpen={openAddBangumi} onClose={onCloseAddBangumi} />
   </div>
 }
