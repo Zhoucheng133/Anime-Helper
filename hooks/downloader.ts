@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-interface bangumi {
+export interface bangumi {
   title: string,
   ass: string,
 }

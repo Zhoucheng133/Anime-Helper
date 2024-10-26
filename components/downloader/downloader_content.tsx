@@ -1,8 +1,10 @@
-import { dlFormStore, dlStatusStore, exclusionTableColumn } from "@/hooks/downloader"
+import { bangumi, dlFormStore, dlStatusStore, exclusionTableColumn } from "@/hooks/downloader"
 import { Accordion, AccordionItem, Button, Chip, Input, Select, SelectItem, Switch, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react";
 import { useRecoilState } from "recoil";
 import { bangumiTableColumn } from "@/hooks/downloader";
 import DownloaderAddBangumi from "./downloader_add_bangumi";
+import DownloadDelBangumi from "./download_del_bangumi";
+import { useState } from "react";
 
 export default function DownloaderContent(){
 
@@ -10,6 +12,9 @@ export default function DownloaderContent(){
   const [form, setForm]=useRecoilState(dlFormStore);
 
   const {isOpen: openAddBangumi, onOpen: onOpenAddBangumi, onClose: onCloseAddBangumi} = useDisclosure();
+  const {isOpen: openDelBangumi, onOpen: onOpenDelBangumi, onClose: onCloseDelBangumi} = useDisclosure();
+
+  const [bangumiItem, setBangumiItem]=useState<bangumi>({title: '', ass: ''});
 
   const showLog=()=>{
     console.log(form);
@@ -51,6 +56,11 @@ export default function DownloaderContent(){
   const toggle=(val: boolean)=>{
     setStatus(val)
     // TODO 这里是切换运行状态
+  }
+
+  const delBangumi=(item: bangumi)=>{
+    setBangumiItem(item);
+    onOpenDelBangumi();
   }
 
   return <div className="page">
@@ -114,7 +124,7 @@ export default function DownloaderContent(){
                       return <TableCell>{item.title}</TableCell>
                     }
                     return <TableCell style={{userSelect: 'none', width: 90}}>
-                      <Button size="sm" variant="flat" color="danger">删除</Button>
+                      <Button size="sm" variant="flat" color="danger" onClick={()=>delBangumi(item)}>删除</Button>
                     </TableCell>
                   }}
                 </TableRow>
@@ -149,5 +159,6 @@ export default function DownloaderContent(){
       </AccordionItem>
     </Accordion>
     <DownloaderAddBangumi isOpen={openAddBangumi} onClose={onCloseAddBangumi} />
+    <DownloadDelBangumi isOpen={openDelBangumi} onClose={onCloseDelBangumi} data={bangumiItem} />
   </div>
 }
