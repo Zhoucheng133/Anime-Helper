@@ -12,16 +12,16 @@ export default function DownloaderContent(){
     console.log(form);
   }
 
-  const typeChange=(e: any)=>{
-    const type=e.target.value;
+  const typeChange=(key: string)=>{
+    const type=key;
     setForm({
       ...form,
       type
     })
   }
 
-  const freqChange=(e: any)=>{
-    const freq=parseInt(e.target.value);
+  const freqChange=(val: string)=>{
+    const freq=parseInt(val);
     if(freq<15){
       return;
     }
@@ -31,21 +31,22 @@ export default function DownloaderContent(){
     })
   }
 
-  const ariaChange=(e: any)=>{
+  const ariaChange=(val: string)=>{
     setForm({
       ...form,
-      ariaLink: e.target.value
+      ariaLink: val
     })
   }
 
-  const secretChange=(e: any)=>{
+  const secretChange=(val: string)=>{
     setForm({
       ...form,
-      ariaSecret: e.target.value,
+      ariaSecret: val
     })
   }
 
-  const toggle=(value: boolean)=>{
+  const toggle=(val: boolean)=>{
+    setStatus(val)
     // TODO 这里是切换运行状态
   }
 
@@ -67,7 +68,7 @@ export default function DownloaderContent(){
     <div className="item">
       <div className="label">RSS来源</div>
       <div className="content">
-        <Select aria-label='筛选' size="sm" label={null} defaultSelectedKeys={[form.type]} className="selector" onChange={(e)=>typeChange(e)}>
+        <Select aria-label='筛选' size="sm" label={null} defaultSelectedKeys={[form.type]} className="selector" onSelectionChange={(key)=>typeChange(key as string)}>
           <SelectItem key={'mikan'}>Mikan</SelectItem>
           <SelectItem key={'acgrip'}>Acgrip</SelectItem>
         </Select>
@@ -76,20 +77,20 @@ export default function DownloaderContent(){
     <div className="item">
       <div className="label">更新频率</div>
       <div className="content">
-        <Input size="sm" type="number" className="freq_input" value={form.freq.toString()} onChange={(e)=>freqChange(e)}></Input>
+        <Input size="sm" type="number" className="freq_input" value={form.freq.toString()} onValueChange={(value)=>freqChange(value)}></Input>
         <div style={{marginLeft: 5}}>分钟</div>
       </div>
     </div>
     <div className="item">
       <div className="label">Aria2 地址</div>
       <div className="content">
-        <Input size="sm" placeholder="http(s)://" value={form.ariaLink} onChange={(e)=>ariaChange(e)}></Input>
+        <Input size="sm" placeholder="http(s)://" value={form.ariaLink} onValueChange={(value)=>ariaChange(value)}></Input>
       </div>
     </div>
     <div className="item">
       <div className="label">Aria2 密钥</div>
       <div className="content">
-      <Input size="sm" type="password" value={form.ariaSecret} onChange={(e)=>secretChange(e)}></Input>
+      <Input size="sm" type="password" value={form.ariaSecret} onValueChange={(value)=>secretChange(value)}></Input>
       </div>
     </div>
     <Accordion selectionMode="multiple" defaultExpandedKeys={['1', '2']}>
