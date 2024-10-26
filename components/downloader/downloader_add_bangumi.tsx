@@ -1,11 +1,14 @@
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
 import { useState } from "react";
 import Dialog from "../dialog";
+import { useRecoilState } from "recoil";
+import { dlFormStore } from "@/hooks/downloader";
 
 export default function({isOpen, onClose}: any){
 
   const [msg, setMsg]=useState('');
   const [openDialog, setOpenDialog]=useState(false);
+  const [form, setForm]=useRecoilState(dlFormStore);
 
   const [title, setTitle]=useState('');
   const [ass, setAss]=useState('');
@@ -20,6 +23,14 @@ export default function({isOpen, onClose}: any){
       setOpenDialog(true);
       return;
     }
+    setForm({
+      ... form,
+      bangumi: [
+        ...form.bangumi,
+        {title, ass}
+      ],
+    })
+    onClose();
   }
 
   return <>
