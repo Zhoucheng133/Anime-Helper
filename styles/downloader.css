@@ -19,10 +19,11 @@
 }
 .content{
   display: flex;
+  align-items: center;
 }
 .selector{
   width: 120px;
 }
 .freq_input{
-  width: 120px;
+  width: 90px;
 }
