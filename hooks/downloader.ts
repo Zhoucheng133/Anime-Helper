@@ -1,4 +1,6 @@
-import { atom } from "recoil";
+import axios from "axios";
+import { atom, useRecoilValue } from "recoil";
+import Cookies from 'js-cookie';
 
 export interface bangumi {
   title: string,
@@ -56,3 +58,29 @@ export const exclusionTableColumn=[
     label: '操作'
   }
 ]
+
+interface feedback{
+  ok: boolean,
+  msg: string
+}
+
+export const saveForm=async (form: dlFormInterface): Promise<feedback>=>{
+  const token=Cookies.get('token')
+  const {data: response}=await axios.post('/api/dl/save', {
+    data: form,
+  }, {
+    headers: {
+      token
+    }
+  })
+  if(response.ok){
+    return {
+      ok: true,
+      msg: ''
+    };
+  }
+  return {
+    ok: false,
+    msg: response.msg
+  };
+}

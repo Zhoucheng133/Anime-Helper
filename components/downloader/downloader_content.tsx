@@ -1,4 +1,4 @@
-import { bangumi, dlFormStore, dlStatusStore, exclusionTableColumn } from "@/hooks/downloader"
+import { bangumi, dlFormStore, dlStatusStore, exclusionTableColumn, saveForm } from "@/hooks/downloader"
 import { Accordion, AccordionItem, Button, Chip, Input, Select, SelectItem, Switch, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react";
 import { useRecoilState } from "recoil";
 import { bangumiTableColumn } from "@/hooks/downloader";
@@ -7,6 +7,7 @@ import DownloaderDelBangumi from "./downloader_del_bangumi";
 import DownloaderAddExclusion from "./downloader_add_exclusion";
 import DownloaderDelExclusion from "./downloader_del_exclusion";
 import { useState } from "react";
+import Dialog from "../dialog";
 
 export default function DownloaderContent(){
 
@@ -20,8 +21,21 @@ export default function DownloaderContent(){
 
   const [bangumiItem, setBangumiItem]=useState<bangumi>({title: '', ass: ''});
   const [exclusionItem, setExclusionItem]=useState<string>('');
+  const [msg, setMsg]=useState('');
+  const [title, setTitle]=useState('');
+  const [openDialog, setOpenDialog]=useState(false);
 
-  const save=()=>{
+  const save=async ()=>{
+    const res=await saveForm(form);
+    if(res.ok){
+      setTitle('保存表单成功');
+      setMsg('已将此表单保存至服务器');
+      setOpenDialog(true);
+    }else{
+      setTitle('保存表单失败')
+      setMsg(res.msg);
+      setOpenDialog(true);
+    }
     
   }
 
@@ -176,5 +190,6 @@ export default function DownloaderContent(){
     <DownloaderAddExclusion isOpen={openAddExclusion} onClose={onCloseAddExclusion}/>
     <DownloaderDelBangumi isOpen={openDelBangumi} onClose={onCloseDelBangumi} data={bangumiItem} />
     <DownloaderDelExclusion isOpen={openDelExclusion} onClose={onCloseDelExclusion} data={exclusionItem} />
+    <Dialog title={title} msg={msg} isOpen={openDialog} onClose={()=>setOpenDialog(false)}/>
   </div>
 }
