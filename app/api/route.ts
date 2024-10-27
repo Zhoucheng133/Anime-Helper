@@ -31,6 +31,7 @@ const app = new Elysia({ prefix: '/api' })
 .get('calendar/sub/:id',  ({jwt, headers, params: {id}})=>calendar.info(jwt, headers, id))
 
 .get('dl/get', ({jwt, headers})=>dl.get(jwt, headers))
+.post('dl/save', ({jwt, headers, body})=>dl.save(jwt, headers, body))
 
 export const GET = app.handle;
 export const POST = app.handle;
