@@ -21,6 +21,10 @@ export default function DownloaderContent(){
   const [bangumiItem, setBangumiItem]=useState<bangumi>({title: '', ass: ''});
   const [exclusionItem, setExclusionItem]=useState<string>('');
 
+  const save=()=>{
+    
+  }
+
   const showLog=()=>{
     console.log(form);
   }
@@ -85,7 +89,7 @@ export default function DownloaderContent(){
       <div className="label">系统操作</div>
       <div className="content">
         <Button size="sm" variant="flat" onClick={()=>showLog()}>显示日志</Button>
-        <Button size="sm" variant="flat" style={{marginLeft: 20}}>保存表单</Button>
+        <Button size="sm" variant="flat" style={{marginLeft: 20}} onClick={()=>save()}>保存表单</Button>
       </div>
     </div>
     <div className="item">
