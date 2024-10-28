@@ -1,4 +1,4 @@
-import { bangumi, dlFormStore, dlStatusStore, exclusionTableColumn, saveForm } from "@/hooks/downloader"
+import { bangumi, dlFormStore, dlStatusStore, exclusionTableColumn, saveForm, toggleRun } from "@/hooks/downloader"
 import { Accordion, AccordionItem, Button, Chip, Input, Select, SelectItem, Switch, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react";
 import { useRecoilState } from "recoil";
 import { bangumiTableColumn } from "@/hooks/downloader";
@@ -94,14 +94,18 @@ export default function DownloaderContent(){
       setOpenDialog(true);
       return;
     }
-    const res=await saveForm(form);
-    if(!res.ok){
-      setTitle('保存表单失败')
-      setMsg(res.msg);
-      setOpenDialog(true);
-      return;
+    if(val){
+      const res=await saveForm(form);
+      if(!res.ok){
+        setTitle('保存表单失败')
+        setMsg(res.msg);
+        setOpenDialog(true);
+        return;
+      }
     }
-    
+    if(await toggleRun(val)){
+      setStatus(val)
+    }
 
     // setStatus(val)
   }

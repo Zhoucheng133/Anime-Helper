@@ -84,3 +84,30 @@ export const saveForm=async (form: dlFormInterface): Promise<feedback>=>{
     msg: response.msg
   };
 }
+
+export const toggleRun=async (val: boolean)=>{
+  const token=Cookies.get('token');
+  if(val){
+    const {data: response}=await axios.post('/api/dl/run', {}, {
+      headers: {
+        token
+      }
+    })
+    if(response.ok){
+      return true;
+    }else{
+      return false;
+    }
+  }else{
+    const {data: response}=await axios.post('/api/dl/stop', {}, {
+      headers: {
+        token
+      }
+    })
+    if(response.ok){
+      return true;
+    }else{
+      return false;
+    }
+  }
+}
