@@ -27,3 +27,17 @@
 .freq_input{
   width: 90px;
 }
+.logItem{
+  display: grid;
+  grid-template-columns: auto 150px 10px;
+  align-items: center;
+}
+.log_label{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.log_time{
+  display: flex;
+  justify-content: flex-end;
+}

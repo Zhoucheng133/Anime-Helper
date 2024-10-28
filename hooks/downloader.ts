@@ -93,7 +93,7 @@ export const saveForm=async (form: dlFormInterface): Promise<feedback>=>{
 
 export const useLog=()=>{
   const token=Cookies.get('token');
-  const [log, setLog]=useRecoilState(dlLogStore);
+  const [_, setLog]=useRecoilState(dlLogStore);
   const get=async ()=>{
     const {data: response}=await axios.get('/api/dl/log', {
       headers: {
@@ -102,8 +102,6 @@ export const useLog=()=>{
     })
     if(response.ok){
       setLog(response.msg);
-      console.log(log);
-      
     }
   }
   return get;

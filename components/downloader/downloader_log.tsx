@@ -1,6 +1,7 @@
 import { dlLogStore } from "@/hooks/downloader";
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip } from "@nextui-org/react";
 import { useRecoilValue } from "recoil";
+import dayjs from 'dayjs';
 
 export interface LogInterface{
   ok: boolean,
@@ -17,7 +18,12 @@ export default function({isOpen, onClose}: any){
       <ModalHeader className="flex flex-col gap-1">日志</ModalHeader>
       <ModalBody>
         {data.map((item, index)=><div key={index}>
-          { item.msg }
+          <Tooltip content={item.msg}>
+            <div className="logItem" style={{'color': item.ok ? 'green' : 'red' }}>
+              <div className="log_label">{ item.msg }</div>
+              <div className="log_time">{ dayjs(item.time).format("YYYY-MM-DD HH:mm") }</div>
+            </div>
+          </Tooltip>
         </div>)}
       </ModalBody>
       <ModalFooter>
