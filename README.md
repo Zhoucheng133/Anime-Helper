@@ -1,7 +1,5 @@
 # Anime Helper
 
-**暂时弃坑**
-
 <img src="assets/icon.svg" width=100></img>
 
 ![License](https://img.shields.io/badge/License-MIT-dark_green)
