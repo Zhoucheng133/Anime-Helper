@@ -8,7 +8,7 @@
 
 前端页面[在这里](https://github.com/Zhoucheng133/Anime-Helper-Web)
 
-新版本测试中🏗️
+新版本测试中🏗️==建议使用dev分支==
 
 ## 使用说明
 
