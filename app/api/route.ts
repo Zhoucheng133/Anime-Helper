@@ -34,6 +34,7 @@ const app = new Elysia({ prefix: '/api' })
 .post('dl/save', ({jwt, headers, body})=>dl.save(jwt, headers, body))
 .post('dl/run', ({jwt, headers})=>dl.run(jwt, headers))
 .post('dl/stop', ({jwt, headers})=>dl.stop(jwt, headers))
+.get('dl/log', ({jwt, headers})=>dl.getlog(jwt, headers))
 
 export const GET = app.handle;
 export const POST = app.handle;

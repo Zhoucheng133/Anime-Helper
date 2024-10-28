@@ -142,9 +142,6 @@ export class Downloader{
     }
   }
 
-  test() {
-    console.log("?"); 
-  }
 
   // 【POST】运行
   async run(jwt: any, headers: any): Promise<response>{
@@ -153,9 +150,9 @@ export class Downloader{
       return check;
     }
     if(this.interval==undefined){
-      this.test()
+      this.mainloop()
       this.interval=setInterval(()=>{
-        this.test()
+        this.mainloop()
       }, this.form.freq*1000*60)
       return {
         ok: true,
@@ -166,6 +163,18 @@ export class Downloader{
         ok: false,
         msg: "在运行中"
       }
+    }
+  }
+
+  // 【GET】获取日志
+  async getlog(jwt: any, headers: any): Promise<response>{
+    const check=await this.account.auth(jwt, headers);
+    if(!check.ok){
+      return check;
+    }
+    return {
+      ok: true,
+      msg: this.log,
     }
   }
 
