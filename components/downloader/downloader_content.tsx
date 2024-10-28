@@ -76,9 +76,34 @@ export default function DownloaderContent(){
     })
   }
 
-  const toggle=(val: boolean)=>{
-    setStatus(val)
-    // TODO 这里是切换运行状态
+  const toggle=async (val: boolean)=>{
+
+    if(form.ariaLink.length==0){
+      setTitle('启动失败');
+      setMsg('Aria地址不能为空');
+      setOpenDialog(true);
+      return;
+    }else if(form.ariaSecret.length==0){
+      setTitle('启动失败');
+      setMsg('Aria密钥不能为空');
+      setOpenDialog(true);
+      return;
+    }else if(form.bangumi.length==0){
+      setTitle('启动失败');
+      setMsg('至少需要添加一个番剧');
+      setOpenDialog(true);
+      return;
+    }
+    const res=await saveForm(form);
+    if(!res.ok){
+      setTitle('保存表单失败')
+      setMsg(res.msg);
+      setOpenDialog(true);
+      return;
+    }
+    
+
+    // setStatus(val)
   }
 
   const delBangumi=(item: bangumi)=>{
