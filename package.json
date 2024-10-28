@@ -1,25 +1,47 @@
 {
-  "name": "helper",
+  "name": "anime-helper",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "bun  --watch src/index.ts",
-    "build": "bun build src/index.ts --target=node --outdir ./build",
-    "start": "NODE_ENV=production bun src/index.ts"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "bun run next build; bun run next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@elysiajs/cors": "^1.1.0",
-    "@elysiajs/jwt": "^1.1.0",
+    "@elysiajs/jwt": "^1.1.1",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@nextui-org/react": "^2.4.8",
+    "@types/crypto-js": "^4.2.2",
+    "@types/js-cookie": "^3.0.6",
+    "@types/lodash": "^4.17.10",
     "@types/xml2js": "^0.4.14",
+    "autoprefixer": "^10.4.20",
     "axios": "^1.7.7",
+    "cookie": "^1.0.1",
     "crypto-js": "^4.2.0",
-    "elysia": "^1.1.5",
+    "dayjs": "^1.11.13",
+    "elysia": "^1.1.22",
+    "framer-motion": "~11.1.1",
+    "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
     "lowdb": "^7.0.1",
+    "nanoid": "^5.0.7",
+    "next": "14.2.15",
+    "postcss": "^8.4.47",
+    "react": "^18",
+    "react-dom": "^18",
+    "recoil": "^0.7.7",
+    "tailwindcss": "^3.4.14",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.0",
-    "@types/bun": "^1.1.6",
-    "@types/crypto-js": "^4.2.2",
-    "@types/lowdb": "^1.0.15",
-    "typescript": "^5.5.4"
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18"
   }
 }

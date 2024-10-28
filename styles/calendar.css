@@ -1,0 +1,25 @@
+.page{
+  margin: auto;
+  width: 1000px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+@media screen and (max-width: 1040px) {
+  .page {
+    width: calc(100% - 40px)
+  }
+}
+.item_default, .item_follow{
+  margin-top: 5px;
+  margin-bottom: 5px;
+  user-select: none;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.item_default{
+  cursor: pointer;
+}
+.item_follow{
+  cursor: default;
+}

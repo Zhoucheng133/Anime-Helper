@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g transform="matrix(0.86,0,0,0.86,36,35)">
+        <path d="M500,125L500,375C500,443.989 443.989,500 375,500L125,500C56.011,500 0,443.989 0,375L0,125C0,56.011 56.011,0 125,0L375,0C443.989,0 500,56.011 500,125Z" style="fill:white;stroke:black;stroke-width:15.12px;"/>
+    </g>
+    <g transform="matrix(5.26737e-17,-0.860227,1.58853,9.72696e-17,-4.54368,347.726)">
+        <clipPath id="_clip1">
+            <path d="M362.415,97.345L349.636,65.789L314.109,39.907L250.98,26.482L141.997,25.881L117.237,40.37L66.52,76.918L32.176,114.979L28.582,123.629L269.789,159.312L25.387,197.589L34.572,223.108L88.484,274.577L119.633,295.121L248.623,295.121L316.912,283.443L355.649,252.302L366.432,193.913L362.415,97.345Z"/>
+        </clipPath>
+        <g clip-path="url(#_clip1)">
+            <rect x="14.64" y="5.825" width="472.356" height="318.303" style="fill:url(#_Linear2);"/>
+        </g>
+    </g>
+    <g transform="matrix(0.86,0,0,0.86,36,35)">
+        <path d="M500,125L500,375C500,443.989 443.989,500 375,500L125,500C56.011,500 0,443.989 0,375L0,125C0,56.011 56.011,0 125,0L375,0C443.989,0 500,56.011 500,125Z" style="fill:none;stroke:black;stroke-width:15.12px;"/>
+    </g>
+    <path d="M150,465L250,114L350,465" style="fill:none;stroke:black;stroke-width:13px;"/>
+    <g transform="matrix(1,0,0,1,5,-214)">
+        <clipPath id="_clip3">
+            <rect x="30" y="-13" width="430" height="583"/>
+        </clipPath>
+        <g clip-path="url(#_clip3)">
+            <circle cx="255.5" cy="266.5" r="279.5" style="fill:none;stroke:black;stroke-width:13px;"/>
+        </g>
+    </g>
+    <path d="M206,292.5L186,362L222,369.2L241,300.2L206,292.5Z" style="fill:white;"/>
+    <defs>
+        <linearGradient id="_Linear2" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(472.356,0,0,318.303,14.6396,164.977)"><stop offset="0" style="stop-color:rgb(161,196,253);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(194,233,251);stop-opacity:1"/></linearGradient>
+    </defs>
+</svg>
