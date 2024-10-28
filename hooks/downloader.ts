@@ -1,6 +1,7 @@
 import axios from "axios";
-import { atom, useRecoilValue } from "recoil";
+import { atom, useRecoilState, useRecoilValue } from "recoil";
 import Cookies from 'js-cookie';
+import { LogInterface } from "@/components/downloader/downloader_log";
 
 export interface bangumi {
   title: string,
@@ -31,6 +32,11 @@ export const dlFormStore=atom<dlFormInterface>({
 export const dlStatusStore=atom<boolean>({
   key: 'dlStatus',
   default: false,
+})
+
+export const dlLogStore=atom<LogInterface[]>({
+  key: 'dlLog',
+  default: [],
 })
 
 export const bangumiTableColumn=[
@@ -83,6 +89,24 @@ export const saveForm=async (form: dlFormInterface): Promise<feedback>=>{
     ok: false,
     msg: response.msg
   };
+}
+
+export const useLog=()=>{
+  const token=Cookies.get('token');
+  const [log, setLog]=useRecoilState(dlLogStore);
+  const get=async ()=>{
+    const {data: response}=await axios.get('/api/dl/log', {
+      headers: {
+        token
+      }
+    })
+    if(response.ok){
+      setLog(response.msg);
+      console.log(log);
+      
+    }
+  }
+  return get;
 }
 
 export const toggleRun=async (val: boolean)=>{

@@ -1,4 +1,4 @@
-import { bangumi, dlFormStore, dlStatusStore, exclusionTableColumn, saveForm, toggleRun } from "@/hooks/downloader"
+import { bangumi, dlFormStore, dlStatusStore, exclusionTableColumn, saveForm, toggleRun, useLog } from "@/hooks/downloader"
 import { Accordion, AccordionItem, Button, Chip, Input, Select, SelectItem, Switch, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react";
 import { useRecoilState } from "recoil";
 import { bangumiTableColumn } from "@/hooks/downloader";
@@ -6,6 +6,7 @@ import DownloaderAddBangumi from "./downloader_add_bangumi";
 import DownloaderDelBangumi from "./downloader_del_bangumi";
 import DownloaderAddExclusion from "./downloader_add_exclusion";
 import DownloaderDelExclusion from "./downloader_del_exclusion";
+import DownloaderLog from "./downloader_log";
 import { useState } from "react";
 import Dialog from "../dialog";
 
@@ -18,6 +19,7 @@ export default function DownloaderContent(){
   const {isOpen: openAddExclusion, onOpen: onOpenAddExclusion, onClose: onCloseAddExclusion} = useDisclosure();
   const {isOpen: openDelBangumi, onOpen: onOpenDelBangumi, onClose: onCloseDelBangumi} = useDisclosure();
   const {isOpen: openDelExclusion, onOpen: onOpenDelExclusion, onClose: onCloseDelExclusion} = useDisclosure();
+  const {isOpen: openLog, onOpen: onOpenLog, onClose: onCloseLog} = useDisclosure();
 
   const [bangumiItem, setBangumiItem]=useState<bangumi>({title: '', ass: ''});
   const [exclusionItem, setExclusionItem]=useState<string>('');
@@ -38,9 +40,11 @@ export default function DownloaderContent(){
     }
     
   }
+  const getlog=useLog();
 
-  const showLog=()=>{
-    console.log(form);
+  const showLog=async ()=>{
+    await getlog();
+    onOpenLog();
   }
 
   const typeChange=(key: string)=>{
@@ -220,5 +224,6 @@ export default function DownloaderContent(){
     <DownloaderDelBangumi isOpen={openDelBangumi} onClose={onCloseDelBangumi} data={bangumiItem} />
     <DownloaderDelExclusion isOpen={openDelExclusion} onClose={onCloseDelExclusion} data={exclusionItem} />
     <Dialog title={title} msg={msg} isOpen={openDialog} onClose={()=>setOpenDialog(false)}/>
+    <DownloaderLog isOpen={openLog} onClose={onCloseLog} />
   </div>
 }
