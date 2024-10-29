@@ -13,10 +13,10 @@ export default function({isOpen, onClose}: any){
 
   const data=useRecoilValue(dlLogStore);
 
-  return <Modal size="xl" isOpen={isOpen} onClose={onClose}>
+  return <Modal size="xl" isOpen={isOpen} onClose={onClose} scrollBehavior="inside">
     <ModalContent>
       <ModalHeader className="flex flex-col gap-1">日志</ModalHeader>
-      <ModalBody>
+      <ModalBody className="gap-0">
         {data.map((item, index)=><div key={index}>
           <Tooltip content={item.msg}>
             <div className="logItem" style={{'color': item.ok ? 'green' : 'red' }}>
