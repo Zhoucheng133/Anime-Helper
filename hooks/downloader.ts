@@ -101,7 +101,7 @@ export const useLog=()=>{
       }
     })
     if(response.ok){
-      setLog(response.msg);
+      setLog(response.msg.reverse());
     }
   }
   return get;
