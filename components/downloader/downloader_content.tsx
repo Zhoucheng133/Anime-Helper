@@ -139,7 +139,7 @@ export default function DownloaderContent(){
     <div className="item">
       <div className="label">RSS来源</div>
       <div className="content">
-        <Select aria-label='筛选' size="sm" label={null} defaultSelectedKeys={[form.type]} className="selector" onSelectionChange={(key)=>typeChange(key as string)}>
+        <Select aria-label='筛选' size="sm" label={null} defaultSelectedKeys={[form.type]} className="selector" onSelectionChange={(key)=>typeChange(key as string)} isDisabled={status}>
           <SelectItem key={'mikan'}>Mikan</SelectItem>
           <SelectItem key={'acgrip'}>Acgrip</SelectItem>
         </Select>
