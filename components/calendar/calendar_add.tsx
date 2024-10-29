@@ -137,7 +137,7 @@ export function CalendarAdd({isOpen, onClose, data, day}: props){
               }
             }} />
             <Input label={'观看至'} type="number" value={now.toString()} onChange={(e)=>{
-              if(e.target.value && parseInt(e.target.value)>=0 && ( !onUpdate || parseInt(e.target.value)<=updateTo)){
+              if(e.target.value && parseInt(e.target.value)>=0 && ((!onUpdate && parseInt(e.target.value)<=ep) || (onUpdate && parseInt(e.target.value)<=updateTo))){
                 setNow(parseInt(e.target.value))
               }
             }} />
