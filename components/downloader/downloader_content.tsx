@@ -98,6 +98,7 @@ export default function DownloaderContent(){
       setOpenDialog(true);
       return;
     }
+    setStatus(val)
     if(val){
       const res=await saveForm(form);
       if(!res.ok){
@@ -107,11 +108,7 @@ export default function DownloaderContent(){
         return;
       }
     }
-    if(await toggleRun(val)){
-      setStatus(val)
-    }
-
-    // setStatus(val)
+    await toggleRun(val);
   }
 
   const delBangumi=(item: bangumi)=>{
@@ -136,7 +133,7 @@ export default function DownloaderContent(){
       <div className="label">系统操作</div>
       <div className="content">
         <Button size="sm" variant="flat" onClick={()=>showLog()}>显示日志</Button>
-        <Button size="sm" variant="flat" style={{marginLeft: 20}} onClick={()=>save()}>保存表单</Button>
+        <Button size="sm" variant="flat" style={{marginLeft: 20}} onClick={()=>save()} isDisabled={status}>保存表单</Button>
       </div>
     </div>
     <div className="item">
@@ -151,25 +148,25 @@ export default function DownloaderContent(){
     <div className="item">
       <div className="label">更新频率</div>
       <div className="content">
-        <Input size="sm" type="number" className="freq_input" value={form.freq.toString()} onValueChange={(value)=>freqChange(value)}></Input>
+        <Input isDisabled={status} size="sm" type="number" className="freq_input" value={form.freq.toString()} onValueChange={(value)=>freqChange(value)}></Input>
         <div style={{marginLeft: 5}}>分钟</div>
       </div>
     </div>
     <div className="item">
       <div className="label">Aria2 地址</div>
       <div className="content">
-        <Input size="sm" placeholder="http(s)://" value={form.ariaLink} onValueChange={(value)=>ariaChange(value)}></Input>
+        <Input isDisabled={status} size="sm" placeholder="http(s)://" value={form.ariaLink} onValueChange={(value)=>ariaChange(value)}></Input>
       </div>
     </div>
     <div className="item">
       <div className="label">Aria2 密钥</div>
       <div className="content">
-      <Input size="sm" type="password" value={form.ariaSecret} onValueChange={(value)=>secretChange(value)}></Input>
+      <Input isDisabled={status} size="sm" type="password" value={form.ariaSecret} onValueChange={(value)=>secretChange(value)}></Input>
       </div>
     </div>
     <Accordion selectionMode="multiple" defaultExpandedKeys={['1', '2']}>
       <AccordionItem key="1" aria-label="list" title="番剧表">
-        <Button size="sm" color="primary" style={{marginBottom: 10}} onClick={()=>onOpenAddBangumi()}>添加</Button>
+        <Button isDisabled={status} size="sm" color="primary" style={{marginBottom: 10}} onClick={()=>onOpenAddBangumi()}>添加</Button>
         <Table aria-label='bangumi list'>
           <TableHeader columns={bangumiTableColumn}>
             {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
@@ -185,7 +182,7 @@ export default function DownloaderContent(){
                       return <TableCell>{item.title}</TableCell>
                     }
                     return <TableCell style={{userSelect: 'none', width: 90}}>
-                      <Button size="sm" variant="flat" color="danger" onClick={()=>delBangumi(item)}>删除</Button>
+                      <Button isDisabled={status} size="sm" variant="flat" color="danger" onClick={()=>delBangumi(item)}>删除</Button>
                     </TableCell>
                   }}
                 </TableRow>
@@ -195,7 +192,7 @@ export default function DownloaderContent(){
         </Table>
       </AccordionItem>
       <AccordionItem key="2" aria-label="exclude" title="排除关键字">
-        <Button size="sm" color="primary" style={{marginBottom: 10}} onPress={()=>onOpenAddExclusion()}>添加</Button>
+        <Button isDisabled={status} size="sm" color="primary" style={{marginBottom: 10}} onPress={()=>onOpenAddExclusion()}>添加</Button>
         <Table aria-label='exclusion list'>
           <TableHeader columns={exclusionTableColumn}>
             {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
@@ -209,7 +206,7 @@ export default function DownloaderContent(){
                       return <TableCell>{item}</TableCell>
                     }
                     return <TableCell style={{userSelect: 'none', width: 90}}>
-                      <Button size="sm" variant="flat" color="danger" onPress={()=>delExclusion(item)}>删除</Button>
+                      <Button isDisabled={status} size="sm" variant="flat" color="danger" onPress={()=>delExclusion(item)}>删除</Button>
                     </TableCell>
                   }}
                 </TableRow>
