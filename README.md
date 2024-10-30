@@ -4,17 +4,40 @@
 
 ![License](https://img.shields.io/badge/License-MIT-dark_green)
 
-一个追番&自动下载工具，如需在本地搭建，务必先阅读[使用说明](#使用说明)
+一个追番&自动下载工具，如需在本地搭建，务必先阅读[部署](#部署)
 
-前端页面[在这里](https://github.com/Zhoucheng133/Anime-Helper-Web)
+这个项目由ElysiaJS和Next.js开发
 
-新版本测试中🏗️==建议使用dev分支==
+## 截图
 
-## 使用说明
+![截图1](screenshot/截图1.png)
 
-这个项目由ElysiaJS (后端)和Nextjs(前端)开发
+![截图2](screenshot/截图2.png)
 
-这个项目需要将前端页面和后端分开搭建，并且需要使用Docker搭建在服务器上
+![截图3](screenshot/截图3.png)
+
+## 部署
+
+### 基础服务
+
+不推荐直接将本服务部署在本地机器上，下面的部署方法需要使用Docker
+
+#### 【方法一】在本地Build（适用于服务器性能较弱的情况）
+- 需要安装`bun`环境，你可以[在这里](https://bun.sh/)查看如何在你的设备上安装
+- 使用命令安装依赖：`bun install`
+- 使用命令生成生产文件：`bun run build`
+- 删除`dockerfile`中的`RUN bun run build`这行
+- 将所有文件和目录（**除去**`node_modules`，**包含**`.next`）拷贝到服务器
+- 使用docker生成镜像`sudo docker build -t helper <拷贝到服务器的路径>`
+- 使用docker生成容器`sudo docker run -d --restart always -p <主机端口*>:3000 -v <配置目录**>:/app/db --name helper helper`
+
+#### 【方法二】直接在服务器端部署
+- 将本项目代码复制到服务器
+- 使用docker生成镜像`sudo docker build -t helper <拷贝到服务器的路径>`
+- 使用docker生成容器`sudo docker run -d --restart always -p <主机端口*>:3000 -v <配置目录**>:/app/db --name helper helper`
+
+\* 主机端口一般随意，但是不要和服务器已有服务冲突  
+\*\* 配置目录用于存放数据，你也可以不指定容器目录映射（不推荐）
 
 ### 下载器配置
 
@@ -27,7 +50,7 @@
 
 ## 更新日志
 
-### 2.0.0 (?)
+### 2.0.0 (2024/10/30)
 - 使用Nextjs重构
 
 <details>
