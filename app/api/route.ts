@@ -11,8 +11,7 @@ const list=new List();
 const calendar=new Calendar();
 const dl=new Downloader();
 
-// const JWT_SECRET = crypto.randomBytes(32).toString('hex');
-const JWT_SECRET = "JWT_SECRET";
+const JWT_SECRET = crypto.randomBytes(32).toString('hex');
 const app = new Elysia({ prefix: '/api' })
 .use(
   jwt({name: 'jwt',secret: JWT_SECRET, exp: "1y"})
@@ -28,7 +27,7 @@ const app = new Elysia({ prefix: '/api' })
 .post('list/del', ({jwt, headers, body})=>list.del(jwt, headers, body))
 
 .get('calendar/get', ({jwt, headers})=>calendar.get(jwt, headers))
-.get('calendar/sub/:id',  ({jwt, headers, params: {id}})=>calendar.info(jwt, headers, id))
+.get('calendar/sub/',  ({jwt, headers, query})=>calendar.info(jwt, headers, query))
 
 .get('dl/get', ({jwt, headers})=>dl.get(jwt, headers))
 .post('dl/save', ({jwt, headers, body})=>dl.save(jwt, headers, body))
