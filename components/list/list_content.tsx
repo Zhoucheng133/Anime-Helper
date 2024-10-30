@@ -7,6 +7,7 @@ import { ListItemInterface } from "@/hooks/interface";
 import { ListAdd } from "./list_add";
 import { ListDel } from "./list_del";
 import ListEdit from "./list_edit";
+import ListAddTo from "./list_addto";
 
 export default function ListContent(){
 
@@ -17,8 +18,10 @@ export default function ListContent(){
   const {isOpen: openAdd, onOpen: onOpenAdd, onClose: onCloseAdd} = useDisclosure();
   const {isOpen: openDel, onOpen: onOpenDel, onClose: onCloseDel} = useDisclosure();
   const {isOpen: openEdit, onOpen: onOpenEdit, onClose: onCloseEdit} = useDisclosure();
+  const {isOpen: openAddTo, onOpen: onOpenAddTo, onClose: onCloseAddTo} = useDisclosure();
 
   const [item, setItem]=useState<ListItemInterface>()
+  
 
   const addEp=useAddEp();
   const minusEp=useMinusEp();
@@ -29,7 +32,8 @@ export default function ListContent(){
   }
 
   const addDownloader=(item: ListItemInterface)=>{
-    console.log(item);
+    setItem(item);
+    onOpenAddTo();
   }
 
   const del=(item: ListItemInterface)=>{
@@ -94,6 +98,9 @@ export default function ListContent(){
     <ListDel isOpen={openDel} onClose={onCloseDel} data={item}/>
     {
       item!=undefined && <ListEdit isOpen={openEdit} onClose={onCloseEdit} data={item} />
+    }
+    {
+      item!=undefined && <ListAddTo onClose={onCloseAddTo} isOpen={openAddTo} titleProp={item?.title} />
     }
   </div>
 }

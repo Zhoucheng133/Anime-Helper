@@ -3,6 +3,7 @@ import { ListItemInterface } from "./interface";
 import { analyseEpisode } from "@/components/list/list_table_row";
 import Cookies from 'js-cookie';
 import axios from "axios";
+import { bangumi } from "./downloader";
 
 export const listStore=atom<any[]>({
   key: 'list',
@@ -229,4 +230,32 @@ export const useAdd=()=>{
     }
   }
   return add
+}
+
+export const addTo=async(item: bangumi): Promise<Response>=>{
+  const token=Cookies.get('token')
+  if(!token){
+    return {
+      ok: false,
+      msg: "获取token失败"
+    };
+  }
+  const response=(await axios.post(`/api/dl/add`, {
+    data: item,
+  }, {
+    headers: {
+      "token": token
+    }
+  })).data;
+  if(!response.ok){
+    return {
+      ok: false,
+      msg: response.msg
+    }
+  }else{
+    return {
+      ok: true,
+      msg: '',
+    };
+  }
 }
