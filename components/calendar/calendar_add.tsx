@@ -41,7 +41,7 @@ export function CalendarAdd({isOpen, onClose, data, day}: props){
       setOpenDialog(true);
       return;
     }
-    const {data: res}=await axios.get(`/api/calendar/sub/${data.id}`, {
+    const {data: res}=await axios.get(`/api/calendar/sub?id=${data.id}`, {
       headers: {
         token: token,
       }

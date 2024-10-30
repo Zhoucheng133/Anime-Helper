@@ -54,7 +54,8 @@ export class Calendar{
   }
 
   // 【GET】获取信息
-  async info(jwt: any, headers: any, id: string): Promise<response>{
+  async info(jwt: any, headers: any, query: any): Promise<response>{
+    const id=query.id;
     const check=await this.account.auth(jwt, headers);
     if(!check.ok){
       return check;
