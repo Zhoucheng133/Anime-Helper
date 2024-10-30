@@ -52,6 +52,12 @@ export default function ListEdit({ isOpen, onClose, data }: props) {
     setUpdateTo(analyseEpisode(data));
   }, [data])
 
+  useEffect(()=>{
+    if(onUpdate){
+      setNow(0);
+    }
+  }, [onUpdate])
+
   const [msg, setMsg] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -125,7 +131,7 @@ export default function ListEdit({ isOpen, onClose, data }: props) {
               }
             }} />
             <Input label={'观看至'} type="number" value={now.toString()} onChange={(e) => {
-              if (e.target.value && parseInt(e.target.value) >= 0 && parseInt(e.target.value)<=updateTo) {
+              if (e.target.value && parseInt(e.target.value) >= 0 && ((!onUpdate && parseInt(e.target.value)<=ep) || (onUpdate && parseInt(e.target.value)<=updateTo))) {
                 setNow(parseInt(e.target.value))
               }
             }} />

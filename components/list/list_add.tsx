@@ -1,5 +1,5 @@
 import { Button, Checkbox, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dialog from "../dialog";
 import { ListItemInterface } from "@/hooks/interface";
 import { nanoid } from "nanoid";
@@ -93,6 +93,12 @@ export function ListAdd({isOpen, onClose}: any){
     setWeekday('星期一');
     onClose();
   }
+
+  useEffect(()=>{
+    if(onUpdate){
+      setNow(0);
+    }
+  }, [onUpdate])
 
   const handleWeekday=(e: any)=>{
     setWeekday(e.target.value);
