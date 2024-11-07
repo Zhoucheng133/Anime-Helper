@@ -94,14 +94,15 @@ export function ListAdd({isOpen, onClose}: any){
     onClose();
   }
 
-  useEffect(()=>{
-    if(onUpdate){
-      setNow(0);
-    }
-  }, [onUpdate])
-
   const handleWeekday=(e: any)=>{
     setWeekday(e.target.value);
+  }
+
+  const handleUpdateChange=(val: boolean)=>{
+    if(val){
+      setNow(0);
+    }
+    setUpdate(val)
   }
 
   return <>
@@ -111,7 +112,7 @@ export function ListAdd({isOpen, onClose}: any){
           <ModalHeader className="flex flex-col gap-1">添加一个番剧</ModalHeader>
           <ModalBody>
             <Input label={'标题'} value={title} onChange={(e)=>setTitle(e.target.value)} />
-            <Checkbox isSelected={onUpdate} onValueChange={setUpdate}>当前在更新</Checkbox>
+            <Checkbox isSelected={onUpdate} onValueChange={(val)=>handleUpdateChange(val)}>当前在更新</Checkbox>
             <Input label={'集数'} type="number" value={ep.toString()} onChange={(e)=>{
               if(e.target.value && parseInt(e.target.value)>0){
                 setEp(parseInt(e.target.value))

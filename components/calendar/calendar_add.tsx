@@ -123,6 +123,16 @@ export function CalendarAdd({isOpen, onClose, data, day}: props){
     }
   }
 
+  const handleUpdateChange=(val: boolean)=>{
+    console.log(val);
+    
+    if(val){
+      setNow(0);
+    }
+    setUpdate(val)
+  }
+
+
   return <>
     <Modal size="md" isOpen={isOpen} onClose={onClose} >
       <ModalContent>
@@ -130,7 +140,7 @@ export function CalendarAdd({isOpen, onClose, data, day}: props){
           <ModalHeader className="flex flex-col gap-1">添加一个番剧</ModalHeader>
           <ModalBody>
             <Input label={'标题'} value={title} onChange={(e)=>setTitle(e.target.value)} />
-            <Checkbox isSelected={onUpdate} onValueChange={setUpdate}>当前在更新</Checkbox>
+            <Checkbox isSelected={onUpdate} onValueChange={(val)=>handleUpdateChange(val)}>当前在更新</Checkbox>
             <Input label={'集数'} type="number" value={ep.toString()} onChange={(e)=>{
               if(e.target.value && parseInt(e.target.value)>0){
                 setEp(parseInt(e.target.value))
