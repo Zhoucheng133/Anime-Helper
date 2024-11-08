@@ -34,7 +34,8 @@
 #### 【方法二】直接在服务器端部署
 - 将本项目代码复制到服务器
 - 使用docker生成镜像`sudo docker build -t helper <拷贝到服务器的路径>`
-- 使用docker生成容器`sudo docker run -d --restart always -p <主机端口*>:3000 -v <配置目录**>:/app/db --name helper helper`
+- 使用docker生成容器`sudo docker run -d --restart always -p <主机端口*>:3000 -v <配置目录**>:/app/db --name helper helper`，譬如  
+`sudo docker run -d --restart always -p 5588:3000 -v /DATA/AppData/helper:/app/db --name anime_helper anime_helper`
 
 \* 主机端口一般随意，但是不要和服务器已有服务冲突  
 \*\* 配置目录用于存放数据，你也可以不指定容器目录映射（不推荐）
@@ -47,7 +48,6 @@
 
 #### 使用Motrix下载器 (不推荐)
 你也可以通过[Motrix](https://motrix.app/zh-CN)作为Aria下载器，其下载端口和密码在该软件的设置中
-
 ## 更新日志
 
 ### 2.0.2 (2024/11/8)
