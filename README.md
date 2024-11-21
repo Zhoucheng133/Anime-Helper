@@ -35,7 +35,7 @@
 - 将本项目代码复制到服务器
 - 使用docker生成镜像`sudo docker build -t helper <拷贝到服务器的路径>`
 - 使用docker生成容器`sudo docker run -d --restart always -p <主机端口*>:3000 -v <配置目录**>:/app/db --name helper helper`，譬如  
-`sudo docker run -d --restart always -p 5588:3000 -v /DATA/AppData/helper:/app/db --name anime_helper anime_helper`
+`sudo docker run -d --restart always -p 5588:3000 -v /DATA/AppData/helper:/app/db --name helper helper`
 
 \* 主机端口一般随意，但是不要和服务器已有服务冲突  
 \*\* 配置目录用于存放数据，你也可以不指定容器目录映射（不推荐）
