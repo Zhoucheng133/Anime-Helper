@@ -83,10 +83,10 @@ export default function ListContent(){
         <SelectItem key="已完结">已完结</SelectItem>
         <SelectItem key="已看完">已看完</SelectItem>
         <SelectItem key="搜索">搜索</SelectItem>
-        <SelectItem key="更新日期">更新日期</SelectItem>
+        <SelectItem key="更新周">更新周</SelectItem>
       </Select>
       { type=='搜索' && <Input placeholder='输入关键词搜索' className="search_box" disabled={type!='搜索'} value={searchKey} onChange={(e)=>setSearchKey(e.target.value)}></Input> }
-      { type=='更新日期' && <Select className='selector' aria-label='更新日期' label={null} selectedKeys={[weekday]} onChange={(e)=>setWeekday(e.target.value)}>
+      { type=='更新周' && <Select className='selector' aria-label='更新周' label={null} selectedKeys={[weekday]} onChange={(e)=>setWeekday(e.target.value)}>
           <SelectItem key="星期一">星期一</SelectItem>
           <SelectItem key="星期二">星期二</SelectItem>
           <SelectItem key="星期三">星期三</SelectItem>
