@@ -12,6 +12,7 @@ import ListAddTo from "./list_addto";
 export default function ListContent(){
 
   const [type, setType]=useState('进行中');
+  const [weekday, setWeekday]=useState('星期一');
   const [searchKey, setSearchKey]=useState('');
 
   const list=useRecoilValue(listStore);
@@ -60,8 +61,15 @@ export default function ListContent(){
       return calculateEpisodesReleased(item.time)>=item.episode;
     }else if(type=='已看完'){
       return calculateEpisodesReleased(item.time)>=item.episode && item.now==item.episode;
-    }else{
+    }else if(type=='搜索'){
       return item.title.includes(searchKey);
+    }else{
+      if(item.time==0){
+        return false;
+      }
+      const date: Date = new Date(item.time);
+      const weekDay: string = date.toLocaleString('zh-CN', { weekday: 'long' });
+      return weekDay==weekday;
     }
   }
 
@@ -75,8 +83,18 @@ export default function ListContent(){
         <SelectItem key="已完结">已完结</SelectItem>
         <SelectItem key="已看完">已看完</SelectItem>
         <SelectItem key="搜索">搜索</SelectItem>
+        <SelectItem key="更新日期">更新日期</SelectItem>
       </Select>
-      <Input placeholder={ type=='搜索' ? '输入关键词搜索' : '需要在左侧选择搜索'} className="search_box" disabled={type!='搜索'} value={searchKey} onChange={(e)=>setSearchKey(e.target.value)}></Input>
+      { type=='搜索' && <Input placeholder='输入关键词搜索' className="search_box" disabled={type!='搜索'} value={searchKey} onChange={(e)=>setSearchKey(e.target.value)}></Input> }
+      { type=='更新日期' && <Select className='selector' aria-label='更新日期' label={null} selectedKeys={[weekday]} onChange={(e)=>setWeekday(e.target.value)}>
+          <SelectItem key="星期一">星期一</SelectItem>
+          <SelectItem key="星期二">星期二</SelectItem>
+          <SelectItem key="星期三">星期三</SelectItem>
+          <SelectItem key="星期四">星期四</SelectItem>
+          <SelectItem key="星期五">星期五</SelectItem>
+          <SelectItem key="星期六">星期六</SelectItem>
+          <SelectItem key="星期日">星期日</SelectItem>
+        </Select>}
     </div>
     <Table aria-label="content">
       <TableHeader columns={tableColumn}>
