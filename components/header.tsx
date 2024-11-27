@@ -47,6 +47,10 @@ export default function Header({login=false, page='list'}: HeaderProps){
         <FontAwesomeIcon icon={faCalendar} style={{'width': 12}}/>
         <div className="head_menu_label">每日放送</div>
       </div>
+      <div className={ page=='all' ? "head_menu_item_selected" : 'head_menu_item'} style={{marginLeft: 30}} onClick={()=>toPage('all')}>
+        <FontAwesomeIcon icon={faDownload} style={{'width': 12}}/>
+        <div className="head_menu_label">下载器</div>
+      </div>
       <div className={ page=='downloader' ? "head_menu_item_selected" : 'head_menu_item'} style={{marginLeft: 30}} onClick={()=>toPage('downloader')}>
         <FontAwesomeIcon icon={faDownload} style={{'width': 12}}/>
         <div className="head_menu_label">下载器</div>
@@ -73,6 +77,7 @@ export default function Header({login=false, page='list'}: HeaderProps){
           <DropdownMenu aria-label="menus">
             <DropdownItem key="new" onClick={()=>toPage('list')}>列表</DropdownItem>
             <DropdownItem key="copy" onClick={()=>toPage('calendar')}>每日放送</DropdownItem>
+            <DropdownItem key="edit" onClick={()=>toPage('all')}>下载器</DropdownItem>
             <DropdownItem key="edit" onClick={()=>toPage('downloader')}>下载器</DropdownItem>
           </DropdownMenu>
         </Dropdown>
