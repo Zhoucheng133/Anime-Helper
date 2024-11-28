@@ -8,25 +8,22 @@ import { parse } from "cookie";
 import { host } from "@/hooks/env";
 import { useRecoilState } from "recoil";
 import { allStore } from "@/hooks/all";
-import { listStore } from "@/hooks/list";
 import AllContent from "@/components/all/all_content";
 import { useEffect } from "react";
 
-export default function Calendar({list, calendar}: any){
+export default function All({list}: any){
   
-  // const [_, setCalendar]=useRecoilState(allStore);
-  // const [__, setList]=useRecoilState(listStore);
+  const [ls, setList]=useRecoilState(allStore);
 
-  // useEffect(()=>{
-  //   setList(list);
-  //   setCalendar(calendar);
-  // }, []);
+  useEffect(()=>{
+    setList(list);
+  }, []);
 
   return <div>
     <Head>
       <title>AnimeHelper | 每日放送</title>
     </Head>
-    <Header login={true} page="calendar" />
+    <Header login={true} page="all" />
     <AllContent />
   </div>
 }
@@ -34,33 +31,24 @@ export default function Calendar({list, calendar}: any){
 export async function getServerSideProps(context: any){
   const init=await initPage(context);
   if(init==true){
-    // let ls=[];
-    // let calendar=[];
-    // const { req } = context;
-    // const cookies = parse(req.headers.cookie || '');
-    // const token=cookies.token;
-    // const {data: resCl}=await axios.get(`${host}/api/calendar/get`, {
-    //   headers: {
-    //     token: token,
-    //   }
-    // })
-    // if(resCl.ok){
-    //   calendar=resCl.msg;
-    // }
-    // const {data: resLs}=await axios.get(`${host}/api/list/get`, {
-    //   headers: {
-    //     token: token,
-    //   }
-    // })
-    // if(resLs.ok){
-    //   ls=resLs.msg;
-    // }
-    // return {
-    //   props: {
-    //     list: ls,
-    //     calendar: calendar
-    //   }
-    // }
+    let ls=[];
+    const { req } = context;
+    const cookies = parse(req.headers.cookie || '');
+    const token=cookies.token;
+    const {data: res}=await axios.get(`${host}/api/all/get`, {
+      headers: {
+        token: token,
+      }
+    })
+    
+    if(res.ok){
+      ls=res.msg;
+    }
+    return {
+      props: {
+        list: ls,
+      }
+    }
   }else{
     return init;
   }
