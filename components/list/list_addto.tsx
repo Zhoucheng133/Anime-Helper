@@ -43,7 +43,7 @@ export default function({isOpen, onClose, titleProp}: props){
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1">添加一个番剧</ModalHeader>
         <ModalBody>
-        <Input label='标题' value={title} onValueChange={setTitle}></Input>
+          <Input label='标题' value={title} onValueChange={setTitle}></Input>
           <Input label='字幕组' value={ass} onValueChange={setAss}></Input>
         </ModalBody>
         <ModalFooter>
