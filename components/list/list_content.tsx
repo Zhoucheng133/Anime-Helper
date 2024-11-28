@@ -1,6 +1,6 @@
 import { listStore, tableColumn, useAddEp, useMinusEp } from "@/hooks/list";
-import {Button, Input, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure} from "@nextui-org/react";
-import { useState } from "react";
+import {Button, Input, Pagination, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure} from "@nextui-org/react";
+import { useEffect, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
 import ListTableRow, { calculateEpisodesReleased } from "./list_table_row";
 import { ListItemInterface } from "@/hooks/interface";
@@ -21,8 +21,46 @@ export default function ListContent(){
   const {isOpen: openEdit, onOpen: onOpenEdit, onClose: onCloseEdit} = useDisclosure();
   const {isOpen: openAddTo, onOpen: onOpenAddTo, onClose: onCloseAddTo} = useDisclosure();
 
+  const show=(item: ListItemInterface): boolean=>{
+    if(type=='所有'){
+      return true;
+    }else if(type=='进行中'){
+      return !(calculateEpisodesReleased(item.time)>=item.episode && item.now==item.episode);
+    }else if(type=='更新中'){
+      return calculateEpisodesReleased(item.time)<item.episode;
+    }else if(type=='已完结'){
+      return calculateEpisodesReleased(item.time)>=item.episode;
+    }else if(type=='已看完'){
+      return calculateEpisodesReleased(item.time)>=item.episode && item.now==item.episode;
+    }else if(type=='搜索'){
+      return item.title.includes(searchKey);
+    }else{
+      if(item.time==0){
+        return false;
+      }
+      const date: Date = new Date(item.time);
+      const weekDay: string = date.toLocaleString('zh-CN', { weekday: 'long' });
+      return weekDay==weekday;
+    }
+  }
+
   const [item, setItem]=useState<ListItemInterface>()
-  
+  const rowsPerPage = 15;
+  const pages = useMemo(()=>{
+    if(list.length==0){
+      return 1;
+    }
+    return Math.ceil(list.filter((item)=>show(item)).length / rowsPerPage);
+  }, [list, type]);
+  const [page, setPage]=useState(1);
+
+
+  const items = useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    return list.filter((item)=>show(item)).slice(start, end);
+  }, [page, list, type]);
+
 
   const addEp=useAddEp();
   const minusEp=useMinusEp();
@@ -50,29 +88,6 @@ export default function ListContent(){
     onOpenAdd();
   }
 
-  const show=(item: ListItemInterface): boolean=>{
-    if(type=='所有'){
-      return true;
-    }else if(type=='进行中'){
-      return !(calculateEpisodesReleased(item.time)>=item.episode && item.now==item.episode);
-    }else if(type=='更新中'){
-      return calculateEpisodesReleased(item.time)<item.episode;
-    }else if(type=='已完结'){
-      return calculateEpisodesReleased(item.time)>=item.episode;
-    }else if(type=='已看完'){
-      return calculateEpisodesReleased(item.time)>=item.episode && item.now==item.episode;
-    }else if(type=='搜索'){
-      return item.title.includes(searchKey);
-    }else{
-      if(item.time==0){
-        return false;
-      }
-      const date: Date = new Date(item.time);
-      const weekDay: string = date.toLocaleString('zh-CN', { weekday: 'long' });
-      return weekDay==weekday;
-    }
-  }
-
   return <div className="page">
     <div className="tool_bar">
       <Button color='primary' onClick={()=>add()}>添加</Button>
@@ -96,11 +111,23 @@ export default function ListContent(){
           <SelectItem key="星期日">星期日</SelectItem>
         </Select>}
     </div>
-    <Table aria-label="content">
+    <Table aria-label="content"  bottomContent={
+        <div className="flex w-full justify-center">
+          <Pagination
+            isCompact
+            showControls
+            showShadow
+            color="primary"
+            page={page}
+            total={pages}
+            onChange={(page) => setPage(page)}
+          />
+        </div>
+      }>
       <TableHeader columns={tableColumn}>
         {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
       </TableHeader>
-      <TableBody items={list.filter((item)=>show(item))}>
+      <TableBody items={items}>
         {(item)=>(
           <TableRow key={item.key}>
             {(columnKey) => (
