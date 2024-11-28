@@ -7,3 +7,6 @@ body{
 *:focus {
   outline: none;
 }
+*{
+  font-family: inherit !important;
+}
