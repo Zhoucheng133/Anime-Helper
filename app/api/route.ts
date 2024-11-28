@@ -5,11 +5,13 @@ import * as crypto from 'crypto';
 import { List } from './service/list';
 import { Calendar } from './service/calendar';
 import { Downloader } from './service/downloader';
+import { All } from './service/all';
 
 const account=new Account();
 const list=new List();
 const calendar=new Calendar();
 const dl=new Downloader();
+const all=new All();
 
 // const JWT_SECRET = crypto.randomBytes(32).toString('hex');
 const JWT_SECRET='Helper';
@@ -36,6 +38,8 @@ const app = new Elysia({ prefix: '/api' })
 .post('dl/stop', ({jwt, headers})=>dl.stop(jwt, headers))
 .get('dl/log', ({jwt, headers})=>dl.getlog(jwt, headers))
 .post('dl/add', ({jwt, headers, body})=>dl.add(jwt, headers, body))
+
+.get('all/get', ({jwt, headers})=>all.get(jwt, headers))
 
 export const GET = app.handle;
 export const POST = app.handle;
