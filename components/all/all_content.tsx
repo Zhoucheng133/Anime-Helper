@@ -15,8 +15,8 @@ export default function AllContent(){
 
   const [page, setPage]=useState(1);
   const items=useMemo(()=>{
-    const start = (page - 1) * 25;
-    const end = start + 25;
+    const start = (page - 1) * 20;
+    const end = start + 20;
     return list.slice(start, end);
   }, [page, list]);
   
@@ -32,7 +32,7 @@ export default function AllContent(){
           isCompact
           showControls
           showShadow
-          color="secondary"
+          color="primary"
           page={page}
           total={5}
           onChange={(page) => setPage(page)}
