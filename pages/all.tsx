@@ -21,7 +21,7 @@ export default function All({list}: any){
 
   return <div>
     <Head>
-      <title>AnimeHelper | 每日放送</title>
+      <title>AnimeHelper | 所有</title>
     </Head>
     <Header login={true} page="all" />
     <AllContent />
