@@ -2,7 +2,6 @@ import { allColumn, allStore } from "@/hooks/all";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, ButtonGroup, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
-import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil"
 
 export default function AllContent(){
