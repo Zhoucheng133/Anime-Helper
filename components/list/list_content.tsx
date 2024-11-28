@@ -45,7 +45,7 @@ export default function ListContent(){
   }
 
   const [item, setItem]=useState<ListItemInterface>()
-  const rowsPerPage = 15;
+  const rowsPerPage = 20;
   const pages = useMemo(()=>{
     if(list.length==0){
       return 1;
