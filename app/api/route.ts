@@ -40,6 +40,7 @@ const app = new Elysia({ prefix: '/api' })
 .post('dl/add', ({jwt, headers, body})=>dl.add(jwt, headers, body))
 
 .get('all/get', ({jwt, headers})=>all.get(jwt, headers))
+.post('all/download', ({jwt, headers, body})=>all.download(jwt, headers, body))
 
 export const GET = app.handle;
 export const POST = app.handle;
