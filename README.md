@@ -97,3 +97,5 @@
 ## 一些API
 
 [Bangumi API](https://bangumi.github.io/api/)
+
+[Mikan RSS](https://mikanime.tv/RSS/Classic)
