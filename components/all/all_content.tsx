@@ -1,10 +1,11 @@
-import { allColumn, AllItem, allStore, download } from "@/hooks/all";
+import { allColumn, AllItem, allStore } from "@/hooks/all";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, ButtonGroup, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip, useDisclosure } from "@nextui-org/react";
 import { useMemo, useState } from "react";
 import { useRecoilValue } from "recoil"
 import AllAdd from "./all_add";
+import AllDl from "./all_dl";
 
 export default function AllContent(){
 
@@ -12,6 +13,7 @@ export default function AllContent(){
   
   const [thisItem, setThisItem]=useState<AllItem>({title: '', url: ''});
   const {isOpen: openAdd, onOpen: onOpenAdd, onClose: onCloseAdd} = useDisclosure();
+  const [openDl, setOpenDl]=useState(false);
 
   const [page, setPage]=useState(1);
   const items=useMemo(()=>{
@@ -23,6 +25,11 @@ export default function AllContent(){
   const add=(data: AllItem)=>{
     setThisItem(data);
     onOpenAdd();
+  }
+
+  const download=(data: AllItem)=>{
+    setThisItem(data);
+    setOpenDl(true);
   }
 
   return <div className="page">
@@ -69,5 +76,6 @@ export default function AllContent(){
       </TableBody>
     </Table>
     <AllAdd item={thisItem} isOpen={openAdd} onClose={onCloseAdd}></AllAdd>
+    <AllDl isOpen={openDl} onClose={()=>setOpenDl(false) } item={thisItem}></AllDl>
   </div>
 }

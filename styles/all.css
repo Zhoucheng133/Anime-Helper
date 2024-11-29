@@ -18,7 +18,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.add_title{
+.add_title, .add_dl{
   display: -webkit-box;
   -webkit-box-orient: vertical;
   line-clamp: 3;

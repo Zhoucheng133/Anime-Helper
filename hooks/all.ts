@@ -20,7 +20,3 @@ export interface AllItem{
   title: string,
   url: string
 }
-
-export const download=(item: AllItem)=>{
-    
-}
