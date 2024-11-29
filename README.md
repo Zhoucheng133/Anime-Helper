@@ -16,6 +16,8 @@
 
 ![截图3](screenshot/截图3.png)
 
+![截图4](screenshot/截图4.png)
+
 ## 部署
 
 ### 基础服务
