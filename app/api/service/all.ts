@@ -10,10 +10,9 @@ export class All{
     if(!check.ok){
       return check;
     }
-    const response=(await axios.get("http://127.0.0.1:5000")).data;
-    // const response=(await axios.get("https://mikanime.tv/RSS/Classic")).data;
-    const parser = new xml2js.Parser();
     try {
+      const response=(await axios.get("http://127.0.0.1:5000")).data;
+      const parser = new xml2js.Parser();
       const result = await new Promise<any>((resolve, reject) => {
         parser.parseString(response, (err, result) => {
           if (err) {
