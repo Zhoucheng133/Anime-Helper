@@ -13,8 +13,8 @@ const calendar=new Calendar();
 const dl=new Downloader();
 const all=new All();
 
-// const JWT_SECRET = crypto.randomBytes(32).toString('hex');
-const JWT_SECRET='Helper';
+const JWT_SECRET = crypto.randomBytes(32).toString('hex');
+// const JWT_SECRET='Helper';
 const app = new Elysia({ prefix: '/api' })
 .use(
   jwt({name: 'jwt',secret: JWT_SECRET, exp: "1y"})
