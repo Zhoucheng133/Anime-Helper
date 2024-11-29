@@ -43,6 +43,7 @@ export default function AllContent(){
           page={page}
           total={5}
           onChange={(page) => setPage(page)}
+          className="pagination"
         />
       </div>
     }>

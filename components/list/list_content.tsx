@@ -121,6 +121,7 @@ export default function ListContent(){
             page={page}
             total={pages}
             onChange={(page) => setPage(page)}
+            className="pagination"
           />
         </div>
       }>
