@@ -39,6 +39,12 @@ export function LoginContent(){
     }
   }
 
+  function onKeyDown(event: any){
+    if(event.key=='Enter'){
+      hanlder();
+    }
+  }
+
   return <div className="panel">
     <div className="title">登录</div>
     <div className="sub">Hi, 欢迎回来👋</div>
@@ -48,7 +54,7 @@ export function LoginContent(){
     </div>
     <div className="item">
       <div className="label">密码</div>
-      <Input type="password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
+      <Input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} onKeyDown={onKeyDown}/>
     </div>
     <Button color="primary" style={{marginTop: 30, width: '100%'}} onClick={()=>hanlder()}>登录</Button>
     <Dialog title="登录失败" isOpen={openMsg} msg={msg} onClose={()=>closeMsg()}/>

@@ -46,6 +46,12 @@ export default function RegisterContent(){
     }
   }
 
+  function onKeyDown(event: any){
+    if(event.key=='Enter'){
+      hanlder();
+    }
+  }
+
   return <div className="panel">
     <div className="title">注册</div>
     <div className="sub">Hi, 从这里开始吧👋</div>
@@ -59,7 +65,7 @@ export default function RegisterContent(){
     </div>
     <div className="item">
       <div className="label">重复密码</div>
-      <Input value={repassword} onChange={(e)=>setRepassword(e.target.value)} type="password"/>
+      <Input value={repassword} onChange={(e)=>setRepassword(e.target.value)} type="password" onKeyDown={onKeyDown}/>
     </div>
     <Button color="primary" style={{marginTop: 30, width: '100%'}} onClick={()=>hanlder()}>注册</Button>
     <Dialog title="登录失败" isOpen={openMsg} msg={msg} onClose={()=>closeMsg()}/>
