@@ -35,7 +35,7 @@ export default function Header({login=false, page='list'}: HeaderProps){
 
   return <div className="head_container">
     <div className="head_lead">
-      <img src="/icon.svg" alt="" width="40px" className="head_icon"></img>
+      <img src="/icon.svg" alt="" width="40px" className="head_icon" draggable={false}></img>
       <div className="head_title">AnimeHelper</div>
     </div>
     {(login && width>800) && (<div className="head_menu">
