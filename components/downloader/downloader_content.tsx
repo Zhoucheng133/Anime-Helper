@@ -133,7 +133,7 @@ export default function DownloaderContent(){
       <div className="label">系统操作</div>
       <div className="content">
         <Button size="sm" variant="flat" onClick={()=>showLog()}>显示日志</Button>
-        <Button size="sm" variant="flat" style={{marginLeft: 20}} onClick={()=>save()} isDisabled={status}>保存表单</Button>
+        <Button size="sm" variant="flat" style={{marginLeft: 20}} onClick={()=>save()}>保存表单</Button>
       </div>
     </div>
     <div className="item">
@@ -166,7 +166,7 @@ export default function DownloaderContent(){
     </div>
     <Accordion selectionMode="multiple" defaultExpandedKeys={['1', '2']}>
       <AccordionItem key="1" aria-label="list" title="番剧表">
-        <Button isDisabled={status} size="sm" color="primary" style={{marginBottom: 10}} onClick={()=>onOpenAddBangumi()}>添加</Button>
+        <Button size="sm" color="primary" style={{marginBottom: 10}} onClick={()=>onOpenAddBangumi()}>添加</Button>
         <Table aria-label='bangumi list'>
           <TableHeader columns={bangumiTableColumn}>
             {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
@@ -182,7 +182,7 @@ export default function DownloaderContent(){
                       return <TableCell>{item.title}</TableCell>
                     }
                     return <TableCell style={{userSelect: 'none', width: 90}}>
-                      <Button isDisabled={status} size="sm" variant="flat" color="danger" onClick={()=>delBangumi(item)}>删除</Button>
+                      <Button size="sm" variant="flat" color="danger" onClick={()=>delBangumi(item)}>删除</Button>
                     </TableCell>
                   }}
                 </TableRow>
@@ -192,7 +192,7 @@ export default function DownloaderContent(){
         </Table>
       </AccordionItem>
       <AccordionItem key="2" aria-label="exclude" title="排除关键字">
-        <Button isDisabled={status} size="sm" color="primary" style={{marginBottom: 10}} onPress={()=>onOpenAddExclusion()}>添加</Button>
+        <Button size="sm" color="primary" style={{marginBottom: 10}} onPress={()=>onOpenAddExclusion()}>添加</Button>
         <Table aria-label='exclusion list'>
           <TableHeader columns={exclusionTableColumn}>
             {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
@@ -206,7 +206,7 @@ export default function DownloaderContent(){
                       return <TableCell>{item}</TableCell>
                     }
                     return <TableCell style={{userSelect: 'none', width: 90}}>
-                      <Button isDisabled={status} size="sm" variant="flat" color="danger" onPress={()=>delExclusion(item)}>删除</Button>
+                      <Button size="sm" variant="flat" color="danger" onPress={()=>delExclusion(item)}>删除</Button>
                     </TableCell>
                   }}
                 </TableRow>
