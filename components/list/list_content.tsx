@@ -1,6 +1,6 @@
 import { listStore, tableColumn, useAddEp, useMinusEp } from "@/hooks/list";
 import {Button, Input, Pagination, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure} from "@nextui-org/react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
 import ListTableRow, { calculateEpisodesReleased } from "./list_table_row";
 import { ListItemInterface } from "@/hooks/interface";
@@ -35,11 +35,12 @@ export default function ListContent(){
     }else if(type=='搜索'){
       return item.title.includes(searchKey);
     }else{
-      if(item.time==0){
+      if(item.time==0 || calculateEpisodesReleased(item.time)>=item.episode){
         return false;
       }
       const date: Date = new Date(item.time);
-      const weekDay: string = date.toLocaleString('zh-CN', { weekday: 'long' });
+      const weekDays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+      const weekDay = weekDays[date.getDay()];
       return weekDay==weekday;
     }
   }
@@ -59,7 +60,7 @@ export default function ListContent(){
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
     return list.filter((item)=>show(item)).slice(start, end);
-  }, [page, list, type]);
+  }, [page, list, type, weekday]);
 
 
   const addEp=useAddEp();
