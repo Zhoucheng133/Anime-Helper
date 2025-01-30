@@ -3,7 +3,12 @@ import { response } from "./_interface";
 import { Account } from "./account";
 import xml2js  from "xml2js";
 import { JSONFilePreset } from "lowdb/node";
-import { bangumi } from "@/hooks/downloader";
+
+export interface bangumi {
+  title: string,
+  ass: string,
+}
+
 
 interface dl{
   type: string,

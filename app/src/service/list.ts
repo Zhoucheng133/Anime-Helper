@@ -1,7 +1,6 @@
-import { JSONFilePreset } from "lowdb/node";
 import { response } from "./_interface";
 import { Account } from "./account"
-import { Database } from 'better-sqlite3';
+import { Database } from 'bun:sqlite';
 
 interface item{
   id: string,
