@@ -7,6 +7,7 @@ import { Calendar } from './service/calendar';
 import { Downloader } from './service/downloader';
 import { All } from './service/all';
 import Database from 'bun:sqlite';
+import { cors } from '@elysiajs/cors'
 
 const account=new Account();
 const list=new List();
@@ -22,6 +23,7 @@ const app = new Elysia({ prefix: '/api' })
 .use(
   jwt({name: 'jwt',secret: JWT_SECRET, exp: "1y"})
 )
+.use(cors())
 .get('/init', () => account.checkInit())
 .post('/register', ({body}) => account.register(body))
 .post('/login', ({jwt, body})=>account.login(body, jwt))
@@ -44,6 +46,4 @@ const app = new Elysia({ prefix: '/api' })
 
 .get('all/get', ({jwt, headers})=>all.get(jwt, headers))
 .post('all/download', ({jwt, headers, body})=>all.download(jwt, headers, body))
-
-export const GET = app.handle;
-export const POST = app.handle;
+.listen(8080);
