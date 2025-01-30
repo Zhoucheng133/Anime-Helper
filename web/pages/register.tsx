@@ -1,5 +1,5 @@
 import Header from "@/components/header";
-import { host } from "@/hooks/env";
+import { ssrhost } from "@/hooks/env";
 import axios from "axios";
 import Head from "next/head";
 import "@/styles/global.css"
@@ -28,7 +28,7 @@ export async function getServerSideProps(context: any){
   // const { req } = context;
   // const cookies = parse(req.headers.cookie || '');
   
-  const {data: init}=await axios.get(`${host}/api/init`);
+  const {data: init}=await axios.get(`${ssrhost}/api/init`);
   if(!init){
     return {
       redirect: {

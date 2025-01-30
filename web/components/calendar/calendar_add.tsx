@@ -9,6 +9,7 @@ import { CalendarItemInterface } from "./calendar_content";
 import axios from "axios";
 import CalendarLoading from "./calendar_loading";
 import Cookies from 'js-cookie';
+import { webHost } from "@/hooks/env";
 
 interface CalendarSub{
   eps: number,
@@ -41,7 +42,7 @@ export function CalendarAdd({isOpen, onClose, data, day}: props){
       setOpenDialog(true);
       return;
     }
-    const {data: res}=await axios.get(`/api/calendar/sub?id=${data.id}`, {
+    const {data: res}=await axios.get(`${webHost}/api/calendar/sub?id=${data.id}`, {
       headers: {
         token: token,
       }

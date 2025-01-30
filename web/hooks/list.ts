@@ -4,6 +4,7 @@ import { analyseEpisode } from "@/components/list/list_table_row";
 import Cookies from 'js-cookie';
 import axios from "axios";
 import { bangumi } from "./downloader";
+import { webHost } from "./env";
 
 export const listStore=atom<any[]>({
   key: 'list',
@@ -45,7 +46,7 @@ const useGet=()=>{
     if(!token){
       return;
     }
-    const {data: res}=await axios.get(`/api/list/get`, {
+    const {data: res}=await axios.get(`${webHost}/api/list/get`, {
       headers: {
         token: token,
       }
@@ -58,7 +59,7 @@ const useGet=()=>{
 }
 
 export const changeItem=async (item: ListItemInterface, token: string): Promise<Response>=>{
-  const response=(await axios.post(`/api/list/edit`, {
+  const response=(await axios.post(`${webHost}/api/list/edit`, {
     data: item,
   }, {
     headers: {
@@ -176,7 +177,7 @@ export const useDel=()=>{
         msg: "获取token失败"
       };
     }
-    const response=(await axios.post(`/api/list/del`, {
+    const response=(await axios.post(`${webHost}/api/list/del`, {
       id: id
     }, {
       headers: {
@@ -209,7 +210,7 @@ export const useAdd=()=>{
         msg: "获取token失败"
       };
     }
-    const response=(await axios.post(`/api/list/add`, {
+    const response=(await axios.post(`${webHost}/api/list/add`, {
       data: item,
     }, {
       headers: {
@@ -240,7 +241,7 @@ export const addTo=async(item: bangumi): Promise<Response>=>{
       msg: "获取token失败"
     };
   }
-  const response=(await axios.post(`/api/dl/add`, {
+  const response=(await axios.post(`${webHost}/api/dl/add`, {
     data: item,
   }, {
     headers: {

@@ -1,7 +1,8 @@
 import axios from "axios";
-import { atom, useRecoilState, useRecoilValue } from "recoil";
+import { atom, useRecoilState } from "recoil";
 import Cookies from 'js-cookie';
 import { LogInterface } from "@/components/downloader/downloader_log";
+import { webHost } from "./env";
 
 export interface bangumi {
   title: string,
@@ -72,7 +73,7 @@ interface feedback{
 
 export const saveForm=async (form: dlFormInterface): Promise<feedback>=>{
   const token=Cookies.get('token')
-  const {data: response}=await axios.post('/api/dl/save', {
+  const {data: response}=await axios.post(`${webHost}/api/dl/save'`, {
     data: form,
   }, {
     headers: {
@@ -95,7 +96,7 @@ export const useLog=()=>{
   const token=Cookies.get('token');
   const [_, setLog]=useRecoilState(dlLogStore);
   const get=async ()=>{
-    const {data: response}=await axios.get('/api/dl/log', {
+    const {data: response}=await axios.get(`${webHost}/api/dl/log`, {
       headers: {
         token
       }
@@ -110,7 +111,7 @@ export const useLog=()=>{
 export const toggleRun=async (val: boolean)=>{
   const token=Cookies.get('token');
   if(val){
-    const {data: response}=await axios.post('/api/dl/run', {}, {
+    const {data: response}=await axios.post(`${webHost}/api/dl/run`, {}, {
       headers: {
         token
       }
@@ -121,7 +122,7 @@ export const toggleRun=async (val: boolean)=>{
       return false;
     }
   }else{
-    const {data: response}=await axios.post('/api/dl/stop', {}, {
+    const {data: response}=await axios.post(`${webHost}/api/dl/stop`, {}, {
       headers: {
         token
       }

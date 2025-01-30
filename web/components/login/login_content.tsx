@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import Cookies from 'js-cookie';
 import Dialog from "../dialog";
+import { webHost } from "@/hooks/env";
 
 export function LoginContent(){
 
@@ -26,7 +27,7 @@ export function LoginContent(){
       setMsg('密码不能为空')
       return;
     }
-    const {data: res}=await axios.post('/api/login', {
+    const {data: res}=await axios.post(`${webHost}/api/login`, {
       username: name,
       password: password,
     })

@@ -4,6 +4,7 @@ import Dialog from "../dialog";
 import axios from "axios";
 import { AllItem } from "@/hooks/all";
 import Cookies from 'js-cookie';
+import { webHost } from "@/hooks/env";
 
 interface prop{
   isOpen: any,
@@ -23,7 +24,7 @@ export default function AllDl({isOpen, onClose, item}: prop){
       setMsg('token不合法')
       return;
     }
-    const {data: res}=await axios.post('/api/all/download', {
+    const {data: res}=await axios.post(`${webHost}/api/all/download`, {
       'link': item.url
     }, {
       headers: {

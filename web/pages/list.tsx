@@ -5,7 +5,7 @@ import "@/styles/global.css";
 import "@/styles/list.css";
 import ListContent from "@/components/list/list_content";
 import axios from "axios";
-import { host } from "@/hooks/env";
+import { ssrhost } from "@/hooks/env";
 import { parse } from "cookie";
 import { useRecoilState } from "recoil";
 import { listStore } from "@/hooks/list";
@@ -39,7 +39,7 @@ export async function getServerSideProps(context: any){
     const { req } = context;
     const cookies = parse(req.headers.cookie || '');
     const token=cookies.token;
-    const {data: res}=await axios.get(`${host}/api/list/get`, {
+    const {data: res}=await axios.get(`${ssrhost}/api/list/get`, {
       headers: {
         token: token,
       }

@@ -2,6 +2,7 @@ import {Input, Button} from "@nextui-org/react";
 import axios from "axios";
 import { useState } from "react";
 import Dialog from "../dialog";
+import { webHost } from "@/hooks/env";
 
 export default function RegisterContent(){
 
@@ -34,7 +35,7 @@ export default function RegisterContent(){
       setMsg('两次密码不相符')
       return;
     }
-    const {data: res}=await axios.post("/api/register", {
+    const {data: res}=await axios.post(`${webHost}/api/register`, {
       username: name,
       password: password,
     })

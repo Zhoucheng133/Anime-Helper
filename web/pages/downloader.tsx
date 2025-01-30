@@ -4,7 +4,7 @@ import Head from "next/head";
 import "@/styles/global.css"
 import { parse } from "cookie";
 import axios from "axios";
-import { host } from "@/hooks/env";
+import { ssrhost } from "@/hooks/env";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { dlFormStore, dlStatusStore } from "@/hooks/downloader";
@@ -36,7 +36,7 @@ export async function getServerSideProps(context: any){
     const { req } = context;
     const cookies = parse(req.headers.cookie || '');
     const token=cookies.token;
-    const {data: res}=await axios.get(`${host}/api/dl/get`, {
+    const {data: res}=await axios.get(`${ssrhost}/api/dl/get`, {
       headers: {
         token: token,
       }

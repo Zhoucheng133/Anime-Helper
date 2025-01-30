@@ -1,4 +1,4 @@
-import { host } from "@/hooks/env";
+import { ssrhost } from "@/hooks/env";
 import axios from "axios";
 import Head from "next/head";
 import "@/styles/global.css"
@@ -31,7 +31,7 @@ export default function Login(){
 }
 
 export async function getServerSideProps(){
-  const {data: init}=await axios.get(`${host}/api/init`);
+  const {data: init}=await axios.get(`${ssrhost}/api/init`);
   if(init){
     return {
       redirect: {

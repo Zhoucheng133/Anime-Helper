@@ -5,7 +5,7 @@ import "@/styles/global.css";
 import "@/styles/calendar.css";
 import axios from "axios";
 import { parse } from "cookie";
-import { host } from "@/hooks/env";
+import { ssrhost } from "@/hooks/env";
 import { useRecoilState } from "recoil";
 import { calendarStore } from "@/hooks/calendar";
 import { listStore } from "@/hooks/list";
@@ -39,7 +39,7 @@ export async function getServerSideProps(context: any){
     const { req } = context;
     const cookies = parse(req.headers.cookie || '');
     const token=cookies.token;
-    const {data: resCl}=await axios.get(`${host}/api/calendar/get`, {
+    const {data: resCl}=await axios.get(`${ssrhost}/api/calendar/get`, {
       headers: {
         token: token,
       }
@@ -47,7 +47,7 @@ export async function getServerSideProps(context: any){
     if(resCl.ok){
       calendar=resCl.msg;
     }
-    const {data: resLs}=await axios.get(`${host}/api/list/get`, {
+    const {data: resLs}=await axios.get(`${ssrhost}/api/list/get`, {
       headers: {
         token: token,
       }

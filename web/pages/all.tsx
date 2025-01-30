@@ -5,7 +5,7 @@ import "@/styles/global.css";
 import "@/styles/all.css";
 import axios from "axios";
 import { parse } from "cookie";
-import { host } from "@/hooks/env";
+import { ssrhost } from "@/hooks/env";
 import { useRecoilState } from "recoil";
 import { allStore } from "@/hooks/all";
 import AllContent from "@/components/all/all_content";
@@ -35,7 +35,7 @@ export async function getServerSideProps(context: any){
     const { req } = context;
     const cookies = parse(req.headers.cookie || '');
     const token=cookies.token;
-    const {data: res}=await axios.get(`${host}/api/all/get`, {
+    const {data: res}=await axios.get(`${ssrhost}/api/all/get`, {
       headers: {
         token: token,
       }
