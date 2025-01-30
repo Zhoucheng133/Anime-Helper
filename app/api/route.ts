@@ -14,7 +14,7 @@ const calendar=new Calendar();
 const dl=new Downloader();
 const all=new All();
 
-const db = new Database('db/app.db');
+const db = new Database('db/list.db');
 
 const JWT_SECRET = crypto.randomBytes(32).toString('hex');
 // const JWT_SECRET='Helper';
