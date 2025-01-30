@@ -6,12 +6,15 @@ import { List } from './service/list';
 import { Calendar } from './service/calendar';
 import { Downloader } from './service/downloader';
 import { All } from './service/all';
+import Database from 'better-sqlite3';
 
 const account=new Account();
 const list=new List();
 const calendar=new Calendar();
 const dl=new Downloader();
 const all=new All();
+
+const db = new Database('db/app.db');
 
 const JWT_SECRET = crypto.randomBytes(32).toString('hex');
 // const JWT_SECRET='Helper';
@@ -24,10 +27,10 @@ const app = new Elysia({ prefix: '/api' })
 .post('/login', ({jwt, body})=>account.login(body, jwt))
 .get('/auth', ({jwt, headers})=>account.auth(jwt, headers))
 
-.get('list/get', ({jwt, headers})=>list.getList(jwt, headers))
-.post('list/edit', ({jwt, headers, body})=>list.edit(jwt, headers, body))
-.post('list/add', ({jwt, headers, body})=>list.add(jwt, headers, body))
-.post('list/del', ({jwt, headers, body})=>list.del(jwt, headers, body))
+.get('list/get', ({jwt, headers})=>list.getList(jwt, headers, db))
+.post('list/edit', ({jwt, headers, body})=>list.edit(jwt, headers, body, db))
+.post('list/add', ({jwt, headers, body})=>list.add(jwt, headers, body, db))
+.post('list/del', ({jwt, headers, body})=>list.del(jwt, headers, body, db))
 
 .get('calendar/get', ({jwt, headers})=>calendar.get(jwt, headers))
 .get('calendar/sub/',  ({jwt, headers, query})=>calendar.info(jwt, headers, query))

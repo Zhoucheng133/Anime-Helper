@@ -1,6 +1,7 @@
 import { JSONFilePreset } from "lowdb/node";
 import { response } from "./_interface";
 import { Account } from "./account"
+import { Database } from 'better-sqlite3';
 
 interface item{
   id: string,
@@ -14,21 +15,30 @@ export class List{
   account=new Account();
 
   // 【GET】获取列表
-  async getList(jwt: any, headers: any): Promise<response>{
+  async getList(jwt: any, headers: any, db: Database): Promise<response>{
     const check=await this.account.auth(jwt, headers);
     if(check.ok){
-      const db = await JSONFilePreset('db/list.json', []);
-      db.read();
-      if(db.data.length==0){
+      const tableExists = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name = 'list'").get();
+      if (!tableExists) {
+        db.prepare(`
+          CREATE TABLE list (
+            id TEXT KEY,
+            title TEXT,
+            episode INTEGER,
+            now INTEGER,
+            time INTEGER
+          )
+        `).run();
         return {
           ok: true,
-          msg: []
-        }
+          msg: [],  
+        };
       }else{
+        const data = db.prepare('SELECT * FROM list').all();
         return {
           ok: true,
-          msg: db.data,
-        }
+          msg: data,
+        };
       }
     }else{
       return check;
@@ -40,7 +50,7 @@ export class List{
   }
 
   // 【POST】添加
-  async add(jwt: any, headers: any, body: any): Promise<response>{
+  async add(jwt: any, headers: any, body: any, db: Database): Promise<response>{
     const check=await this.account.auth(jwt, headers);
     if(!check.ok){
       return check;
@@ -54,16 +64,11 @@ export class List{
     try {
       const data:item=body.data as item;
       if(this.isLegal(data)){
-        const db = await JSONFilePreset<item[]>('db/list.json', []);
-        await db.read();
-        let dbData: item[]=db.data;
-        dbData.push(data);
-        db.data=dbData;
-        db.write();
-  
+        const stmt = db.prepare("INSERT INTO list (id, title, episode, now, time) VALUES (?, ?, ?, ?, ?)");
+        stmt.run(data.id, data.title, data.episode, data.now, data.time);
         return {
           ok: true,
-          msg: ""
+          msg: "",
         }
       }else{
         return {
@@ -80,7 +85,7 @@ export class List{
   }
 
   // 【POST】编辑
-  async edit(jwt: any, headers: any, body: any): Promise<response>{
+  async edit(jwt: any, headers: any, body: any, db: Database): Promise<response>{
     const check=await this.account.auth(jwt, headers);
     if(!check){
       return check;
@@ -92,35 +97,25 @@ export class List{
       };
     }
     const data=body.data as item;
-    const db = await JSONFilePreset<item[]>('db/list.json', []);
-    db.read();
-    if(db.data.length==0){
+    const checkStmt = db.prepare("SELECT id FROM list WHERE id = ?");
+    const row = checkStmt.get(data.id);
+    if(row){
+      const updateStmt = db.prepare("UPDATE list SET title = ?, episode = ?, now = ?, time = ? WHERE id = ?");
+      updateStmt.run(data.title, data.episode, data.now, data.time, data.id);
+      return {
+        ok: true,
+        msg: ""
+      }
+    }else{
       return {
         ok: false,
         msg: '没有该数据'
       }
     }
-    let dbData: item[]=db.data;
-    const index=dbData.findIndex((item)=>item.id==data.id);
-    if(index==-1){
-      return {
-        ok: false,
-        msg: "没有找到对应项"
-      }
-    }else{
-      dbData[index]=data;
-    }
-    db.data=dbData;
-    await db.write();
-
-    return {
-      ok: true,
-      msg: ""
-    }
   }
 
   // 【POST】删除
-  async del(jwt: any, headers: any, body: any): Promise<response>{
+  async del(jwt: any, headers: any, body: any, db: Database): Promise<response>{
     const check=await this.account.auth(jwt, headers);
     if(!check.ok){
       return check;
@@ -131,24 +126,21 @@ export class List{
         msg: "参数不正确",
       };
     }
-    const db = await JSONFilePreset<item[]>('db/list.json', []);
-    await db.read();
-    let dbData: item[]=db.data;
-    const index=dbData.findIndex((item)=>item.id==body.id);
-    if(index==-1){
+    const id=body.id;
+    const checkStmt = db.prepare("SELECT id FROM list WHERE id = ?");
+    const row = checkStmt.get(id);
+    if (row) {
+      const deleteStmt = db.prepare("DELETE FROM list WHERE id = ?");
+      deleteStmt.run(id);
+      return {
+        ok: true,
+        msg: "",
+      }
+    } else {
       return {
         ok: false,
-        msg: "没有找到对应项"
+        msg: "数据不存在",
       }
-    }else{
-      dbData.splice(index, 1);
-    }
-    db.data=dbData;
-    await db.write();
-
-    return {
-      ok: true,
-      msg: ""
     }
   }
 }
