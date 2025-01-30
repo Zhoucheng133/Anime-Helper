@@ -6,7 +6,7 @@ import { List } from './service/list';
 import { Calendar } from './service/calendar';
 import { Downloader } from './service/downloader';
 import { All } from './service/all';
-import Database from 'better-sqlite3';
+import Database from 'bun:sqlite';
 
 const account=new Account();
 const list=new List();
