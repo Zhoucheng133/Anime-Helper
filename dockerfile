@@ -12,9 +12,9 @@ ENV TZ=Asia/Shanghai
 
 EXPOSE 8081
 
-RUN cd web&&bun run install&&bun run build
+RUN cd web&&bun install&&bun run build
 
-RUN cd app&&bun run install&&bun build \
+RUN cd app&&bun install&&bun build \
 --compile \
 --minify-whitespace \
 --minify-syntax \
