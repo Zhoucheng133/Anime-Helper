@@ -73,7 +73,7 @@ interface feedback{
 
 export const saveForm=async (form: dlFormInterface): Promise<feedback>=>{
   const token=Cookies.get('token')
-  const {data: response}=await axios.post(`${webHost}/api/dl/save'`, {
+  const {data: response}=await axios.post(`${webHost}/api/dl/save`, {
     data: form,
   }, {
     headers: {
