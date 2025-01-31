@@ -31,17 +31,7 @@
 
 不推荐直接将本服务部署在本地机器上，下面的部署方法需要使用Docker
 
-#### 【方法一】在本地Build（适用于服务器性能较弱的情况）
-- 需要安装`bun`环境，你可以[在这里](https://bun.sh/)查看如何在你的设备上安装
-- 使用命令安装依赖：`bun install`
-- 使用命令生成生产文件：`bun run build`
-- 删除`dockerfile`中的`RUN bun run build`这行
-- 将所有文件和目录（**除去**`node_modules`，**包含**`.next`）拷贝到服务器
-- 使用docker生成镜像`sudo docker build -t helper <拷贝到服务器的路径>`
-- 使用docker生成容器`sudo docker run -d --restart always -p <主机端口*>:3000 -v <配置目录**>:/app/db --name helper helper`
-
-#### 【方法二】直接在服务器端部署
-- 将本项目代码复制到服务器
+- 转至Release页下载build包并拷贝到服务器
 - 使用docker生成镜像`sudo docker build -t helper <拷贝到服务器的路径>`
 - 使用docker生成容器`sudo docker run -d --restart always -p <主机端口*>:3000 -v <配置目录**>:/app/db --name helper helper`，譬如  
 `sudo docker run -d --restart always -p 5588:3000 -v /DATA/AppData/helper:/app/db --name helper helper`
@@ -60,7 +50,7 @@
 
 ## 更新日志
 
-### 2.3.0
+### 2.3.0 (2025/1/31)
 - 分离前后端
 - 使用sqlite存储列表信息
 - 大幅提高运行速度
