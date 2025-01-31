@@ -12,7 +12,7 @@ ENV TZ=Asia/Shanghai
 
 EXPOSE 8081
 
-RUN cd web&&bun install&&bun run build
+RUN cd web&&bun install
 
 RUN cd app&&bun install&&bun build \
 --compile \
