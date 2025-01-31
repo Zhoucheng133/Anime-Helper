@@ -31,7 +31,7 @@
 
 不推荐直接将本服务部署在本地机器上，下面的部署方法需要使用Docker
 
-- 转至Release页下载build包并拷贝到服务器
+- 转至Release页下载build包并解压拷贝到服务器
 - 使用docker生成镜像`sudo docker build -t helper <拷贝到服务器的路径>`
 - 使用docker生成容器`sudo docker run -d --restart always -p <主机端口*>:3000 -v <配置目录**>:/app/db --name helper helper`，譬如  
 `sudo docker run -d --restart always -p 5588:3000 -v /DATA/AppData/helper:/app/db --name helper helper`
