@@ -1,7 +1,6 @@
 import { Elysia } from "elysia";
 import { Database } from "bun:sqlite";
 import { cors } from '@elysiajs/cors';
-import * as crypto from 'crypto';
 import { User } from "./routes/user";
 import { initDB } from "./routes/db";
 import jwt from "@elysiajs/jwt";
