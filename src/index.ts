@@ -5,10 +5,11 @@ import * as crypto from 'crypto';
 import { User } from "./routes/user";
 import { initDB } from "./routes/db";
 import jwt from "@elysiajs/jwt";
+import { nanoid } from "nanoid";
 
 const user=new User();
 
-// const JWT_SECRET = crypto.randomBytes(32).toString('hex');
+// const JWT_SECRET = nanoid();
 const JWT_SECRET='Helper';
 const app = new Elysia({ prefix: '/api' })
 .use(cors())
