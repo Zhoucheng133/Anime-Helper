@@ -5,8 +5,10 @@ import { User } from "./routes/user";
 import { initDB } from "./routes/db";
 import jwt from "@elysiajs/jwt";
 import { nanoid } from "nanoid";
+import { List } from "./routes/list";
 
 const user=new User();
+const list=new List();
 
 // const JWT_SECRET = nanoid();
 const JWT_SECRET='Helper';
@@ -17,7 +19,9 @@ const app = new Elysia({ prefix: '/api' })
 .get('/init', () => user.checkInit(db))
 .post("/register", ({body}) => user.register(body, db))
 .post("/login", ({body, jwt}) => user.login(body, jwt, db))
-.get("/auth", ({jwt, headers})=>user.checkAuth(headers, jwt))
+.get("/auth", ({jwt, headers}) => user.checkAuth(headers, jwt))
+
+.get("/list/get", ({jwt, headers, query}) => list.get(headers, jwt, db, query as any))
 
 .listen(3000)
 
