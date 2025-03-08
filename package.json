@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "anime-helper",
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,14 +9,8 @@
     "@elysiajs/cors": "^1.2.0",
     "@elysiajs/jwt": "^1.2.0",
     "@types/crypto-js": "^4.2.2",
-    "@types/lodash": "^4.17.15",
-    "@types/xml2js": "^0.4.14",
-    "axios": "^1.7.9",
     "crypto-js": "^4.2.0",
-    "elysia": "latest",
-    "lodash": "^4.17.21",
-    "lowdb": "^7.0.1",
-    "xml2js": "^0.6.2"
+    "elysia": "latest"
   },
   "devDependencies": {
     "bun-types": "latest"
