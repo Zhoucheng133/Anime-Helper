@@ -2,6 +2,7 @@ import Database from "bun:sqlite";
 import { ResponseType, ToResponse } from "./types";
 import { nanoid } from "nanoid";
 import CryptoJS from "crypto-js";
+import auth from "./auth";
 
 export class User{
 
@@ -11,6 +12,11 @@ export class User{
       .prepare("SELECT COUNT(*) AS count FROM user")
       .get() as { count: number };
     return rowCount.count === 0;
+  }
+
+  // 身份验证
+  checkAuth(headers: any, jwt: any){
+    return auth(headers, jwt)
   }
 
   // 注册

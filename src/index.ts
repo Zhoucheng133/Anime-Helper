@@ -18,6 +18,7 @@ const app = new Elysia({ prefix: '/api' })
 .get('/init', () => user.checkInit(db))
 .post("/register", ({body}) => user.register(body, db))
 .post("/login", ({body, jwt}) => user.login(body, jwt, db))
+.get("/auth", ({jwt, headers})=>user.checkAuth(headers, jwt))
 
 .listen(3000)
 
