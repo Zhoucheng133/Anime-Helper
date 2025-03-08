@@ -7,11 +7,11 @@ import auth from "./auth";
 export class User{
 
   // 检查是否需要注册(true/false)
-  checkInit(db: Database) {
+  checkInit(db: Database): ResponseType {
     const rowCount = db
       .prepare("SELECT COUNT(*) AS count FROM user")
       .get() as { count: number };
-    return rowCount.count === 0;
+    return ToResponse(true, rowCount.count === 0);
   }
 
   // 身份验证
