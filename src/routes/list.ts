@@ -10,6 +10,14 @@ export interface ListQuery{
   param: string | undefined
 }
 
+interface ListItem{
+  id: string,
+  title: string,
+  episode: number,
+  now: number,
+  time: number,
+}
+
 export class List{
 
   validFilter(filter: string): boolean{
@@ -17,6 +25,25 @@ export class List{
       return true;
     }
     return false;
+  }
+
+  async edit(headers: any, jwt: any, body: any, db: Database){
+    const authCheck=await auth(headers, jwt);
+    if(!authCheck.ok){
+      return authCheck;
+    }
+
+    if (!body || !body.data) {
+      return ToResponse(false, "参数不正确");
+    }
+    
+    try {
+      const data=body.data as ListItem;
+      db.prepare(`UPDATE list SET title = ?, episode = ?, now = ?, time = ? WHERE id = ?`).run(data.title, data.episode, data.now, data.time, data.id);
+    } catch (error) {
+      return ToResponse(false, error);
+    }
+    return ToResponse(true, "");
   }
 
   async get(headers: any, jwt: any, db: Database, query: ListQuery): Promise<ResponseType>{

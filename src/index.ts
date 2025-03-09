@@ -22,6 +22,7 @@ const app = new Elysia({ prefix: '/api' })
 .get("/auth", ({jwt, headers}) => user.checkAuth(headers, jwt))
 
 .get("/list/get", ({jwt, headers, query}) => list.get(headers, jwt, db, query as any))
+.post("/list/edit", ({jwt, headers, body})=>list.edit(headers, jwt, body, db))
 
 .listen(3000)
 
