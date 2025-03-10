@@ -39,7 +39,7 @@ export class List{
   }
 
   // 添加项
-  async add(headers: any, jwt: any, body: any, db: Database){
+  async add(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
     const authCheck=await auth(headers, jwt);
     if(!authCheck.ok){
       return authCheck;
@@ -59,8 +59,23 @@ export class List{
 
   }
 
+  // 删除项
+  async del(headers: any, jwt: any, id: string, db: Database): Promise<ResponseType>{
+    const authCheck=await auth(headers, jwt);
+    if(!authCheck.ok){
+      return authCheck;
+    }
+    
+    try {
+      db.prepare(`DELETE FROM list WHERE id = ?`).run(id);
+    } catch (error) {
+      return ToResponse(false, error);
+    }
+    return ToResponse(true, "");
+  }
+
   // 编辑列表
-  async edit(headers: any, jwt: any, body: any, db: Database){
+  async edit(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
     const authCheck=await auth(headers, jwt);
     if(!authCheck.ok){
       return authCheck;

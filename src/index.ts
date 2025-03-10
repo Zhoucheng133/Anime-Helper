@@ -24,6 +24,7 @@ const app = new Elysia({ prefix: '/api' })
 .get("/list/get", ({jwt, headers, query}) => list.get(headers, jwt, db, query as any))
 .post("/list/edit", ({jwt, headers, body})=>list.edit(headers, jwt, body, db))
 .post("/list/add", ({jwt, headers, body})=>list.add(headers, jwt, body, db))
+.delete("/list/del/:id", ({jwt, headers, params: { id }})=>list.del(headers, jwt, id, db))
 
 .listen(3000)
 
