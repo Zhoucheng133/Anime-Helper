@@ -27,13 +27,46 @@ export class List{
     return false;
   }
 
+  validItem(data: any): boolean{
+    return (
+      data &&
+      typeof data.id === "string" &&
+      typeof data.title === "string" &&
+      typeof data.episode === "number" &&
+      typeof data.now === "number" &&
+      typeof data.time === "number"
+    );
+  }
+
+  // 添加项
+  async add(headers: any, jwt: any, body: any, db: Database){
+    const authCheck=await auth(headers, jwt);
+    if(!authCheck.ok){
+      return authCheck;
+    }
+
+    if (!body || !body.data || !this.validItem(body.data)) {
+      return ToResponse(false, "参数不正确");
+    }
+
+    try {
+      const data=body.data as ListItem;
+      db.prepare(`INSERT INTO list VALUES (?, ?, ?, ?, ?)`).run(data.id, data.title, data.episode, data.now, data.time);
+    } catch (error) {
+      return ToResponse(false, error);
+    }
+    return ToResponse(true, "");
+
+  }
+
+  // 编辑列表
   async edit(headers: any, jwt: any, body: any, db: Database){
     const authCheck=await auth(headers, jwt);
     if(!authCheck.ok){
       return authCheck;
     }
 
-    if (!body || !body.data) {
+    if (!body || !body.data || !this.validItem(body.data)) {
       return ToResponse(false, "参数不正确");
     }
     
@@ -46,6 +79,7 @@ export class List{
     return ToResponse(true, "");
   }
 
+  // 获取列表
   async get(headers: any, jwt: any, db: Database, query: ListQuery): Promise<ResponseType>{
     const authCheck=await auth(headers, jwt);
     if(!authCheck.ok){
