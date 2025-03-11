@@ -6,9 +6,11 @@ import { initDB } from "./routes/db";
 import jwt from "@elysiajs/jwt";
 import { nanoid } from "nanoid";
 import { List } from "./routes/list";
+import { Calendar } from "./routes/calendar";
 
 const user=new User();
 const list=new List();
+const calendar=new Calendar();
 
 // const JWT_SECRET = nanoid();
 const JWT_SECRET='Helper';
@@ -25,6 +27,8 @@ const app = new Elysia({ prefix: '/api' })
 .post("/list/edit", ({jwt, headers, body})=>list.edit(headers, jwt, body, db))
 .post("/list/add", ({jwt, headers, body})=>list.add(headers, jwt, body, db))
 .delete("/list/del/:id", ({jwt, headers, params: { id }})=>list.del(headers, jwt, id, db))
+
+.get("/calendar/get", ({jwt, headers}) => calendar.get(headers, jwt))
 
 .listen(3000)
 
