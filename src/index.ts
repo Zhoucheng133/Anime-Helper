@@ -29,6 +29,7 @@ const app = new Elysia({ prefix: '/api' })
 .delete("/list/del/:id", ({jwt, headers, params: { id }})=>list.del(headers, jwt, id, db))
 
 .get("/calendar/get", ({jwt, headers}) => calendar.get(headers, jwt))
+.get("/calendar/info/:id", ({jwt, headers, params: { id }})=>calendar.info(headers, jwt, id))
 
 .listen(3000)
 
