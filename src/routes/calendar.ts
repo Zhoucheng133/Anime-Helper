@@ -1,7 +1,8 @@
 import axios from "axios";
 import auth from "./auth";
-import { ResponseType } from "./types";
+import { ResponseType, ToResponse } from "./types";
 import Database from "bun:sqlite";
+import { calendar_get } from "./test";
 
 interface CalendarItem{
   id: number,
@@ -29,6 +30,9 @@ export class Calendar{
     if (!authCheck.ok) {
       return authCheck;
     }
+
+    // return calendar_get;
+
     let ls: CalendarItem[][] = [];
     try {
       const response = (await axios.get("https://api.bgm.tv/calendar")).data;
@@ -48,16 +52,11 @@ export class Calendar{
       if (lastDay) {
         ls.unshift(lastDay);
       }
-
     } catch (error) {
-      console.error("Error fetching calendar data:", error);
-      ls = [];
+      return ToResponse(false, error);
     }
 
-    return {
-      ok: true,
-      msg: ls,
-    };
+    return ToResponse(true, ls);
   }
 
   async info(headers: any, jwt: any, id: string){
@@ -77,7 +76,6 @@ export class Calendar{
         }
       })).data;
       const ls=response['data'];
-      // data.eps=response.total;
       for(let item of ls){
         if(item.type==0){
           data.eps+=1;
@@ -86,10 +84,9 @@ export class Calendar{
           data.updates+=1;
         }
       }
-    }catch(_){}
-    return {
-      ok: true,
-      msg: data,
-    };
+    }catch(error){
+      return ToResponse(false, error);
+    }
+    return ToResponse(true, data);
   }
 }
