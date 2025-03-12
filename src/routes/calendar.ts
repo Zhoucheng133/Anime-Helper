@@ -59,7 +59,7 @@ export class Calendar{
     return ToResponse(true, ls);
   }
 
-  async info(headers: any, jwt: any, id: string){
+  async info(headers: any, jwt: any, id: string): Promise<ResponseType>{
     const authCheck=await auth(headers, jwt);
     if(!authCheck.ok){
       return authCheck;
