@@ -141,4 +141,18 @@ export class Downloader{
     }
     return ToResponse(true, "");
   }
+
+  async delFromExclude(headers: any, jwt: any, id: string, db: Database){
+    const authCheck = await auth(headers, jwt);
+    if (!authCheck.ok) {
+      return authCheck;
+    }
+
+    try {
+      db.prepare(`DELETE FROM downloader_exclude WHERE id = ?`).run(id);
+    } catch (error) {
+      return ToResponse(false, error);
+    }
+    return ToResponse(true, "");
+  }
 }

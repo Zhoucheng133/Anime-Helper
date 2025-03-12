@@ -39,6 +39,7 @@ const app = new Elysia({ prefix: '/api' })
 .delete("/downloader/list/del/:id", ({jwt, headers, params: { id }}) => downloader.delFromList(headers, jwt, id, db))
 
 .post("/downloader/exclude/add", ({jwt, headers, body}) => downloader.addToExclude(headers, jwt, body, db))
+.delete("/downloader/exclude/del/:id", ({jwt, headers, params: { id }}) => downloader.delFromExclude(headers, jwt, id, db))
 
 
 .listen(3000)
