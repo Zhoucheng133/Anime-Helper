@@ -34,8 +34,12 @@ const app = new Elysia({ prefix: '/api' })
 .get("/calendar/info/:id", ({jwt, headers, params: { id }})=>calendar.info(headers, jwt, id))
 
 .get("/downloader/get", ({jwt, headers}) => downloader.get(headers, jwt, db))
+
 .post("/downloader/list/add", ({jwt, headers, body}) => downloader.addToList(headers, jwt, body, db))
 .delete("/downloader/list/del/:id", ({jwt, headers, params: { id }}) => downloader.delFromList(headers, jwt, id, db))
+
+.post("/downloader/exclude/add", ({jwt, headers, body}) => downloader.addToExclude(headers, jwt, body, db))
+
 
 .listen(3000)
 

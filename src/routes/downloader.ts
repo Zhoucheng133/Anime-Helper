@@ -80,6 +80,14 @@ export class Downloader{
     );
   }
 
+  validExcludeItem(data: any): boolean{
+    return (
+      data &&
+      typeof data.id === "string" &&
+      typeof data.key === "string"
+    );
+  }
+
   async addToList(headers: any, jwt: any, body: any, db: Database){
     const authCheck = await auth(headers, jwt);
     if (!authCheck.ok) {
@@ -108,6 +116,26 @@ export class Downloader{
 
     try {
       db.prepare(`DELETE FROM downloader_list WHERE id = ?`).run(id);
+    } catch (error) {
+      return ToResponse(false, error);
+    }
+    return ToResponse(true, "");
+  }
+
+  async addToExclude(headers: any, jwt: any, body: any, db: Database){
+    const authCheck = await auth(headers, jwt);
+    if (!authCheck.ok) {
+      return authCheck;
+    }
+    
+
+    if (!body || !body.data || !this.validExcludeItem(body.data)) {
+      return ToResponse(false, "参数不正确");
+    }
+
+    try {
+      const data=body.data as DownloaderExcludeType;
+      db.prepare(`INSERT INTO downloader_exclude VALUES (?, ?)`).run(data.id, data.key);
     } catch (error) {
       return ToResponse(false, error);
     }
