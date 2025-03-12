@@ -88,7 +88,7 @@ export class Downloader{
     );
   }
 
-  async addToList(headers: any, jwt: any, body: any, db: Database){
+  async addToList(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
     const authCheck = await auth(headers, jwt);
     if (!authCheck.ok) {
       return authCheck;
@@ -108,7 +108,7 @@ export class Downloader{
 
   }
 
-  async delFromList(headers: any, jwt: any, id: string, db: Database){
+  async delFromList(headers: any, jwt: any, id: string, db: Database): Promise<ResponseType>{
     const authCheck = await auth(headers, jwt);
     if (!authCheck.ok) {
       return authCheck;
@@ -122,7 +122,7 @@ export class Downloader{
     return ToResponse(true, "");
   }
 
-  async addToExclude(headers: any, jwt: any, body: any, db: Database){
+  async addToExclude(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
     const authCheck = await auth(headers, jwt);
     if (!authCheck.ok) {
       return authCheck;
@@ -142,7 +142,7 @@ export class Downloader{
     return ToResponse(true, "");
   }
 
-  async delFromExclude(headers: any, jwt: any, id: string, db: Database){
+  async delFromExclude(headers: any, jwt: any, id: string, db: Database): Promise<ResponseType>{
     const authCheck = await auth(headers, jwt);
     if (!authCheck.ok) {
       return authCheck;
@@ -150,6 +150,36 @@ export class Downloader{
 
     try {
       db.prepare(`DELETE FROM downloader_exclude WHERE id = ?`).run(id);
+    } catch (error) {
+      return ToResponse(false, error);
+    }
+    return ToResponse(true, "");
+  }
+
+  validConfigItem(data: any): boolean{
+    return (
+      data &&
+      typeof data.link === "string" &&
+      typeof data.secret === "string" &&
+      typeof data.freq === "number" &&
+      typeof data.type === "string"
+    );
+  }
+
+  async save(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
+    const authCheck = await auth(headers, jwt);
+    if (!authCheck.ok) {
+      return authCheck;
+    }
+
+    if (!body || !body.data || !this.validConfigItem(body.data)) {
+      return ToResponse(false, "参数不正确");
+    }
+    
+    try {
+      const data=body.data as DownloaderConfigType;
+      db.prepare(`INSERT OR REPLACE INTO downloader_config (id, link, secret, freq, type) VALUES (?, ?, ?, ?, ?)`)
+      .run("0", data.link, data.secret, data.freq, data.type);
     } catch (error) {
       return ToResponse(false, error);
     }
