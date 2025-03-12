@@ -100,7 +100,17 @@ export class Downloader{
 
   }
 
-  addToExclude(){
+  async delFromList(headers: any, jwt: any, id: string, db: Database){
+    const authCheck = await auth(headers, jwt);
+    if (!authCheck.ok) {
+      return authCheck;
+    }
 
+    try {
+      db.prepare(`DELETE FROM downloader_list WHERE id = ?`).run(id);
+    } catch (error) {
+      return ToResponse(false, error);
+    }
+    return ToResponse(true, "");
   }
 }
