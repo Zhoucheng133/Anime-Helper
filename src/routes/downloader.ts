@@ -30,7 +30,6 @@ interface DownloaderDataType{
 }
 
 export class Downloader{
-
   async get(headers: any, jwt: any, db: Database): Promise<ResponseType> {
     const authCheck = await auth(headers, jwt);
     if (!authCheck.ok) {
@@ -57,7 +56,6 @@ export class Downloader{
       }
 
       const sqlList=db.prepare(`SELECT * FROM downloader_list`).all() as DownloaderListType[];
-
       const sqlExclude=db.prepare(`SELECT * FROM downloader_exclude`).all() as DownloaderExcludeType[];
 
       data={
@@ -71,5 +69,38 @@ export class Downloader{
     }
 
     return ToResponse(true, data);
+  }
+
+  validListItem(data: any): boolean{
+    return (
+      data &&
+      typeof data.id === "string" &&
+      typeof data.title === "string" &&
+      typeof data.ass === "string"
+    );
+  }
+
+  async addToList(headers: any, jwt: any, body: any, db: Database){
+    const authCheck = await auth(headers, jwt);
+    if (!authCheck.ok) {
+      return authCheck;
+    }
+
+    if (!body || !body.data || !this.validListItem(body.data)) {
+      return ToResponse(false, "参数不正确");
+    }
+
+    try {
+      const data=body.data as DownloaderListType;
+      db.prepare(`INSERT INTO downloader_list VALUES (?, ?, ?)`).run(data.id, data.title, data.ass);
+    } catch (error) {
+      return ToResponse(false, error);
+    }
+    return ToResponse(true, "");
+
+  }
+
+  addToExclude(){
+
   }
 }
