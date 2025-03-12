@@ -2,7 +2,7 @@ import axios from "axios";
 import auth from "./auth";
 import { ResponseType, ToResponse } from "./types";
 import Database from "bun:sqlite";
-import { calendar_get } from "./test";
+// import { calendar_get } from "./test";
 
 interface CalendarItem{
   id: number,
