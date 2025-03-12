@@ -7,10 +7,12 @@ import jwt from "@elysiajs/jwt";
 import { nanoid } from "nanoid";
 import { List } from "./routes/list";
 import { Calendar } from "./routes/calendar";
+import { Downloader } from "./routes/downloader";
 
 const user=new User();
 const list=new List();
 const calendar=new Calendar();
+const downloader=new Downloader();
 
 // const JWT_SECRET = nanoid();
 const JWT_SECRET='Helper';
@@ -30,6 +32,8 @@ const app = new Elysia({ prefix: '/api' })
 
 .get("/calendar/get", ({jwt, headers}) => calendar.get(headers, jwt, db))
 .get("/calendar/info/:id", ({jwt, headers, params: { id }})=>calendar.info(headers, jwt, id))
+
+.get("/downloader/get", ({jwt, headers}) => downloader.get(headers, jwt, db))
 
 .listen(3000)
 
