@@ -11,7 +11,7 @@ export function initDB(db: Database){
 function initUserTable(db: Database){
   db.prepare(`
     CREATE TABLE IF NOT EXISTS user (
-      id TEXT KEY,
+      id TEXT PRIMARY KEY,
       username TEXT,
       password TEXT
     )
@@ -21,7 +21,7 @@ function initUserTable(db: Database){
 function initListTable(db: Database){
   db.prepare(`
     CREATE TABLE IF NOT EXISTS list (
-      id TEXT KEY,
+      id TEXT PRIMARY KEY,
       title TEXT,
       episode INTEGER,
       now INTEGER,
@@ -33,6 +33,7 @@ function initListTable(db: Database){
 function initDownloaderConfigTable(db: Database){
   db.prepare(`
     CREATE TABLE IF NOT EXISTS downloader_config (
+      id TEXT PRIMARY KEY,
       link TEXT,
       secret TEXT,
       freq INTEGER,
@@ -44,7 +45,7 @@ function initDownloaderConfigTable(db: Database){
 function initDownloaderListTable(db: Database){
   db.prepare(`
     CREATE TABLE IF NOT EXISTS downloader_list (
-      id TEXT KEY,
+      id TEXT PRIMARY KEY,
       title TEXT,
       ass TEXT
     )
@@ -54,7 +55,7 @@ function initDownloaderListTable(db: Database){
 function initDownloaderExcludeTable(db: Database){
   db.prepare(`
     CREATE TABLE IF NOT EXISTS downloader_exclude (
-      id TEXT KEY,
+      id TEXT PRIMARY KEY,
       value TEXT
     )
   `).run()
