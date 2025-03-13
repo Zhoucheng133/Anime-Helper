@@ -44,6 +44,10 @@ const app = new Elysia({ prefix: '/api' })
 .post("/downloader/exclude/add", ({jwt, headers, body}) => downloader.addToExclude(headers, jwt, body, db))
 .delete("/downloader/exclude/del/:id", ({jwt, headers, params: { id }}) => downloader.delFromExclude(headers, jwt, id, db))
 
+.post("/download/run", ({jwt, headers}) => downloader.run(headers, jwt, db))
+.post("/download/stop", ({jwt, headers}) => downloader.stop(headers, jwt))
+.get("/download/log", ({jwt, headers}) => downloader.getLog(headers, jwt))
+
 .get("/all/get", ({jwt, headers}) => all.get(headers, jwt))
 .post("/all/download", ({jwt, headers, body}) => all.download(headers, jwt, body, db))
 

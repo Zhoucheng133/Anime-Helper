@@ -1,6 +1,8 @@
 import Database from "bun:sqlite";
 import auth from "./auth";
 import { ResponseType, ToResponse } from "./types";
+import xml2js  from "xml2js";
+import axios from "axios";
 
 interface DownloaderListType{
   id: string,
@@ -30,32 +32,34 @@ interface DownloaderDataType{
   exclude: DownloaderExcludeType[]
 }
 
+interface Log{
+  ok: boolean,
+  msg: string,
+  time: number
+}
+
 export class Downloader{
 
   interval: any;
 
-  async get(headers: any, jwt: any, db: Database): Promise<ResponseType> {
-    const authCheck = await auth(headers, jwt);
-    if (!authCheck.ok) {
-      return authCheck;
-    }
-    
-    let data: DownloaderDataType={
-      link: "",
-      secret: "",
-      freq: 15,
-      type: "mikan",
-      running: this.interval==undefined ? false : true,
-      list: [],
-      exclude: []
-    }
+  form: DownloaderDataType={
+    link: "",
+    secret: "",
+    freq: 15,
+    type: "",
+    running: false,
+    list: [],
+    exclude: []
+  }
 
+  updateForm(db: Database): ResponseType{
     try {
       const sqlConfig = db.prepare(`SELECT * FROM downloader_config`).get() as DownloaderConfigType || null;
       if(sqlConfig!=null){
-        data={
-          ...data,
+        this.form={
+          ...this.form,
           ...sqlConfig,
+          running: this.interval==undefined ? false : true,
           list: [],
           exclude: []
         }
@@ -64,17 +68,171 @@ export class Downloader{
       const sqlList=db.prepare(`SELECT * FROM downloader_list`).all() as DownloaderListType[];
       const sqlExclude=db.prepare(`SELECT * FROM downloader_exclude`).all() as DownloaderExcludeType[];
 
-      data={
-        ...data,
+      this.form={
+        ...this.form,
         list: sqlList,
         exclude: sqlExclude,
       }
-
     } catch (error) {
       return ToResponse(false, error);
     }
+    return ToResponse(true, this.form);
+  }
 
-    return ToResponse(true, data);
+  log: Log[]=[];
+
+  addLog(status: boolean, msg: string){
+    if(this.log.length>=50){
+      this.log.shift();
+    }
+    this.log.push({
+      ok: status,
+      msg: msg,
+      time: Date.now()
+    })
+  }
+
+  downloadHandler=async (list: any[])=>{
+    for(let item of list){
+      try {
+        await axios.post(
+          this.form.link,
+          {
+            "jsonrpc": "2.0",
+            "method": "aria2.addUri",
+            "id": 1,
+            "params": [
+              `token:${this.form.secret}`,
+              [item.url],
+              {}
+            ],
+          }
+        );
+      } catch (error) {
+        this.addLog(false, `下载: ${item.title} 失败`);
+        continue;
+      }
+      this.addLog(true, `下载: ${item.title}`);
+    }
+  }
+
+  judge(){
+    const newItems=this.ls.filter(lsItem => !this.prels.some(prelsItem => lsItem.title == prelsItem.title));
+    const exclusions=this.form.exclude;
+    const bangumi=this.form.list;
+    let filteredList=[];
+    for(let item of newItems){
+      let matchesBangumi = bangumi.some(b => 
+        item.title.includes(b.title) && item.title.includes(b.ass)
+      );
+      let matchesExclusions = exclusions.some(e => 
+        item.title.includes(e)
+      );
+      if (matchesBangumi && !matchesExclusions) {
+        filteredList.push(item);
+      }
+    }
+    this.downloadHandler(filteredList);
+  }
+
+  prels: any[]=[];
+  ls: any[]=[];
+
+  async mainloop(){
+    let url="";
+    // 注意这里改成官方链接
+    if(this.form.type=='mikan'){
+      url='https://mikanime.tv/RSS/Classic';
+      // url='http://127.0.0.1:8080'
+    }else if(this.form.type=='acgrip'){
+      url='https://acgrip.art/.xml';
+    }
+    try {
+      const xml=(await axios.get(url)).data;
+      const parser = new xml2js.Parser();
+      parser.parseString(xml, (err, result) => {
+        if (err) {
+          this.addLog(false, "解析rss失败");
+          return;
+        }
+        var list=[];
+        var items=result.rss.channel[0].item;
+        for(let item of items){
+          list.push({
+            'title': item['title'][0].trim(),
+            'url': item['enclosure'][0]['$']["url"],
+          })
+        }
+        // if(getPrels().length==0){
+        if(this.prels.length==0){
+          // setPrels(list);
+          this.prels=list;
+          // setLs(list);
+          this.ls=list;
+          this.addLog(true, "请求rss成功");
+          return;
+        }else{
+          // setPrels(getLs());
+          this.prels=this.ls;
+          // setLs(list);
+          this.ls=list;
+          this.addLog(true, "请求rss成功");
+          this.judge();
+        }
+      });
+    } catch (error) {
+      this.addLog(false, "解析rss失败");
+    }
+  }
+
+  async getLog(headers: any, jwt: any){
+    const authCheck = await auth(headers, jwt);
+    if (!authCheck.ok) {
+      return authCheck;
+    }
+    return ToResponse(true, this.log);
+  }
+
+  async run(headers: any, jwt: any, db: Database): Promise<ResponseType>{
+    const authCheck = await auth(headers, jwt);
+    if (!authCheck.ok) {
+      return authCheck;
+    }
+    if(this.interval!=undefined){
+      return ToResponse(false, "在运行中");
+    }
+    this.updateForm(db);
+    this.addLog(true, "开始运行");
+    this.mainloop()
+      let intervalTime=this.form.freq*1000*60;
+      this.interval=setInterval(()=>{
+        this.mainloop()
+      }, intervalTime);
+
+    return ToResponse(true, "");
+  }
+
+  async stop(headers: any, jwt: any): Promise<ResponseType>{
+    const authCheck = await auth(headers, jwt);
+    if (!authCheck.ok) {
+      return authCheck;
+    }
+    if(this.interval==undefined){
+      return ToResponse(false, "不在运行中");
+    }
+    clearInterval(this.interval);
+    this.interval=undefined;
+    this.addLog(true, "停止运行");
+    return ToResponse(true, "");
+  }
+
+  async get(headers: any, jwt: any, db: Database): Promise<ResponseType> {
+    const authCheck = await auth(headers, jwt);
+    if (!authCheck.ok) {
+      return authCheck;
+    }
+  
+    return this.updateForm(db)
   }
 
   validListItem(data: any): boolean{
@@ -110,6 +268,7 @@ export class Downloader{
     } catch (error) {
       return ToResponse(false, error);
     }
+    this.updateForm(db);
     return ToResponse(true, "");
 
   }
@@ -125,6 +284,7 @@ export class Downloader{
     } catch (error) {
       return ToResponse(false, error);
     }
+    this.updateForm(db);
     return ToResponse(true, "");
   }
 
@@ -145,6 +305,7 @@ export class Downloader{
     } catch (error) {
       return ToResponse(false, error);
     }
+    this.updateForm(db);
     return ToResponse(true, "");
   }
 
@@ -159,6 +320,7 @@ export class Downloader{
     } catch (error) {
       return ToResponse(false, error);
     }
+    this.updateForm(db);
     return ToResponse(true, "");
   }
 
@@ -189,6 +351,7 @@ export class Downloader{
     } catch (error) {
       return ToResponse(false, error);
     }
+    this.updateForm(db);
     return ToResponse(true, "");
   }
 }
