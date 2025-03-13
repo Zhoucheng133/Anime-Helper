@@ -44,7 +44,7 @@ export class Downloader{
       link: "",
       secret: "",
       freq: 15,
-      type: "",
+      type: "mikan",
       running: this.interval==undefined ? false : true,
       list: [],
       exclude: []
