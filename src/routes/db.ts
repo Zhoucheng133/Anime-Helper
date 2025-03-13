@@ -56,7 +56,7 @@ function initDownloaderExcludeTable(db: Database){
   db.prepare(`
     CREATE TABLE IF NOT EXISTS downloader_exclude (
       id TEXT PRIMARY KEY,
-      value TEXT
+      key TEXT
     )
   `).run()
 }
