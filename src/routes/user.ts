@@ -46,7 +46,9 @@ export class User{
     }
     const { username, password } = body;
     const data = db.prepare("SELECT password FROM user WHERE username = ?").get(username) as any;
-    if(data.password == CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex)){
+    if(!data){
+      return ToResponse(false, "用户名或密码不正确");
+    }else if(data.password == CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex)){
       const token=await jwt.sign({ username });
       return ToResponse(true, token)
     }
