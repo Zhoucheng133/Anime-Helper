@@ -6,7 +6,7 @@
 
 一个追番&自动下载工具，如需在本地搭建，务必先阅读[部署](#部署)
 
-这个项目由ElysiaJS和Next.js开发
+这个项目由ElysiaJS和Vue开发
 
 ## 目录
 - [截图](#截图)
@@ -17,27 +17,17 @@
 
 ## 截图
 
-![截图1](screenshot/截图1.png)
-
-![截图2](screenshot/截图2.png)
-
-![截图3](screenshot/截图3.png)
-
-![截图4](screenshot/截图4.png)
+施工中...
 
 ## 部署
 
 ### 基础服务
 
-不推荐直接将本服务部署在本地机器上，下面的部署方法需要使用Docker
+施工中...
 
-- 转至Release页下载build包并解压拷贝到服务器
-- 使用docker生成镜像`sudo docker build -t helper <拷贝到服务器的路径>`
-- 使用docker生成容器`sudo docker run -d --restart always -p <主机端口*>:3000 -v <配置目录**>:/app/db --name helper helper`，譬如  
-`sudo docker run -d --restart always -p 5588:3000 -v /DATA/AppData/helper:/app/db --name helper helper`
-
-\* 主机端口一般随意，但是不要和服务器已有服务冲突  
-\*\* 配置目录用于存放数据，你也可以不指定容器目录映射（不推荐）
+```bash
+sudo docker run -d --restart always -p 5000:8080 -v /DATA/AppData/helper:/app/db --name helper helper
+```
 
 ### 下载器配置
 
@@ -50,13 +40,15 @@
 
 ## 更新日志
 
+施工中...
+
+<details>
+<summary>过去的版本</summary>
+
 ### 2.3.0 (2025/1/31)
 - 分离前后端
 - 使用sqlite存储列表信息
 - 大幅提高运行速度
-
-<details>
-<summary>过去的版本</summary>
 
 ### 2.2.4 (2025/1/14)
 - 修复无法通过更新周筛选的问题
