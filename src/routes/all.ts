@@ -3,6 +3,7 @@ import auth from "./auth";
 import { ResponseType, ToResponse } from "./types";
 import xml2js  from "xml2js";
 import Database from "bun:sqlite";
+// import { all_get } from "./test";
 
 export class All{
   async download(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
@@ -47,6 +48,9 @@ export class All{
     if (!authCheck.ok) {
       return authCheck;
     }
+
+    // return ToResponse(true, all_get)
+
     try {
       const response=(await axios.get("https://mikanime.tv/RSS/Classic")).data;
       const parser = new xml2js.Parser();
