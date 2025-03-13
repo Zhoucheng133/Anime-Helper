@@ -25,11 +25,15 @@ interface DownloaderDataType{
   secret: string,
   freq: number,
   type: string,
+  running: boolean,
   list: DownloaderListType[],
   exclude: DownloaderExcludeType[]
 }
 
 export class Downloader{
+
+  interval: any;
+
   async get(headers: any, jwt: any, db: Database): Promise<ResponseType> {
     const authCheck = await auth(headers, jwt);
     if (!authCheck.ok) {
@@ -41,6 +45,7 @@ export class Downloader{
       secret: "",
       freq: 15,
       type: "",
+      running: this.interval==undefined ? false : true,
       list: [],
       exclude: []
     }
@@ -49,6 +54,7 @@ export class Downloader{
       const sqlConfig = db.prepare(`SELECT * FROM downloader_config`).get() as DownloaderConfigType || null;
       if(sqlConfig!=null){
         data={
+          ...data,
           ...sqlConfig,
           list: [],
           exclude: []
