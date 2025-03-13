@@ -21,7 +21,25 @@ export class All{
     const aria=config.link;
     const secret=config.secret;
 
-    return ToResponse(true, `${aria} | ${secret}`);
+    try {
+      await axios.post(
+        aria,
+        {
+          "jsonrpc": "2.0",
+          "method": "aria2.addUri",
+          "id": 1,
+          "params": [
+            `token:${secret}`,
+            [url],
+            {}
+          ],
+        }
+      );
+    } catch (error) {
+      return ToResponse(false, error);
+    }
+
+    return ToResponse(true, "");
   }
 
   async get(headers: any, jwt: any): Promise<ResponseType>{
