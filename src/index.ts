@@ -8,11 +8,13 @@ import { nanoid } from "nanoid";
 import { List } from "./routes/list";
 import { Calendar } from "./routes/calendar";
 import { Downloader } from "./routes/downloader";
+import { All } from "./routes/all";
 
 const user=new User();
 const list=new List();
 const calendar=new Calendar();
 const downloader=new Downloader();
+const all=new All();
 
 // const JWT_SECRET = nanoid();
 const JWT_SECRET='Helper';
@@ -42,6 +44,8 @@ const app = new Elysia({ prefix: '/api' })
 .post("/downloader/exclude/add", ({jwt, headers, body}) => downloader.addToExclude(headers, jwt, body, db))
 .delete("/downloader/exclude/del/:id", ({jwt, headers, params: { id }}) => downloader.delFromExclude(headers, jwt, id, db))
 
+.get("/all/get", ({jwt, headers}) => all.get(headers, jwt))
+.post("/all/download", ({jwt, headers, body}) => all.download(headers, jwt, body, db))
 
 .listen(3000)
 
