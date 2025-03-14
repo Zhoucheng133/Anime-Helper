@@ -8,6 +8,8 @@
 
 这个项目由ElysiaJS和Vue开发
 
+前端页面的仓库[在这里](https://github.com/Zhoucheng133/Anime-Helper-UI)
+
 ## 目录
 - [截图](#截图)
 - [部署](#部署)
@@ -17,16 +19,28 @@
 
 ## 截图
 
-施工中...
+<img src="./assets/截图1.png" height="400" />
+<img src="./assets/截图2.png" height="400" />
+<img src="./assets/截图3.png" height="400" />
+<img src="./assets/截图4.png" height="400" />
 
 ## 部署
 
 ### 基础服务
 
-施工中...
+本项目需要使用Docker进行配置
+
+1. 前往Release页面下载docker文件（压缩包）
+2. 解压并复制到你的服务器上
+3. 使用命令生成镜像`sudo docker build -t helper <文件夹目录>`
+4. 使用下面的命令生成容器
 
 ```bash
-sudo docker run -d --restart always -p 5000:8080 -v /DATA/AppData/helper:/app/db --name helper helper
+sudo docker run -d \
+--restart always \
+-p <主机端口>:8080 \
+-v <主机上存储数据库的位置>:/app/db \
+--name helper helper
 ```
 
 ### 下载器配置
@@ -40,7 +54,11 @@ sudo docker run -d --restart always -p 5000:8080 -v /DATA/AppData/helper:/app/db
 
 ## 更新日志
 
-施工中...
+### 3.0.0 (2025/3/14)
+- 使用Vue重构前端
+- 将用户数据、列表和下载器配置项统一存储到SQLite
+- 改进列表获取逻辑，大幅提高性能
+- 改进日志显示
 
 <details>
 <summary>过去的版本</summary>
