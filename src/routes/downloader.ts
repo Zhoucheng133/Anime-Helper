@@ -126,12 +126,12 @@ export class Downloader{
         item.title.includes(b.title) && item.title.includes(b.ass)
       );
       let matchesExclusions = exclusions.some(e => 
-        item.title.includes(e)
+        item.title.includes(e.key)
       );
       if (matchesBangumi && !matchesExclusions) {
         filteredList.push(item);
       }
-    }
+    }    
     this.downloadHandler(filteredList);
   }
 
@@ -143,7 +143,7 @@ export class Downloader{
     // 注意这里改成官方链接
     if(this.form.type=='mikan'){
       url='https://mikanime.tv/RSS/Classic';
-      // url='http://127.0.0.1:8080'
+      // url='http://127.0.0.1:8081'
     }else if(this.form.type=='acgrip'){
       url='https://acgrip.art/.xml';
     }
@@ -205,6 +205,8 @@ export class Downloader{
     this.addLog(true, "开始运行");
     this.mainloop()
       let intervalTime=this.form.freq*1000*60;
+      // 注意下面这行为测试代码
+      // let intervalTime=this.form.freq*1000;
       this.interval=setInterval(()=>{
         this.mainloop()
       }, intervalTime);
