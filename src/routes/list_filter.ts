@@ -8,7 +8,7 @@ export function toSql(filter: string, param: string | undefined): string{
       OR
       (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) < episode)
       OR
-      (time != 0 AND ((((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) > episode) AND now < episode)
+      (time != 0 AND ((((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) >= episode) AND now < episode)
     )
     ORDER BY ROWID DESC
     LIMIT ? OFFSET ? `
@@ -31,7 +31,7 @@ export function toSql(filter: string, param: string | undefined): string{
     WHERE (
       (time = 0 AND now = episode)
       OR
-      (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) > episode AND now = episode)
+      (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) >= episode AND now = episode)
     )
     ORDER BY ROWID DESC
     LIMIT ? OFFSET ? `
@@ -63,7 +63,7 @@ export function calCount(filter: string, param: string | undefined) {
       OR
       (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) < episode)
       OR
-      (time != 0 AND ((((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) > episode) AND now < episode)
+      (time != 0 AND ((((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) >= episode) AND now < episode)
     )`
   }else if(filter=="onUpdate"){
     return `SELECT COUNT(*) as count FROM list
@@ -80,7 +80,7 @@ export function calCount(filter: string, param: string | undefined) {
     WHERE (
       (time = 0 AND now = episode)
       OR
-      (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) > episode AND now = episode)
+      (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) >= episode AND now = episode)
     )`
   }else if(filter=="search"){
     return `SELECT COUNT(*) as count FROM list
