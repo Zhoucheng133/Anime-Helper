@@ -21,6 +21,13 @@ export class User{
 
   // 注册
   register(body: any, db: Database): ResponseType{
+    const rowCount = db
+      .prepare("SELECT COUNT(*) AS count FROM user")
+      .get() as { count: number };
+    if(rowCount.count === 0){
+      return ToResponse(false, "用户已存在")
+    }
+    
     if (!body || !body.username || !body.password) {
       return ToResponse(false, "参数不正确");
     }
