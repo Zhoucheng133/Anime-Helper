@@ -24,7 +24,7 @@ export class User{
     const rowCount = db
       .prepare("SELECT COUNT(*) AS count FROM user")
       .get() as { count: number };
-    if(rowCount.count === 0){
+    if(rowCount.count != 0){
       return ToResponse(false, "用户已存在")
     }
     
