@@ -254,6 +254,7 @@ export class Downloader{
     );
   }
 
+  // 添加到下载列表
   async addToList(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
     const authCheck = await auth(headers, jwt);
     if (!authCheck.ok) {
@@ -275,6 +276,7 @@ export class Downloader{
 
   }
 
+  // 从下载列表中删除
   async delFromList(headers: any, jwt: any, id: string, db: Database): Promise<ResponseType>{
     const authCheck = await auth(headers, jwt);
     if (!authCheck.ok) {
@@ -290,13 +292,13 @@ export class Downloader{
     return ToResponse(true, "");
   }
 
+  // 添加排除项目
   async addToExclude(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
     const authCheck = await auth(headers, jwt);
     if (!authCheck.ok) {
       return authCheck;
     }
     
-
     if (!body || !body.data || !this.validExcludeItem(body.data)) {
       return ToResponse(false, "参数不正确");
     }
@@ -311,6 +313,7 @@ export class Downloader{
     return ToResponse(true, "");
   }
 
+  // 删除排除项目
   async delFromExclude(headers: any, jwt: any, id: string, db: Database): Promise<ResponseType>{
     const authCheck = await auth(headers, jwt);
     if (!authCheck.ok) {
@@ -336,6 +339,7 @@ export class Downloader{
     );
   }
 
+  // 保存表单
   async save(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
     const authCheck = await auth(headers, jwt);
     if (!authCheck.ok) {
