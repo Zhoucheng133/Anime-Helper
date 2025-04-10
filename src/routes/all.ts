@@ -3,7 +3,15 @@ import auth from "./auth";
 import { ResponseType, ToResponse } from "./types";
 import xml2js  from "xml2js";
 import Database from "bun:sqlite";
+import dayjs from "dayjs";
 // import { all_get } from "./test";
+
+interface AllItem{
+  time: number,
+  title: string,
+  url: string,
+  length: number,
+}
 
 export class All{
   async download(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
@@ -67,12 +75,14 @@ export class All{
         });
       });
   
-      const list = [];
+      const list = [] as AllItem[];
       const items = result.rss.channel[0].item;
       for (let item of items) {
         list.push({
-          'title': item['title'][0].trim(),
-          'url': item['enclosure'][0]['$']["url"],
+          title: item['title'][0].trim(),
+          url: item['enclosure'][0]['$']["url"],
+          time: dayjs(item['torrent'][0]['pubDate'][0]).valueOf(),
+          length: item['torrent'][0]['contentLength'][0]
         });
       }
       return ToResponse(true, list);
