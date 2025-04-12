@@ -25,14 +25,7 @@ export class Calendar{
     return inputDate <= today;
   }
 
-  async get(headers: any, jwt: any, db: Database): Promise<ResponseType>{
-    const authCheck = await auth(headers, jwt);
-    if (!authCheck.ok) {
-      return authCheck;
-    }
-
-    // return calendar_get;
-
+  async get(db: Database): Promise<ResponseType>{
     let ls: CalendarItem[][] = [];
     try {
       const response = (await axios.get("https://api.bgm.tv/calendar")).data;
@@ -59,12 +52,7 @@ export class Calendar{
     return ToResponse(true, ls);
   }
 
-  async info(headers: any, jwt: any, id: string): Promise<ResponseType>{
-    const authCheck=await auth(headers, jwt);
-    if(!authCheck.ok){
-      return authCheck;
-    }
-
+  async info(id: string): Promise<ResponseType>{
     let data: CalendarSub={
       updates: 0,
       eps: 0,

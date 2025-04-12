@@ -185,19 +185,11 @@ export class Downloader{
     }
   }
 
-  async getLog(headers: any, jwt: any){
-    const authCheck = await auth(headers, jwt);
-    if (!authCheck.ok) {
-      return authCheck;
-    }
+  async getLog(){
     return ToResponse(true, this.log);
   }
 
-  async run(headers: any, jwt: any, db: Database): Promise<ResponseType>{
-    const authCheck = await auth(headers, jwt);
-    if (!authCheck.ok) {
-      return authCheck;
-    }
+  async run(db: Database): Promise<ResponseType>{
     if(this.interval!=undefined){
       return ToResponse(false, "在运行中");
     }
@@ -214,11 +206,7 @@ export class Downloader{
     return ToResponse(true, "");
   }
 
-  async stop(headers: any, jwt: any): Promise<ResponseType>{
-    const authCheck = await auth(headers, jwt);
-    if (!authCheck.ok) {
-      return authCheck;
-    }
+  async stop(): Promise<ResponseType>{
     if(this.interval==undefined){
       return ToResponse(false, "不在运行中");
     }
@@ -228,12 +216,7 @@ export class Downloader{
     return ToResponse(true, "");
   }
 
-  async get(headers: any, jwt: any, db: Database): Promise<ResponseType> {
-    const authCheck = await auth(headers, jwt);
-    if (!authCheck.ok) {
-      return authCheck;
-    }
-  
+  async get(db: Database): Promise<ResponseType> { 
     return this.updateForm(db)
   }
 
@@ -255,12 +238,7 @@ export class Downloader{
   }
 
   // 添加到下载列表
-  async addToList(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
-    const authCheck = await auth(headers, jwt);
-    if (!authCheck.ok) {
-      return authCheck;
-    }
-
+  async addToList(body: any, db: Database): Promise<ResponseType>{
     if (!body || !body.data || !this.validListItem(body.data)) {
       return ToResponse(false, "参数不正确");
     }
@@ -277,12 +255,7 @@ export class Downloader{
   }
 
   // 从下载列表中删除
-  async delFromList(headers: any, jwt: any, id: string, db: Database): Promise<ResponseType>{
-    const authCheck = await auth(headers, jwt);
-    if (!authCheck.ok) {
-      return authCheck;
-    }
-
+  async delFromList(id: string, db: Database): Promise<ResponseType>{
     try {
       db.prepare(`DELETE FROM downloader_list WHERE id = ?`).run(id);
     } catch (error) {
@@ -293,12 +266,7 @@ export class Downloader{
   }
 
   // 添加排除项目
-  async addToExclude(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
-    const authCheck = await auth(headers, jwt);
-    if (!authCheck.ok) {
-      return authCheck;
-    }
-    
+  async addToExclude(body: any, db: Database): Promise<ResponseType>{
     if (!body || !body.data || !this.validExcludeItem(body.data)) {
       return ToResponse(false, "参数不正确");
     }
@@ -314,12 +282,7 @@ export class Downloader{
   }
 
   // 删除排除项目
-  async delFromExclude(headers: any, jwt: any, id: string, db: Database): Promise<ResponseType>{
-    const authCheck = await auth(headers, jwt);
-    if (!authCheck.ok) {
-      return authCheck;
-    }
-
+  async delFromExclude(id: string, db: Database): Promise<ResponseType>{
     try {
       db.prepare(`DELETE FROM downloader_exclude WHERE id = ?`).run(id);
     } catch (error) {
@@ -340,12 +303,7 @@ export class Downloader{
   }
 
   // 保存表单
-  async save(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
-    const authCheck = await auth(headers, jwt);
-    if (!authCheck.ok) {
-      return authCheck;
-    }
-
+  async save(body: any, db: Database): Promise<ResponseType>{
     if (!body || !body.data || !this.validConfigItem(body.data)) {
       return ToResponse(false, "参数不正确");
     }

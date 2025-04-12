@@ -14,11 +14,7 @@ interface AllItem{
 }
 
 export class All{
-  async download(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
-    const authCheck = await auth(headers, jwt);
-    if (!authCheck.ok) {
-      return authCheck;
-    }
+  async download(body: any, db: Database): Promise<ResponseType>{
     if (!body || !body.link) {
       return ToResponse(false, "参数不正确");
     }
@@ -51,14 +47,7 @@ export class All{
     return ToResponse(true, "");
   }
 
-  async get(headers: any, jwt: any): Promise<ResponseType>{
-    const authCheck = await auth(headers, jwt);
-    if (!authCheck.ok) {
-      return authCheck;
-    }
-
-    // return ToResponse(true, all_get)
-
+  async get(): Promise<ResponseType>{
     try {
       const response=(await axios.get("https://mikanime.tv/RSS/Classic")).data;
       const parser = new xml2js.Parser();

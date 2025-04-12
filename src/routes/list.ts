@@ -39,12 +39,7 @@ export class List{
   }
 
   // 添加项
-  async add(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
-    const authCheck=await auth(headers, jwt);
-    if(!authCheck.ok){
-      return authCheck;
-    }
-
+  async add(body: any, db: Database): Promise<ResponseType>{
     if (!body || !body.data || !this.validItem(body.data)) {
       return ToResponse(false, "参数不正确");
     }
@@ -60,12 +55,7 @@ export class List{
   }
 
   // 删除项
-  async del(headers: any, jwt: any, id: string, db: Database): Promise<ResponseType>{
-    const authCheck=await auth(headers, jwt);
-    if(!authCheck.ok){
-      return authCheck;
-    }
-    
+  async del(id: string, db: Database): Promise<ResponseType>{
     try {
       db.prepare(`DELETE FROM list WHERE id = ?`).run(id);
     } catch (error) {
@@ -75,12 +65,7 @@ export class List{
   }
 
   // 编辑列表
-  async edit(headers: any, jwt: any, body: any, db: Database): Promise<ResponseType>{
-    const authCheck=await auth(headers, jwt);
-    if(!authCheck.ok){
-      return authCheck;
-    }
-
+  async edit(body: any, db: Database): Promise<ResponseType>{
     if (!body || !body.data || !this.validItem(body.data)) {
       return ToResponse(false, "参数不正确");
     }
@@ -95,12 +80,7 @@ export class List{
   }
 
   // 获取列表
-  async get(headers: any, jwt: any, db: Database, query: ListQuery): Promise<ResponseType>{
-    const authCheck=await auth(headers, jwt);
-    if(!authCheck.ok){
-      return authCheck;
-    }
-
+  async get(db: Database, query: ListQuery): Promise<ResponseType>{
     if(query.filter && query.offset && query.limit){
       if(!this.validFilter(query.filter)){
         return ToResponse(false, "筛选方式不合法");
