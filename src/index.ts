@@ -9,12 +9,15 @@ import { List } from "./routes/list";
 import { Calendar } from "./routes/calendar";
 import { Downloader } from "./routes/downloader";
 import { All } from "./routes/all";
+import auth from "./routes/auth";
 
 const user=new User();
 const list=new List();
 const calendar=new Calendar();
 const downloader=new Downloader();
 const all=new All();
+
+// JWT_SECRET在生产模式下使用nanoid生成
 
 const JWT_SECRET = nanoid();
 // const JWT_SECRET='Helper';
@@ -42,29 +45,29 @@ const app = new Elysia({ prefix: '/api' })
 .post("/login", ({body, jwt}) => user.login(body, jwt, db))
 .get("/auth", ({jwt, headers}) => user.checkAuth(headers, jwt))
 
-.get("/list/get", ({jwt, headers, query}) => list.get(headers, jwt, db, query as any))
-.post("/list/edit", ({jwt, headers, body})=>list.edit(headers, jwt, body, db))
-.post("/list/add", ({jwt, headers, body})=>list.add(headers, jwt, body, db))
-.delete("/list/del/:id", ({jwt, headers, params: { id }})=>list.del(headers, jwt, id, db))
+.get("/list/get", ({query}) => list.get(db, query as any))
+.post("/list/edit", ({body})=>list.edit(body, db))
+.post("/list/add", ({body})=>list.add(body, db))
+.delete("/list/del/:id", ({params: { id }})=>list.del(id, db))
 
-.get("/calendar/get", ({jwt, headers}) => calendar.get(headers, jwt, db))
-.get("/calendar/info/:id", ({jwt, headers, params: { id }})=>calendar.info(headers, jwt, id))
+.get("/calendar/get", () => calendar.get(db))
+.get("/calendar/info/:id", ({params: { id }})=>calendar.info(id))
 
-.get("/downloader/get", ({jwt, headers}) => downloader.get(headers, jwt, db))
-.post("/downloader/save", ({jwt, headers, body}) => downloader.save(headers, jwt, body, db))
+.get("/downloader/get", () => downloader.get(db))
+.post("/downloader/save", ({body}) => downloader.save(body, db))
 
-.post("/downloader/list/add", ({jwt, headers, body}) => downloader.addToList(headers, jwt, body, db))
-.delete("/downloader/list/del/:id", ({jwt, headers, params: { id }}) => downloader.delFromList(headers, jwt, id, db))
+.post("/downloader/list/add", ({body}) => downloader.addToList(body, db))
+.delete("/downloader/list/del/:id", ({params: { id }}) => downloader.delFromList(id, db))
 
-.post("/downloader/exclude/add", ({jwt, headers, body}) => downloader.addToExclude(headers, jwt, body, db))
-.delete("/downloader/exclude/del/:id", ({jwt, headers, params: { id }}) => downloader.delFromExclude(headers, jwt, id, db))
+.post("/downloader/exclude/add", ({body}) => downloader.addToExclude(body, db))
+.delete("/downloader/exclude/del/:id", ({params: { id }}) => downloader.delFromExclude(id, db))
 
-.post("/download/run", ({jwt, headers}) => downloader.run(headers, jwt, db))
-.post("/download/stop", ({jwt, headers}) => downloader.stop(headers, jwt))
-.get("/download/log", ({jwt, headers}) => downloader.getLog(headers, jwt))
+.post("/download/run", () => downloader.run(db))
+.post("/download/stop", () => downloader.stop())
+.get("/download/log", () => downloader.getLog())
 
-.get("/all/get", ({jwt, headers}) => all.get(headers, jwt))
-.post("/all/download", ({jwt, headers, body}) => all.download(headers, jwt, body, db))
+.get("/all/get", () => all.get())
+.post("/all/download", ({body}) => all.download(body, db))
 
 .listen(3000)
 
