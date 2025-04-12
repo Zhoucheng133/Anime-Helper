@@ -21,6 +21,21 @@ const JWT_SECRET = nanoid();
 const app = new Elysia({ prefix: '/api' })
 .use(cors())
 .use(jwt({name: 'jwt',secret: JWT_SECRET, exp: "1y"}))
+.onBeforeHandle(async ({path, headers, jwt})=>{
+  switch (path) {
+    case "/api/init":
+    case "/api/register":
+    case "/api/login":
+    case "/api/auth":
+      break;
+  
+    default:
+      const authResponse=await auth(headers, jwt);
+      if(!authResponse.ok){
+        return authResponse;
+      }
+  }
+})
 
 .get('/init', () => user.checkInit(db))
 .post("/register", ({body}) => user.register(body, db))
