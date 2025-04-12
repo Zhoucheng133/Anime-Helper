@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { Database } from "bun:sqlite";
-import { cors } from '@elysiajs/cors';
+// import { cors } from '@elysiajs/cors';
 import { User } from "./routes/user";
 import { initDB } from "./routes/db";
 import jwt from "@elysiajs/jwt";
@@ -19,7 +19,7 @@ const all=new All();
 const JWT_SECRET = nanoid();
 // const JWT_SECRET='Helper';
 const app = new Elysia({ prefix: '/api' })
-.use(cors())
+// .use(cors())
 .use(jwt({name: 'jwt',secret: JWT_SECRET, exp: "1y"}))
 .onBeforeHandle(async ({path, headers, jwt})=>{
   switch (path) {
