@@ -21,50 +21,52 @@ const all=new All();
 
 const JWT_SECRET = nanoid();
 // const JWT_SECRET='Helper';
-const app = new Elysia({ prefix: '/api' })
+const app = new Elysia()
 // .use(cors())
 .use(jwt({name: 'jwt',secret: JWT_SECRET, exp: "1y"}))
 .onBeforeHandle(async ({path, headers, jwt})=>{
-  switch (path) {
-    case "/api/init":
-    case "/api/register":
-    case "/api/login":
-    case "/api/auth":
-      break;
-  
-    default:
-      const authResponse=await auth(headers, jwt);
-      if(!authResponse.ok){
-        return authResponse;
-      }
+  if(path.startsWith("/api")){
+    switch (path) {
+      case "/api/init":
+      case "/api/register":
+      case "/api/login":
+      case "/api/auth":
+        break;
+    
+      default:
+        const authResponse=await auth(headers, jwt);
+        if(!authResponse.ok){
+          return authResponse;
+        }
+    }
   }
 })
 
-.get('/init', () => user.checkInit(db))
-.post("/register", ({body}) => user.register(body, db))
-.post("/login", ({body, jwt}) => user.login(body, jwt, db))
-.get("/auth", ({jwt, headers}) => user.checkAuth(headers, jwt))
+.get('/api/init', () => user.checkInit(db))
+.post("/api/register", ({body}) => user.register(body, db))
+.post("/api/login", ({body, jwt}) => user.login(body, jwt, db))
+.get("/api/auth", ({jwt, headers}) => user.checkAuth(headers, jwt))
 
-.get("/list/get", ({query}) => list.get(db, query as any))
-.post("/list/edit", ({body})=>list.edit(body, db))
-.post("/list/add", ({body})=>list.add(body, db))
-.delete("/list/del/:id", ({params: { id }})=>list.del(id, db))
+.get("/api/list/get", ({query}) => list.get(db, query as any))
+.post("/api/list/edit", ({body})=>list.edit(body, db))
+.post("/api/list/add", ({body})=>list.add(body, db))
+.delete("/api/list/del/:id", ({params: { id }})=>list.del(id, db))
 
-.get("/calendar/get", () => calendar.get(db))
-.get("/calendar/info/:id", ({params: { id }})=>calendar.info(id))
+.get("/api/calendar/get", () => calendar.get(db))
+.get("/api/calendar/info/:id", ({params: { id }})=>calendar.info(id))
 
-.get("/downloader/get", () => downloader.get(db))
-.post("/downloader/save", ({body}) => downloader.save(body, db))
+.get("/api/downloader/get", () => downloader.get(db))
+.post("/api/downloader/save", ({body}) => downloader.save(body, db))
 
-.post("/downloader/list/add", ({body}) => downloader.addToList(body, db))
-.delete("/downloader/list/del/:id", ({params: { id }}) => downloader.delFromList(id, db))
+.post("/api/downloader/list/add", ({body}) => downloader.addToList(body, db))
+.delete("/api/downloader/list/del/:id", ({params: { id }}) => downloader.delFromList(id, db))
 
-.post("/downloader/exclude/add", ({body}) => downloader.addToExclude(body, db))
-.delete("/downloader/exclude/del/:id", ({params: { id }}) => downloader.delFromExclude(id, db))
+.post("/api/downloader/exclude/add", ({body}) => downloader.addToExclude(body, db))
+.delete("/api/downloader/exclude/del/:id", ({params: { id }}) => downloader.delFromExclude(id, db))
 
-.post("/download/run", () => downloader.run(db))
-.post("/download/stop", () => downloader.stop())
-.get("/download/log", () => downloader.getLog())
+.post("/api/download/run", () => downloader.run(db))
+.post("/api/download/stop", () => downloader.stop())
+.get("/api/download/log", () => downloader.getLog())
 
 .get("/all/get", () => all.get())
 .post("/all/download", ({body}) => all.download(body, db))
