@@ -68,8 +68,8 @@ const app = new Elysia()
 .post("/api/download/stop", () => downloader.stop())
 .get("/api/download/log", () => downloader.getLog())
 
-.get("/all/get", () => all.get())
-.post("/all/download", ({body}) => all.download(body, db))
+.get("/api/all/get", () => all.get())
+.post("/api/all/download", ({body}) => all.download(body, db))
 
 
 .get("/assets/:name", ({ params })=>file(`web/assets/${params.name.replaceAll("./", "")}`))
