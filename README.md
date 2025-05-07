@@ -38,7 +38,7 @@
 ```bash
 sudo docker run -d \
 --restart always \
--p <主机端口>:8080 \
+-p <主机端口>:3000 \
 -v <主机上存储数据库的位置>:/app/db \
 --name helper helper
 ```
