@@ -46,3 +46,5 @@ db
 src/routes/test.ts
 
 test
+
+web/dist
