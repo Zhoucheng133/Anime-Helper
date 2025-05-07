@@ -1,4 +1,4 @@
-import { Elysia } from "elysia";
+import { Elysia, file } from "elysia";
 import { Database } from "bun:sqlite";
 // import { cors } from '@elysiajs/cors';
 import { User } from "./routes/user";
@@ -70,6 +70,11 @@ const app = new Elysia()
 
 .get("/all/get", () => all.get())
 .post("/all/download", ({body}) => all.download(body, db))
+
+
+.get("/assets/:name", ({ params })=>file(`web/dist/assets/${params.name}`))
+.get("/icon.svg", ()=>file(`web/dist/icon.svg`))
+.get("/*", ()=>file("web/dist/index.html"))
 
 .listen(3000)
 
