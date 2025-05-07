@@ -72,9 +72,9 @@ const app = new Elysia()
 .post("/all/download", ({body}) => all.download(body, db))
 
 
-.get("/assets/:name", ({ params })=>file(`web/dist/assets/${params.name}`))
-.get("/icon.svg", ()=>file(`web/dist/icon.svg`))
-.get("/*", ()=>file("web/dist/index.html"))
+.get("/assets/:name", ({ params })=>file(`web/assets/${params.name.replaceAll("./", "")}`))
+.get("/icon.svg", ()=>file(`web/icon.svg`))
+.get("/*", ()=>file("web/index.html"))
 
 .listen(3000)
 
