@@ -14,6 +14,6 @@ RUN bun build \
 --outfile server \
 ./src/index.ts
 
-EXPOSE 8080
+EXPOSE 3000
 
 CMD ["./server"]
