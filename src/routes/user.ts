@@ -1,8 +1,8 @@
 import Database from "bun:sqlite";
 import { ResponseType, ToResponse } from "./types";
 import { nanoid } from "nanoid";
-import CryptoJS from "crypto-js";
 import auth from "./auth";
+import bcrypt from 'bcrypt';
 
 export class User{
 
@@ -39,7 +39,7 @@ export class User{
       }
       const id=nanoid();
       db.prepare("INSERT INTO user (id, username, password) VALUES (?, ?, ?)")
-        .run(id, username, CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex));
+        .run(id, username, bcrypt.hashSync(password, 10));
       return ToResponse(true, "");
     } catch (error) {
       return ToResponse(false, error)
@@ -55,7 +55,7 @@ export class User{
     const data = db.prepare("SELECT password FROM user WHERE username = ?").get(username) as any;
     if(!data){
       return ToResponse(false, "用户名或密码不正确");
-    }else if(data.password == CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex)){
+    }else if(bcrypt.compareSync(password, data.password)){
       const token=await jwt.sign({ username });
       return ToResponse(true, token)
     }
