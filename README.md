@@ -48,7 +48,6 @@ sudo docker run -d \
 📁 项目根目录/
 ├── 📄 bun.lockb
 ├── 📄 Dockerfile
-├── 📄 nginx.conf
 ├── 📄 package.json
 ├── 📄 tsconfig.json
 ├── 📁 src/
