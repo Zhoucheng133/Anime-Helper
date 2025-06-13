@@ -47,6 +47,6 @@ src/routes/test.ts
 
 test
 
-web/assets
-web/icon.svg
-web/index.html
+public/assets
+public/icon.svg
+public/index.html

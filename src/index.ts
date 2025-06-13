@@ -10,6 +10,7 @@ import { Calendar } from "./routes/calendar";
 import { Downloader } from "./routes/downloader";
 import { All } from "./routes/all";
 import auth from "./routes/auth";
+import staticPlugin from "@elysiajs/static";
 
 const user=new User();
 const list=new List();
@@ -23,6 +24,10 @@ const JWT_SECRET = nanoid();
 // const JWT_SECRET='Helper';
 const app = new Elysia()
 // .use(cors())
+.use(staticPlugin({
+  prefix: "/",
+  alwaysStatic: true,
+}))
 .use(jwt({name: 'jwt',secret: JWT_SECRET, exp: "1y"}))
 .onBeforeHandle(async ({path, headers, jwt})=>{
   if(path.startsWith("/api")){
@@ -72,13 +77,9 @@ const app = new Elysia()
 .post("/api/all/download", ({body}) => all.download(body, db))
 
 
-.get("/assets/:name", ({ params })=>file(`web/assets/${params.name.replaceAll("./", "")}`))
-.get("/icon.svg", ()=>file(`web/icon.svg`))
-.get("/*", ()=>file("web/index.html"))
+.get("/*", ()=>file("public/index.html"))
 
 .listen(3000)
-
-
 
 const db = new Database('db/database.db');
 initDB(db);
