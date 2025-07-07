@@ -35,9 +35,11 @@ function initDownloaderConfigTable(db: Database){
     CREATE TABLE IF NOT EXISTS downloader_config (
       id TEXT PRIMARY KEY,
       link TEXT,
+      username TEXT,
       secret TEXT,
       freq INTEGER,
-      type TEXT
+      type TEXT,
+      client TEXT
     )
   `).run()
 }
