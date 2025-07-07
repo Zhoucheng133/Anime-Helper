@@ -1,8 +1,9 @@
 import Database from "bun:sqlite";
-import auth from "./auth";
+// import auth from "./auth";
 import { ResponseType, ToResponse } from "./types";
 import xml2js  from "xml2js";
 import axios from "axios";
+// import FormData from "form-data";
 
 interface DownloaderListType{
   id: string,
@@ -15,16 +16,21 @@ interface DownloaderExcludeType{
   key: string,
 }
 
-interface DownloaderConfigType{
+export interface DownloaderConfigType{
   link: string,
   secret: string,
+  // 使用aria时username无效
+  username: string,
   freq: number,
   type: string,
+  client: string,
 }
 
 interface DownloaderDataType{
   link: string,
   secret: string,
+  username: string,
+  client: string,
   freq: number,
   type: string,
   running: boolean,
@@ -38,6 +44,82 @@ interface Log{
   time: number
 }
 
+async function qbitLogin(link: string, username: string, password: string): Promise<string[] | undefined> {
+  const body = new URLSearchParams({ username, password });
+
+  const res = await fetch(`${link}/api/v2/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body,
+  });
+
+  const text = await res.text();
+  if (text !== 'Ok.') {
+    return [];
+  }
+
+  const rawSetCookie = (res.headers as any).getSetCookie?.();
+  if (rawSetCookie && rawSetCookie.length > 0) {
+    return rawSetCookie;
+  }
+  const setCookie = res.headers.get('set-cookie');
+  return setCookie ? [setCookie] : [];
+}
+
+async function qbitAddMagnetTask(link: string, cookie: string[], magnetLink: string): Promise<boolean> {
+  const form = new FormData();
+  form.append('urls', magnetLink);
+
+  const res = await fetch(`${link}/api/v2/torrents/add`, {
+    method: 'POST',
+    headers: {
+      'Cookie': cookie[0].split(';')[0],
+    },
+    body: form,
+  });
+
+  return res.status === 200;
+}
+
+
+export async function downloadItem(client: string, host: string, username: string, secret: string, downloadLink: string): Promise<boolean>{
+  if(client=="aria"){
+    try {
+      await axios.post(
+        host,
+        {
+          "jsonrpc": "2.0",
+          "method": "aria2.addUri",
+          "id": 1,
+          "params": [
+            `token:${secret}`,
+            [downloadLink],
+            {}
+          ],
+        }
+      );
+    } catch (error) {
+      // this.addLog(false, `下载: ${item.title} 失败`);
+      return false;
+    }
+    return true;
+  }else if(client=="qbit"){    
+    const cookie=await qbitLogin(host, username, secret);
+    if(!cookie || cookie.length==0){
+      return false;
+    }else{
+      
+      if(await qbitAddMagnetTask(host, cookie, downloadLink)){
+        return true;
+      }
+      
+    }
+  }
+  return false
+}
+
 export class Downloader{
 
   interval: any;
@@ -45,11 +127,13 @@ export class Downloader{
   form: DownloaderDataType={
     link: "",
     secret: "",
+    username: "",
     freq: 15,
     type: "mikan",
     running: false,
     list: [],
-    exclude: []
+    exclude: [],
+    client: "",
   }
 
   updateForm(db: Database): ResponseType{
@@ -94,25 +178,29 @@ export class Downloader{
 
   downloadHandler=async (list: any[])=>{
     for(let item of list){
-      try {
-        await axios.post(
-          this.form.link,
-          {
-            "jsonrpc": "2.0",
-            "method": "aria2.addUri",
-            "id": 1,
-            "params": [
-              `token:${this.form.secret}`,
-              [item.url],
-              {}
-            ],
-          }
-        );
-      } catch (error) {
+      // try {
+      //   await axios.post(
+      //     this.form.link,
+      //     {
+      //       "jsonrpc": "2.0",
+      //       "method": "aria2.addUri",
+      //       "id": 1,
+      //       "params": [
+      //         `token:${this.form.secret}`,
+      //         [item.url],
+      //         {}
+      //       ],
+      //     }
+      //   );
+      // } catch (error) {
+      //   this.addLog(false, `下载: ${item.title} 失败`);
+      //   continue;
+      // }
+      if(await downloadItem(this.form.client, this.form.link, this.form.username, this.form.secret, item.url)){
+        this.addLog(true, `下载: ${item.title}`);
+      }else{
         this.addLog(false, `下载: ${item.title} 失败`);
-        continue;
       }
-      this.addLog(true, `下载: ${item.title}`);
     }
   }
 
@@ -298,7 +386,8 @@ export class Downloader{
       typeof data.link === "string" &&
       typeof data.secret === "string" &&
       typeof data.freq === "number" &&
-      typeof data.type === "string"
+      typeof data.type === "string" &&
+      typeof data.client == "string"
     );
   }
 
@@ -310,8 +399,8 @@ export class Downloader{
     
     try {
       const data=body.data as DownloaderConfigType;
-      db.prepare(`INSERT OR REPLACE INTO downloader_config (id, link, secret, freq, type) VALUES (?, ?, ?, ?, ?)`)
-      .run("0", data.link, data.secret, data.freq, data.type);
+      db.prepare(`INSERT OR REPLACE INTO downloader_config (id, link, secret, freq, type, client, username) VALUES (?, ?, ?, ?, ?, ?, ?)`)
+      .run("0", data.link, data.secret, data.freq, data.type, data.client, data.username??"");
     } catch (error) {
       return ToResponse(false, error);
     }

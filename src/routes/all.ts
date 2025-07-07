@@ -4,6 +4,7 @@ import { ResponseType, ToResponse } from "./types";
 import xml2js  from "xml2js";
 import Database from "bun:sqlite";
 import dayjs from "dayjs";
+import { DownloaderConfigType, downloadItem } from "./downloader";
 // import { all_get } from "./test";
 
 interface AllItem{
@@ -19,32 +20,42 @@ export class All{
       return ToResponse(false, "参数不正确");
     }
     const url=body.link;
-    const config=db.prepare(`SELECT link, secret FROM downloader_config`).get() as any;
-    if(!config || !config.link || !config.secret){
-      return ToResponse(false, "没有配置Aria地址");
+    const config=db.prepare(`SELECT link, secret, client, username FROM downloader_config`).get() as DownloaderConfigType;
+    if(!config || !config.link || !config.secret || !config.client){
+      console.log(config);
+      
+      return ToResponse(false, "没有配置下载器");
     }
-    const aria=config.link;
+    const link=config.link;
     const secret=config.secret;
+    const client=config.client;
+    const username=config.username;
 
-    try {
-      await axios.post(
-        aria,
-        {
-          "jsonrpc": "2.0",
-          "method": "aria2.addUri",
-          "id": 1,
-          "params": [
-            `token:${secret}`,
-            [url],
-            {}
-          ],
-        }
-      );
-    } catch (error) {
-      return ToResponse(false, error);
+    if(await downloadItem(client, link, username, secret, url)){
+      return ToResponse(true, "");
+    }else{
+      return ToResponse(false, "下载失败");
     }
 
-    return ToResponse(true, "");
+    // try {
+    //   await axios.post(
+    //     aria,
+    //     {
+    //       "jsonrpc": "2.0",
+    //       "method": "aria2.addUri",
+    //       "id": 1,
+    //       "params": [
+    //         `token:${secret}`,
+    //         [url],
+    //         {}
+    //       ],
+    //     }
+    //   );
+    // } catch (error) {
+    //   return ToResponse(false, error);
+    // }
+
+    // return ToResponse(true, "");
   }
 
   async get(): Promise<ResponseType>{
