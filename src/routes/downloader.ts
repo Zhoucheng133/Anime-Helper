@@ -178,24 +178,6 @@ export class Downloader{
 
   downloadHandler=async (list: any[])=>{
     for(let item of list){
-      // try {
-      //   await axios.post(
-      //     this.form.link,
-      //     {
-      //       "jsonrpc": "2.0",
-      //       "method": "aria2.addUri",
-      //       "id": 1,
-      //       "params": [
-      //         `token:${this.form.secret}`,
-      //         [item.url],
-      //         {}
-      //       ],
-      //     }
-      //   );
-      // } catch (error) {
-      //   this.addLog(false, `下载: ${item.title} 失败`);
-      //   continue;
-      // }
       if(await downloadItem(this.form.client, this.form.link, this.form.username, this.form.secret, item.url)){
         this.addLog(true, `下载: ${item.title}`);
       }else{
@@ -234,6 +216,8 @@ export class Downloader{
       // url='http://127.0.0.1:8081'
     }else if(this.form.type=='acgrip'){
       url='https://acgrip.art/.xml';
+    }else if(this.form.type=='kisssub'){
+      url="https://kisssub.org/rss.xml";
     }
     try {
       const xml=(await axios.get(url)).data;
