@@ -37,37 +37,76 @@ export class All{
     }
   }
 
-  async get(): Promise<ResponseType>{
-    try {
-      const response=(await axios.get("https://mikanime.tv/RSS/Classic")).data;
-      const parser = new xml2js.Parser();
-      const result = await new Promise<any>((resolve, reject) => {
-        parser.parseString(response, (err, result) => {
-          if (err) {
-            reject({
-              ok: false,
-              msg: '解析rss失败'
-            });
-          } else {
-            resolve(result);
-          }
-        });
-      });
-  
-      const list = [] as AllItem[];
-      const items = result.rss.channel[0].item;
-      for (let item of items) {
-        list.push({
-          title: item['title'][0].trim(),
-          url: item['enclosure'][0]['$']["url"],
-          time: dayjs(item['torrent'][0]['pubDate'][0]).valueOf(),
-          length: item['torrent'][0]['contentLength'][0],
-          magnet: `magnet:?xt=urn:btih:${item['torrent'][0]['link'][0].split('/').pop()}`,
-        });
-      }
-      return ToResponse(true, list);
-    } catch (error) {
-      return ToResponse(true, "解析rss失败");
+  async get(query: any): Promise<ResponseType>{
+    if (!query || !query.type) {
+      return ToResponse(false, "参数不正确");
     }
+    if(query.type=="mikan"){
+      try {
+        const response=(await axios.get("https://mikanime.tv/RSS/Classic")).data;
+        const parser = new xml2js.Parser();
+        const result = await new Promise<any>((resolve, reject) => {
+          parser.parseString(response, (err, result) => {
+            if (err) {
+              reject({
+                ok: false,
+                msg: '解析rss失败'
+              });
+            } else {
+              resolve(result);
+            }
+          });
+        });
+    
+        const list = [] as AllItem[];
+        const items = result.rss.channel[0].item;
+        for (let item of items) {
+          list.push({
+            title: item['title'][0].trim(),
+            url: item['enclosure'][0]['$']["url"],
+            time: dayjs(item['torrent'][0]['pubDate'][0]).valueOf(),
+            length: item['torrent'][0]['contentLength'][0],
+            magnet: `magnet:?xt=urn:btih:${item['torrent'][0]['link'][0].split('/').pop()}`,
+          });
+        }
+        return ToResponse(true, list);
+      } catch (error) {
+        return ToResponse(true, "解析rss失败");
+      }
+    }else if(query.type=="kisssub"){ 
+      try {
+        const response=(await axios.get("https://kisssub.org/rss.xml")).data;
+        const parser = new xml2js.Parser();
+        const result = await new Promise<any>((resolve, reject) => {
+          parser.parseString(response, (err, result) => {
+            if (err) {
+              reject({
+                ok: false,
+                msg: '解析rss失败'
+              });
+            } else {
+              resolve(result);
+            }
+          });
+        });
+
+        const list = [] as AllItem[];
+        const items = result.rss.channel[0].item;
+        
+        for (let item of items) {
+          list.push({
+            title: item['title'][0].trim(),
+            url: item['enclosure'][0]['$']['url'],
+            time: dayjs(item['pubDate'][0]).valueOf(),
+            length: 0,
+            magnet: `magnet:?xt=urn:btih:${item['enclosure'][0]['$']['url'].split('hash=')[1]}`,
+          });
+        }
+        return ToResponse(true, list);
+      } catch (error) {
+        return ToResponse(true, "解析rss失败");
+      }
+    }
+    return ToResponse(false, "未知类型");
   }
 }

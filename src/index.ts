@@ -48,33 +48,33 @@ const app = new Elysia()
 })
 
 .get('/api/init', () => user.checkInit(db))
-.post("/api/register", ({body}) => user.register(body, db))
+.post("/api/register", ({ body }) => user.register(body, db))
 .post("/api/login", ({body, jwt}) => user.login(body, jwt, db))
 .get("/api/auth", ({jwt, headers}) => user.checkAuth(headers, jwt))
 
-.get("/api/list/get", ({query}) => list.get(db, query as any))
-.post("/api/list/edit", ({body})=>list.edit(body, db))
-.post("/api/list/add", ({body})=>list.add(body, db))
+.get("/api/list/get", ({ query }) => list.get(db, query as any))
+.post("/api/list/edit", ({ body })=>list.edit(body, db))
+.post("/api/list/add", ({ body })=>list.add(body, db))
 .delete("/api/list/del/:id", ({params: { id }})=>list.del(id, db))
 
 .get("/api/calendar/get", () => calendar.get(db))
 .get("/api/calendar/info/:id", ({params: { id }})=>calendar.info(id))
 
 .get("/api/downloader/get", () => downloader.get(db))
-.post("/api/downloader/save", ({body}) => downloader.save(body, db))
+.post("/api/downloader/save", ({ body }) => downloader.save(body, db))
 
-.post("/api/downloader/list/add", ({body}) => downloader.addToList(body, db))
+.post("/api/downloader/list/add", ({ body }) => downloader.addToList(body, db))
 .delete("/api/downloader/list/del/:id", ({params: { id }}) => downloader.delFromList(id, db))
 
-.post("/api/downloader/exclude/add", ({body}) => downloader.addToExclude(body, db))
+.post("/api/downloader/exclude/add", ({ body }) => downloader.addToExclude(body, db))
 .delete("/api/downloader/exclude/del/:id", ({params: { id }}) => downloader.delFromExclude(id, db))
 
 .post("/api/download/run", () => downloader.run(db))
 .post("/api/download/stop", () => downloader.stop())
 .get("/api/download/log", () => downloader.getLog())
 
-.get("/api/all/get", () => all.get())
-.post("/api/all/download", ({body}) => all.download(body, db))
+.get("/api/all/get", ({ query }) => all.get(query as any))
+.post("/api/all/download", ({ body }) => all.download(body, db))
 
 
 .get("/*", ()=>file("public/index.html"))
