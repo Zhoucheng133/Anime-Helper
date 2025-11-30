@@ -19,7 +19,8 @@ WORKDIR /app
 ENV TZ=Asia/Shanghai
 ENV NODE_ENV=production
 
-COPY server public /app/
+COPY --from=builder /app/server /app/server
+COPY --from=builder /app/public /app/public
 
 EXPOSE 3000
 
