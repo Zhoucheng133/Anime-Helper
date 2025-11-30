@@ -27,6 +27,9 @@
 
 本项目需要使用Docker进行配置
 
+> [!NOTE]
+> 你需要修改下面命令中带有尖括号的内容（包括尖括号本身）
+
 ```bash
 sudo docker run -d \
 --restart always \
