@@ -46,7 +46,3 @@ db
 src/routes/test.ts
 
 test
-
-public/assets
-public/icon.svg
-public/index.html
