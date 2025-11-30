@@ -30,6 +30,7 @@
 ```bash
 sudo docker run -d \
 --restart always \
+--name anime-helper \
 -p <主机端口>:3000 \
 -v <主机上存储数据库的位置*>:/app/db \
 zhouc1230/anime-helper:latest
