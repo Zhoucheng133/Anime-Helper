@@ -25,6 +25,8 @@
 
 ## 快速开始
 
+### 部署
+
 本项目需要使用Docker进行配置
 
 > [!NOTE]
@@ -40,6 +42,24 @@ zhouc1230/anime-helper:latest
 ```
 
 *任意，保证存在并且可以读写的目录即可
+
+### 更新
+
+```bash
+# 拉取最新镜像
+docker pull zhouc1230/anime-helper:latest
+# 停止旧容器
+docker stop anime-helper
+# 删除旧容器
+docker rm anime-helper
+# 启动新容器
+sudo docker run -d \
+--restart always \
+--name anime-helper \
+-p <主机端口>:3000 \
+-v <主机上存储数据库的位置>:/app/db \
+zhouc1230/anime-helper:latest
+```
 
 ## 手动部署
 
