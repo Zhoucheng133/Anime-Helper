@@ -1,10 +1,10 @@
-FROM oven/bun
+FROM oven/bun AS builder
 WORKDIR /app
 
-COPY . .
-ENV TZ=Asia/Shanghai
+COPY bun.lockb package.json ./
+RUN bun install --production
 
-RUN bun install
+COPY . .
 
 RUN bun build \
 --compile \
@@ -13,6 +13,13 @@ RUN bun build \
 --target bun \
 --outfile server \
 ./src/index.ts
+
+FROM alpine:latest AS runtime
+WORKDIR /app
+ENV TZ=Asia/Shanghai
+ENV NODE_ENV=production
+
+COPY server public /app/
 
 EXPOSE 3000
 
