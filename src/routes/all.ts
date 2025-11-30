@@ -4,6 +4,7 @@ import xml2js  from "xml2js";
 import Database from "bun:sqlite";
 import dayjs from "dayjs";
 import { DownloaderConfigType, downloadItem } from "./downloader";
+import { Converter } from "opencc-js";
 
 interface AllItem{
   time: number,
@@ -74,6 +75,7 @@ export class All{
         return ToResponse(true, "解析rss失败");
       }
     }else if(query.type=="kisssub"){ 
+      const t2s = Converter({ from: 'tw', to: 'cn' });
       try {
         const response=(await axios.get("https://kisssub.org/rss.xml")).data;
         const parser = new xml2js.Parser();
@@ -95,7 +97,7 @@ export class All{
         
         for (let item of items) {
           list.push({
-            title: item['title'][0].trim(),
+            title: t2s(item['title'][0].trim()),
             url: item['enclosure'][0]['$']['url'],
             time: dayjs(item['pubDate'][0]).valueOf(),
             length: 0,

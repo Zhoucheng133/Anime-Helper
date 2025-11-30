@@ -3,6 +3,7 @@ import Database from "bun:sqlite";
 import { ResponseType, ToResponse } from "./types";
 import xml2js  from "xml2js";
 import axios from "axios";
+import { Converter } from "opencc-js";
 // import FormData from "form-data";
 
 interface DownloaderListType{
@@ -187,16 +188,17 @@ export class Downloader{
   }
 
   judge(){
+    const t2s = Converter({ from: 'tw', to: 'cn' });
     const newItems=this.ls.filter(lsItem => !this.prels.some(prelsItem => lsItem.title == prelsItem.title));
     const exclusions=this.form.exclude;
     const bangumi=this.form.list;
     let filteredList=[];
     for(let item of newItems){
       let matchesBangumi = bangumi.some(b => 
-        item.title.includes(b.title) && item.title.includes(b.ass)
+        t2s(item.title).includes(b.title) && t2s(item.title).includes(b.ass)
       );
       let matchesExclusions = exclusions.some(e => 
-        item.title.includes(e.key)
+        t2s(item.title).includes(e.key)
       );
       if (matchesBangumi && !matchesExclusions) {
         filteredList.push(item);
