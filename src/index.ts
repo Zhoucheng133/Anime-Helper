@@ -1,6 +1,6 @@
 import { Elysia, file } from "elysia";
 import { Database } from "bun:sqlite";
-// import { cors } from '@elysiajs/cors';
+import { cors } from '@elysiajs/cors';
 import { User } from "./routes/user";
 import { initDB } from "./routes/db";
 import jwt from "@elysiajs/jwt";
@@ -23,13 +23,13 @@ const all=new All();
 const JWT_SECRET = nanoid();
 // const JWT_SECRET='Helper';
 const app = new Elysia()
-// .use(cors())
+.use(cors())
 .use(staticPlugin({
   prefix: "/",
   alwaysStatic: true,
 }))
 .use(jwt({name: 'jwt',secret: JWT_SECRET, exp: "1y"}))
-.onBeforeHandle(async ({path, headers, jwt})=>{
+.onBeforeHandle(async ({path, headers, jwt, cookie})=>{
   if(path.startsWith("/api")){
     switch (path) {
       case "/api/init":
@@ -39,7 +39,7 @@ const app = new Elysia()
         break;
     
       default:
-        const authResponse=await auth(headers, jwt);
+        const authResponse=await auth(headers, jwt, cookie);
         if(!authResponse.ok){
           return authResponse;
         }
@@ -50,7 +50,6 @@ const app = new Elysia()
 .get('/api/init', () => user.checkInit(db))
 .post("/api/register", ({ body }) => user.register(body, db))
 .post("/api/login", ({body, jwt}) => user.login(body, jwt, db))
-.get("/api/auth", ({jwt, headers}) => user.checkAuth(headers, jwt))
 
 .get("/api/list/get", ({ query }) => list.get(db, query as any))
 .post("/api/list/edit", ({ body })=>list.edit(body, db))
