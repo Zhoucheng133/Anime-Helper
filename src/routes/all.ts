@@ -22,8 +22,6 @@ export class All{
     const url=body.link;
     const config=db.prepare(`SELECT link, secret, client, username FROM downloader_config`).get() as DownloaderConfigType;
     if(!config || !config.link || !config.secret || !config.client){
-      console.log(config);
-      
       return ToResponse(false, "没有配置下载器");
     }
     const link=config.link;

@@ -14,11 +14,6 @@ export class User{
     return ToResponse(true, rowCount.count === 0);
   }
 
-  // 身份验证
-  checkAuth(headers: any, jwt: any){
-    return auth(headers, jwt)
-  }
-
   // 注册
   register(body: any, db: Database): ResponseType{
     const rowCount = db
@@ -47,18 +42,43 @@ export class User{
   }
 
   // 登录
-  async login(body: any, jwt: any, db: Database): Promise<ResponseType>{
+  async login(body: any, jwt: any, db: Database, cookie: any): Promise<ResponseType>{
     if (!body || !body.username || !body.password) {
       return ToResponse(false, "参数不正确");
     }
+
     const { username, password } = body;
-    const data = db.prepare("SELECT password FROM user WHERE username = ?").get(username) as any;
-    if(!data){
+
+    const user = db.prepare("SELECT password FROM user WHERE username = ?").get(username) as any;
+    if (!user) {
       return ToResponse(false, "用户名或密码不正确");
-    }else if(bcrypt.compareSync(password, data.password)){
-      const token=await jwt.sign({ username });
-      return ToResponse(true, token)
     }
-    return ToResponse(false, "用户名或密码不正确");
+    const match = bcrypt.compareSync(password, user.password);
+    if (!match) {
+      return ToResponse(false, "用户名或密码不正确");
+    }
+
+    const accessToken=await jwt.sign(
+      {
+        username,
+        exp: "1m",
+      },
+    );
+
+    const refreshToken = await jwt.sign(
+      {
+        username,
+        exp: "30d"
+      },
+    );
+
+    cookie.refresh_token.set({
+      value: refreshToken,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      path: "/api/refresh",
+    })
+
+    return ToResponse(true, accessToken);
   }
 }

@@ -9,7 +9,7 @@ import { List } from "./routes/list";
 import { Calendar } from "./routes/calendar";
 import { Downloader } from "./routes/downloader";
 import { All } from "./routes/all";
-import auth from "./routes/auth";
+import auth, { refresh } from "./routes/auth";
 import staticPlugin from "@elysiajs/static";
 
 const user=new User();
@@ -20,26 +20,27 @@ const all=new All();
 
 // JWT_SECRET在生产模式下使用nanoid生成
 
-const JWT_SECRET = nanoid();
-// const JWT_SECRET='Helper';
+// const JWT_SECRET = nanoid();
+const JWT_SECRET='Helper';
 const app = new Elysia()
 .use(cors())
 .use(staticPlugin({
   prefix: "/",
   alwaysStatic: true,
 }))
-.use(jwt({name: 'jwt',secret: JWT_SECRET, exp: "1y"}))
-.onBeforeHandle(async ({path, headers, jwt, cookie})=>{
+.use(jwt({name: 'jwt',secret: JWT_SECRET}))
+.onBeforeHandle(async ({path, jwt, headers})=>{
   if(path.startsWith("/api")){
     switch (path) {
       case "/api/init":
       case "/api/register":
       case "/api/login":
       case "/api/auth":
+      case "/api/refresh":
         break;
     
       default:
-        const authResponse=await auth(headers, jwt, cookie);
+        const authResponse=await auth(headers, jwt);
         if(!authResponse.ok){
           return authResponse;
         }
@@ -49,7 +50,10 @@ const app = new Elysia()
 
 .get('/api/init', () => user.checkInit(db))
 .post("/api/register", ({ body }) => user.register(body, db))
-.post("/api/login", ({body, jwt}) => user.login(body, jwt, db))
+.post("/api/login", ({body, jwt, cookie}) => user.login(body, jwt, db, cookie))
+.get("/api/refresh", ({jwt, cookie}) => refresh(cookie, jwt))
+
+.get("/api/auth", ({headers, jwt}) => auth(headers, jwt))
 
 .get("/api/list/get", ({ query }) => list.get(db, query as any))
 .post("/api/list/edit", ({ body })=>list.edit(body, db))
