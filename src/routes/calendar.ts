@@ -2,15 +2,16 @@ import axios from "axios";
 import auth from "./auth";
 import { ResponseType, ToResponse } from "./types";
 import Database from "bun:sqlite";
+import { calendarList } from "./dataCache/cacheSet";
 // import { calendar_get } from "./test";
 
-interface CalendarItem{
+export interface CalendarItem{
   id: number,
   title: string,
   added: boolean,
 }
 
-interface CalendarSub{
+export interface CalendarSub{
   eps: number,
   updates: number,
 }
@@ -25,31 +26,8 @@ export class Calendar{
     return inputDate <= today;
   }
 
-  async get(db: Database): Promise<ResponseType>{
-    let ls: CalendarItem[][] = [];
-    try {
-      const response = (await axios.get("https://api.bgm.tv/calendar")).data;
-      const allTitles = response.flatMap((day: any) => day.items.map((item: any) =>
-        item.name_cn.length === 0 ? item.name : item.name_cn
-      ));
-      const placeholders = allTitles.map(() => "?").join(", ");
-      const existingTitlesSet = new Set(db.prepare(
-        `SELECT title FROM list WHERE title IN (${placeholders})`
-      ).all(...allTitles).map((row: any) => row.title));
-      ls = response.map((day: any) => day.items.map((item: any) => ({
-        id: item.id,
-        title: item.name_cn.length === 0 ? item.name : item.name_cn,
-        added: existingTitlesSet.has(item.name_cn.length === 0 ? item.name : item.name_cn),
-      })));
-      const lastDay = ls.pop();
-      if (lastDay) {
-        ls.unshift(lastDay);
-      }
-    } catch (error) {
-      return ToResponse(false, error);
-    }
-
-    return ToResponse(true, ls);
+  async get(): Promise<ResponseType>{
+    return ToResponse(true, calendarList);
   }
 
   async info(id: string): Promise<ResponseType>{
