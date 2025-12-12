@@ -1,8 +1,10 @@
 import Database from "bun:sqlite";
 import { ResponseType, ToResponse } from "./types";
 import { nanoid } from "nanoid";
-import auth from "./auth";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { get } from "lodash";
+import { getJwtSecret } from "../config";
 
 export class User{
 
@@ -42,7 +44,7 @@ export class User{
   }
 
   // 登录
-  async login(body: any, jwt: any, db: Database, cookie: any): Promise<ResponseType>{
+  async login(body: any, db: Database, cookie: any): Promise<ResponseType>{
     if (!body || !body.username || !body.password) {
       return ToResponse(false, "参数不正确");
     }
@@ -58,15 +60,26 @@ export class User{
       return ToResponse(false, "用户名或密码不正确");
     }
 
-    const accessToken=await jwt.sign({
-      username,
-      exp: "10m",
-    });
+    const accessToken=jwt.sign(
+      {
+        username,
+      }, 
+      getJwtSecret(),
+      {
+        expiresIn: "1h",
+      }
+    );
 
-    const refreshToken = await jwt.sign({
-      username,
-      exp: "30d"
-    });
+    const refreshToken = jwt.sign(
+      {
+        username,
+        exp: "30d"
+      }, 
+      getJwtSecret(),
+      {
+        expiresIn: "30d",
+      }
+    );
 
     cookie.refresh_token.set({
       value: refreshToken,

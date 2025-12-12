@@ -1,6 +1,8 @@
+import { getJwtSecret } from "../config";
 import { ResponseType, ToResponse } from "./types";
+import jwt from 'jsonwebtoken';
 
-export default async function auth(headers: any, jwt: any): Promise<ResponseType> {
+export default async function auth(headers: any): Promise<ResponseType> {
   const access_token = headers.access_token;
 
   if (!access_token) {
@@ -8,38 +10,49 @@ export default async function auth(headers: any, jwt: any): Promise<ResponseType
   }
 
   try {
-    const profile = await jwt.verify(access_token);
+    const profile = jwt.verify(access_token, getJwtSecret()) as any;
     
     if (profile?.username) {
-        return ToResponse(true, "");
+      return ToResponse(true, "");
     } else {
-        return ToResponse(false, "无效令牌");
+      return ToResponse(false, "无效令牌");
     }
 
   } catch (error: any) {
-    if (error?.code === "ERR_JWT_EXPIRED" || error?.name === "JWTExpired") {
-        return ToResponse(false, "令牌已过期");
+
+    if(error.name === "TokenExpiredError"){
+      return ToResponse(false, "令牌已过期");
     }
+    
     return ToResponse(false, "无效令牌");
   }
 }
 
-export async function refresh(cookie: any, jwt: any): Promise<ResponseType> {  
+export function refresh(cookie: any): ResponseType {  
   const refresh_token = cookie.refresh_token;
   if (!refresh_token.value) {
     return ToResponse(false, "没有登录");
   }
   try {
-    const profile = await jwt.verify(refresh_token.value);
+    const profile = jwt.verify(refresh_token.value, getJwtSecret()) as any;
+    
+    if(profile?.username){
+      const newAccessToken = jwt.sign(
+        {
+          username: profile.username,
+        },
+        getJwtSecret(),
+        {
+          expiresIn: "1h",
+        }
+      );
 
-    const newAccessToken = await jwt.sign({
-      username: profile.username,
-      exp: "10m"
-    });
-
-    return ToResponse(true, newAccessToken);
+      return ToResponse(true, newAccessToken);
+    }else{
+      return ToResponse(false, "refresh_token 无效，请重新登录");
+    }
 
   } catch (err: any) {
-    return ToResponse(false, "refresh_token 无效，请重新登录");
+    return ToResponse(false, err.message);
   }
 }

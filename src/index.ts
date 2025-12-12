@@ -3,7 +3,6 @@ import { Database } from "bun:sqlite";
 import { cors } from '@elysiajs/cors';
 import { User } from "./routes/user";
 import { initDB } from "./routes/db";
-import jwt from "@elysiajs/jwt";
 import { nanoid } from "nanoid";
 import { List } from "./routes/list";
 import { Calendar } from "./routes/calendar";
@@ -11,6 +10,7 @@ import { Downloader } from "./routes/downloader";
 import { All } from "./routes/all";
 import auth, { refresh } from "./routes/auth";
 import staticPlugin from "@elysiajs/static";
+import { setJwtSecret } from "./config";
 
 const user=new User();
 const list=new List();
@@ -22,14 +22,17 @@ const all=new All();
 
 // const JWT_SECRET = nanoid();
 const JWT_SECRET='Helper';
+
+setJwtSecret(JWT_SECRET);
+
 const app = new Elysia()
 .use(cors())
 .use(staticPlugin({
   prefix: "/",
   alwaysStatic: true,
 }))
-.use(jwt({name: 'jwt',secret: JWT_SECRET}))
-.onBeforeHandle(async ({path, jwt, headers})=>{
+
+.onBeforeHandle(async ({path, headers})=>{
   if(path.startsWith("/api")){
     switch (path) {
       case "/api/init":
@@ -40,7 +43,7 @@ const app = new Elysia()
         break;
     
       default:
-        const authResponse=await auth(headers, jwt);
+        const authResponse=await auth(headers);
         if(!authResponse.ok){
           return authResponse;
         }
@@ -50,10 +53,10 @@ const app = new Elysia()
 
 .get('/api/init', () => user.checkInit(db))
 .post("/api/register", ({ body }) => user.register(body, db))
-.post("/api/login", ({body, jwt, cookie}) => user.login(body, jwt, db, cookie))
-.get("/api/refresh", ({jwt, cookie}) => refresh(cookie, jwt))
+.post("/api/login", ({body, cookie}) => user.login(body, db, cookie))
+.get("/api/refresh", ({cookie}) => refresh(cookie))
 
-.get("/api/auth", ({headers, jwt}) => auth(headers, jwt))
+.get("/api/auth", ({headers}) => auth(headers))
 
 .get("/api/list/get", ({ query }) => list.get(db, query as any))
 .post("/api/list/edit", ({ body })=>list.edit(body, db))
