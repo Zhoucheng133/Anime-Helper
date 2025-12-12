@@ -32,12 +32,10 @@ export async function refresh(cookie: any, jwt: any): Promise<ResponseType> {
   try {
     const profile = await jwt.verify(refresh_token.value);
 
-    const newAccessToken = await jwt.sign(
-      {
-        username: profile.username,
-        exp: "1m"
-      },
-    );
+    const newAccessToken = await jwt.sign({
+      username: profile.username,
+      exp: "10m"
+    });
 
     return ToResponse(true, newAccessToken);
 

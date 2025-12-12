@@ -58,19 +58,15 @@ export class User{
       return ToResponse(false, "用户名或密码不正确");
     }
 
-    const accessToken=await jwt.sign(
-      {
-        username,
-        exp: "1m",
-      },
-    );
+    const accessToken=await jwt.sign({
+      username,
+      exp: "10m",
+    });
 
-    const refreshToken = await jwt.sign(
-      {
-        username,
-        exp: "30d"
-      },
-    );
+    const refreshToken = await jwt.sign({
+      username,
+      exp: "30d"
+    });
 
     cookie.refresh_token.set({
       value: refreshToken,
