@@ -1,6 +1,5 @@
 import { Elysia, file } from "elysia";
 import { Database } from "bun:sqlite";
-import { cors } from '@elysiajs/cors';
 import { User } from "./routes/user";
 import { initDB } from "./routes/db";
 import { nanoid } from "nanoid";
@@ -26,7 +25,6 @@ const JWT_SECRET='Helper';
 setJwtSecret(JWT_SECRET);
 
 const app = new Elysia()
-.use(cors())
 .use(staticPlugin({
   prefix: "/",
   alwaysStatic: true,

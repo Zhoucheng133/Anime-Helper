@@ -3,14 +3,14 @@ import { ResponseType, ToResponse } from "./types";
 import jwt from 'jsonwebtoken';
 
 export default async function auth(headers: any): Promise<ResponseType> {
-  const access_token = headers.access_token;
+  const token = headers.token;
 
-  if (!access_token) {
+  if (!token) {
       return ToResponse(false, "未提供令牌");
   }
 
   try {
-    const profile = jwt.verify(access_token, getJwtSecret()) as any;
+    const profile = jwt.verify(token, getJwtSecret()) as any;
     
     if (profile?.username) {
       return ToResponse(true, "");
@@ -43,7 +43,7 @@ export function refresh(cookie: any): ResponseType {
         },
         getJwtSecret(),
         {
-          expiresIn: "1h",
+          expiresIn: "1m",
         }
       );
 
