@@ -73,7 +73,6 @@ export class User{
     const refreshToken = jwt.sign(
       {
         username,
-        exp: "30d"
       }, 
       getJwtSecret(),
       {
