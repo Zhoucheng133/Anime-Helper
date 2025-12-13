@@ -45,7 +45,7 @@ export class Search{
         }
         return ToResponse(true, list);
       } catch (error) {
-        return ToResponse(true, "解析rss失败");
+        return ToResponse(false, "没有搜索到任何结果");
       }
     }
   }

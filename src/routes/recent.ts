@@ -104,7 +104,7 @@ export class Recent{
         }
         return ToResponse(true, list);
       } catch (error) {
-        return ToResponse(true, "解析rss失败");
+        return ToResponse(false, "解析rss失败");
       }
     }
     return ToResponse(false, "未知类型");
