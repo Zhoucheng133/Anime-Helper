@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { DownloaderConfigType, downloadItem } from "./downloader";
 import { Converter } from "opencc-js";
 
-interface AllItem{
+export interface DownloadItem{
   time: number,
   title: string,
   url: string,
@@ -14,7 +14,7 @@ interface AllItem{
   magnet: string
 }
 
-export class All{
+export class Recent{
   async download(body: any, db: Database): Promise<ResponseType>{
     if (!body || !body.link) {
       return ToResponse(false, "参数不正确");
@@ -57,7 +57,7 @@ export class All{
           });
         });
     
-        const list = [] as AllItem[];
+        const list = [] as DownloadItem[];
         const items = result.rss.channel[0].item;
         for (let item of items) {
           list.push({
@@ -90,7 +90,7 @@ export class All{
           });
         });
 
-        const list = [] as AllItem[];
+        const list = [] as DownloadItem[];
         const items = result.rss.channel[0].item;
         
         for (let item of items) {

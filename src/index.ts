@@ -6,7 +6,7 @@ import { nanoid } from "nanoid";
 import { List } from "./routes/list";
 import { Calendar } from "./routes/calendar";
 import { Downloader } from "./routes/downloader";
-import { All } from "./routes/all";
+import { Recent } from "./routes/recent";
 import auth, { refresh } from "./routes/auth";
 import staticPlugin from "@elysiajs/static";
 import { setJwtSecret } from "./config";
@@ -17,7 +17,7 @@ const user=new User();
 const list=new List();
 const calendar=new Calendar();
 const downloader=new Downloader();
-const all=new All();
+const recent=new Recent();
 
 // JWT_SECRET在生产模式下使用nanoid生成
 
@@ -93,8 +93,8 @@ const app = new Elysia()
 .post("/api/download/stop", () => downloader.stop())
 .get("/api/download/log", () => downloader.getLog())
 
-.get("/api/all/get", ({ query }) => all.get(query as any))
-.post("/api/all/download", ({ body }) => all.download(body, db))
+.get("/api/recent/get", ({ query }) => recent.get(query as any))
+.post("/api/recent/download", ({ body }) => recent.download(body, db))
 
 
 .get("/*", ()=>file("public/index.html"))
