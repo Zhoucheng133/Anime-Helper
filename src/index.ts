@@ -12,12 +12,14 @@ import staticPlugin from "@elysiajs/static";
 import { setJwtSecret } from "./config";
 import { getCalendarList } from "./routes/dataCache/cacheSet";
 import cron from "@elysiajs/cron";
+import { Search } from "./routes/search";
 
 const user=new User();
 const list=new List();
 const calendar=new Calendar();
 const downloader=new Downloader();
 const recent=new Recent();
+const search=new Search();
 
 // JWT_SECRET在生产模式下使用nanoid生成
 
@@ -96,6 +98,7 @@ const app = new Elysia()
 .get("/api/recent/get", ({ query }) => recent.get(query as any))
 .post("/api/recent/download", ({ body }) => recent.download(body, db))
 
+.get("/api/search/:keyword", ({ params: { keyword } }) => search.get(keyword))
 
 .get("/*", ()=>file("public/index.html"))
 
