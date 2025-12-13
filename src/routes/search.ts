@@ -11,7 +11,7 @@ export class Search{
       return ToResponse(false, "搜索关键字不能为空");
     }else if(keyword.length>20){
       return ToResponse(false, "搜索关键字过长");
-    }else if(keyword.length<3){
+    }else if(keyword.length<2){
       return ToResponse(false, "搜索关键字过短");
     }else{
       const t2s = Converter({ from: 'tw', to: 'cn' });
