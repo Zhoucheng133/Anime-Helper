@@ -85,7 +85,6 @@ export class User{
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
       path: "/api/refresh",
-      secure: true,
     })
 
     return ToResponse(true, accessToken);
