@@ -66,7 +66,7 @@ export class User{
       }, 
       getJwtSecret(),
       {
-        expiresIn: "1m",
+        expiresIn: "10m",
       }
     );
 

@@ -43,7 +43,7 @@ export function refresh(cookie: any): ResponseType {
         },
         getJwtSecret(),
         {
-          expiresIn: "1m",
+          expiresIn: "10m",
         }
       );
 
