@@ -1,6 +1,6 @@
 {
   "name": "anime-helper",
-  "version": "3.3.2",
+  "version": "3.3.3",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts",
