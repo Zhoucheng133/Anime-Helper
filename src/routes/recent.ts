@@ -21,7 +21,7 @@ export class Recent{
     }
     const url=body.link;
     const config=db.prepare(`SELECT link, secret, client, username FROM downloader_config`).get() as DownloaderConfigType;
-    if(!config || !config.link || !config.secret || !config.client){
+    if(!config || !config.link || !config.client){
       return ToResponse(false, "没有配置下载器");
     }
     const link=config.link;
