@@ -10,10 +10,8 @@ import { Recent } from "./routes/recent";
 import auth, { refresh } from "./routes/auth";
 import staticPlugin from "@elysiajs/static";
 import { setJwtSecret } from "./config";
-import { getCalendarList } from "./routes/dataCache/cacheSet";
-import cron from "@elysiajs/cron";
-import { Search } from "./routes/search";
 
+import { Search } from "./routes/search";
 const user=new User();
 const list=new List();
 const calendar=new Calendar();
@@ -28,24 +26,10 @@ const JWT_SECRET = nanoid();
 
 setJwtSecret(JWT_SECRET);
 
-const db = new Database('db/database.db');
-initDB(db);
-(async () => {
-  await getCalendarList(db);
-})();
-
 const app = new Elysia()
 .use(staticPlugin({
   prefix: "/",
   alwaysStatic: true,
-}))
-
-.use(cron({
-  name: "calendar",
-  pattern: '0 0 * * *',
-  run: async () => {
-    await getCalendarList(db)
-  }
 }))
 
 .onBeforeHandle(async ({path, headers})=>{
@@ -79,7 +63,7 @@ const app = new Elysia()
 .post("/api/list/add", ({ body })=>list.add(body, db))
 .delete("/api/list/del/:id", ({params: { id }})=>list.del(id, db))
 
-.get("/api/calendar/get", () => calendar.get())
+.get("/api/calendar/get", () => calendar.get(db))
 .get("/api/calendar/info/:id", ({params: { id }})=>calendar.info(id))
 
 .get("/api/downloader/get", () => downloader.get(db))
@@ -103,5 +87,8 @@ const app = new Elysia()
 .get("/*", ()=>file("public/index.html"))
 
 .listen(3000)
+
+const db = new Database('db/database.db');
+initDB(db);
 
 console.log(`🦊 Elysia is running at http://127.0.0.1:${app.server?.port}`);
