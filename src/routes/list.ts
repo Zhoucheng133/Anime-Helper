@@ -149,7 +149,7 @@ export class List{
       list=result.data.map((item: any)=>{
         return {
           id: item['id'],
-          title: item['name_cn'],
+          title: item['name_cn'].length==0 ? item['name'] : item['name_cn'],
           episode: item['eps'],
         }
       })
