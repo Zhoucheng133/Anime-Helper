@@ -61,6 +61,8 @@ const app = new Elysia()
 .get("/api/list/get", ({ query }) => list.get(db, query as any))
 .post("/api/list/edit", ({ body })=>list.edit(body, db))
 .post("/api/list/add", ({ body })=>list.add(body, db))
+.get("/api/list/bgm/search/:keyword", ({params: { keyword }})=>list.getFromBangumi(keyword))
+.get("/api/list/bgm/updates/:id", ({params: { id }}) => list.getBangumiItem(id))
 .delete("/api/list/del/:id", ({params: { id }})=>list.del(id, db))
 
 .get("/api/calendar/get", () => calendar.get(db))
