@@ -28,7 +28,11 @@ export class Calendar{
   async get(db: Database): Promise<ResponseType>{
     let ls: CalendarItem[][] = [];
     try {
-      const response = (await axios.get("https://api.bgm.tv/calendar")).data;
+      const response = (await axios.get("https://api.bgm.tv/calendar", {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+      })).data;
       const allTitles = response.flatMap((day: any) => day.items.map((item: any) =>
         item.name_cn.length === 0 ? item.name : item.name_cn
       ));
