@@ -1,10 +1,7 @@
 import Database from "bun:sqlite";
-import auth from "./auth";
 import { ResponseType, ToResponse } from "./types";
 import { calCount, toSql } from "./list_filter";
 import axios from "axios";
-import { filter } from "lodash";
-import { nanoid } from "nanoid";
 import dayjs from "dayjs";
 
 export interface ListQuery{

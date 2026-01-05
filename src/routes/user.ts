@@ -3,7 +3,6 @@ import { ResponseType, ToResponse } from "./types";
 import { nanoid } from "nanoid";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { get } from "lodash";
 import { getJwtSecret } from "../config";
 
 export class User{
