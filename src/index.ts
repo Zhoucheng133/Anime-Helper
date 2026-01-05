@@ -10,6 +10,7 @@ import { Recent } from "./routes/recent";
 import auth, { refresh } from "./routes/auth";
 import staticPlugin from "@elysiajs/static";
 import { setJwtSecret } from "./config";
+const pkg = await import("../package.json");
 
 import { Search } from "./routes/search";
 const user=new User();
@@ -40,6 +41,7 @@ const app = new Elysia()
       case "/api/login":
       case "/api/auth":
       case "/api/refresh":
+      case "/api/version":
         break;
     
       default:
@@ -85,6 +87,8 @@ const app = new Elysia()
 .post("/api/recent/download", ({ body }) => recent.download(body, db))
 
 .get("/api/search/:keyword", ({ params: { keyword } }) => search.get(keyword))
+
+.get("/api/version", () => pkg.version)
 
 .get("/*", ()=>file("public/index.html"))
 
