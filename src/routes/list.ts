@@ -5,6 +5,7 @@ import { calCount, toSql } from "./list_filter";
 import axios from "axios";
 import { filter } from "lodash";
 import { nanoid } from "nanoid";
+import dayjs from "dayjs";
 
 export interface ListQuery{
   offset: string | undefined,
@@ -168,12 +169,17 @@ export class List{
       });
       const ls=result['data'];
       let updates=0;
+      const airdate=ls[0]['airdate'];
+      const day=dayjs(airdate).day()
       for(let item of ls){
         if(this.isDatePassed(item['airdate'])){
           updates+=1;
         }
       }
-      return ToResponse(true, updates);
+      return ToResponse(true, {
+        day: day,
+        updates: updates,
+      });
     } catch (error) {
       return ToResponse(false, error);
     }
