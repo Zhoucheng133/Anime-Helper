@@ -80,6 +80,9 @@ zhouc1230/anime-helper:latest
 
 ### 更新
 
+> [!NOTE]
+> 更新后会停止下载器监听RSS，更新后请重新启动下载器
+
 ```bash
 # 拉取最新镜像
 docker pull zhouc1230/anime-helper:latest
