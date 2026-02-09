@@ -42,6 +42,7 @@ const app = new Elysia()
       case "/api/auth":
       case "/api/refresh":
       case "/api/version":
+      case "/api/changePassword":
         break;
     
       default:
@@ -55,10 +56,11 @@ const app = new Elysia()
 
 .get('/api/init', () => user.checkInit(db))
 .post("/api/register", ({ body }) => user.register(body, db))
-.post("/api/login", ({body, cookie}) => user.login(body, db, cookie))
-.get("/api/refresh", ({cookie}) => refresh(cookie))
+.post("/api/login", ({ body, cookie }) => user.login(body, db, cookie))
+.get("/api/refresh", ({ cookie }) => refresh(cookie))
+.post("/api/changePassword", ({ body, headers }) => user.changePassword(body, db, headers))
 
-.get("/api/auth", ({headers}) => auth(headers))
+.get("/api/auth", ({ headers }) => auth(headers))
 
 .get("/api/list/get", ({ query }) => list.get(db, query as any))
 .post("/api/list/edit", ({ body })=>list.edit(body, db))

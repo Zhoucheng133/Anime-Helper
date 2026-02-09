@@ -6,7 +6,7 @@ export default async function auth(headers: any): Promise<ResponseType> {
   const token = headers.token;
 
   if (!token) {
-      return ToResponse(false, "未提供令牌");
+    return ToResponse(false, "未提供令牌");
   }
 
   try {

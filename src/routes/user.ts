@@ -3,7 +3,7 @@ import { ResponseType, ToResponse } from "./types";
 import { nanoid } from "nanoid";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { getJwtSecret } from "../config";
+import { getJwtSecret, setJwtSecret } from "../config";
 
 export class User{
 
@@ -87,5 +87,48 @@ export class User{
     })
 
     return ToResponse(true, accessToken);
+  }
+
+  // 修改密码
+  async changePassword(body: any, db: Database, headers: any): Promise<ResponseType>{
+
+    if (!body || !body.password || !body.newPassword) {
+      return ToResponse(false, "参数不正确");
+    }
+
+    const token = headers.token;
+    if (!token) {
+      return ToResponse(false, "未提供令牌");
+    }
+
+    let username: string | undefined;
+
+    try {
+      const jwtData=jwt.decode(token) as any;
+      if (!jwtData || !jwtData.username) {
+        return ToResponse(false, "无效令牌");
+      }
+      username = jwtData.username;
+    } catch (error) {
+      return ToResponse(false, "无效令牌");
+    }
+
+    if (!username) {
+      return ToResponse(false, "无效令牌");
+    }
+
+    const user = db.prepare("SELECT password FROM user WHERE username = ?").get(username) as any;
+    if (!user) {
+      return ToResponse(false, "密码不正确");
+    }
+    const match = bcrypt.compareSync(body.password, user.password);
+    if (!match) {
+      return ToResponse(false, "密码不正确");
+    }
+
+    db.prepare(`UPDATE user SET password = ? WHERE username = ?`).run(bcrypt.hashSync(body.newPassword, 10), username);
+    setJwtSecret(nanoid());
+    
+    return ToResponse(true, "")
   }
 }
