@@ -132,15 +132,40 @@ sudo docker run -d \
 
 ## 下载器配置
 
-## 在Docker上部署Aria服务
+### 在Docker上部署Aria服务
 
 你需要在搭建设备局域网内（或者就在该设备上）有Aria2服务，详细你可以[查看这里](https://github.com/P3TERX/Aria2-Pro-Docker)。如果你通过该文档安装了Aria2，那么默认的Aria2地址为`http://<ip>:16800/jsonrpc`，密码在你通过Docker安装的时候作为参数写入
 
-## 在Docker上部署qBitorrent服务
+### 在Docker上部署qBitorrent服务
 你可以在Docker上部署qBitorrent服务，详细你可以[查看这里](https://hub.docker.com/r/linuxserver/qbittorrent)
 
-## 使用Motrix下载器 (不推荐)
+### 使用Motrix下载器 (不推荐)
 你也可以通过[Motrix](https://motrix.app/zh-CN)作为Aria下载器，其下载端口和密码在该软件的设置中
+
+## 重置用户
+
+如果你忘记了用户名密码，可以这样重置登录用户
+
+### 在你的设备上操作
+1. 停止容器 `sudo docker stop anime-helper`
+2. 下载数据库文件`<存储数据库的位置>/database.db`，建议先备份数据库
+3. 使用支持sqlite3的工具，删除user表的数据
+4. 将修改好的数据库文件复制回`<存储数据库的位置>/database.db`，替代原有的文件
+5. 启动容器 `sudo docker start anime-helper`
+
+### 直接在服务器上操作
+1. 停止容器 `sudo docker stop anime-helper`
+2. 在`存储数据库的位置`上，建议先备份数据库
+   ```bash
+   cp database.db database.db.bak
+   ```
+3. 使用这个命令删除user表:
+   ```bash
+   sqlite3 data.db
+   DELETE FROM user;
+   .quit
+   ```
+4. 重新启动容器 `sudo docker start anime-helper`
 
 ## 一些API
 
