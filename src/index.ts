@@ -9,7 +9,7 @@ import { Downloader } from "./routes/downloader";
 import { Recent } from "./routes/recent";
 import auth, { refresh } from "./routes/auth";
 import staticPlugin from "@elysiajs/static";
-import { setJwtSecret } from "./config";
+import { setAccessSecret, setRefreshSecret } from "./config";
 const pkg = await import("../package.json");
 
 import { Search } from "./routes/search";
@@ -21,11 +21,8 @@ const recent=new Recent();
 const search=new Search();
 
 // JWT_SECRET在生产模式下使用nanoid生成
-
-const JWT_SECRET = nanoid();
-// const JWT_SECRET='Helper';
-
-setJwtSecret(JWT_SECRET);
+setRefreshSecret(nanoid());
+setAccessSecret(nanoid());
 
 const app = new Elysia()
 .use(staticPlugin({

@@ -3,7 +3,7 @@ import { ResponseType, ToResponse } from "./types";
 import { nanoid } from "nanoid";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { getJwtSecret, setJwtSecret } from "../config";
+import { getRefreshSecret, getAccessSecret, setRefreshSecret, setAccessSecret } from "../config";
 
 export class User{
 
@@ -63,7 +63,7 @@ export class User{
       {
         username,
       }, 
-      getJwtSecret(),
+      getAccessSecret(),
       {
         expiresIn: "10m",
       }
@@ -73,7 +73,7 @@ export class User{
       {
         username,
       }, 
-      getJwtSecret(),
+      getRefreshSecret(),
       {
         expiresIn: "30d",
       }
@@ -103,7 +103,8 @@ export class User{
       return ToResponse(false, "旧密码不正确");
     }
     db.prepare("UPDATE user SET password = ? WHERE username = ?").run(bcrypt.hashSync(newPassword, 10), username);
-    setJwtSecret(nanoid());
+    setRefreshSecret(nanoid());
+    setAccessSecret(nanoid());
     return ToResponse(true, "");
   }
 }
