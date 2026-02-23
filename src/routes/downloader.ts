@@ -102,7 +102,6 @@ export async function downloadItem(client: string, host: string, username: strin
         }
       );
     } catch (error) {
-      // this.addLog(false, `下载: ${item.title} 失败`);
       return false;
     }
     return true;
@@ -111,11 +110,57 @@ export async function downloadItem(client: string, host: string, username: strin
     if(!cookie || cookie.length==0){
       return false;
     }else{
-      
       if(await qbitAddMagnetTask(host, cookie, downloadLink)){
         return true;
       }
-      
+    }
+  }else if(client=="transmission"){
+
+    const axiosConfig={
+      auth: {
+        username: username,
+        password: secret
+      },
+      headers: {
+        'X-Transmission-Session-Id': ''
+      }
+    }
+
+    const postData = {
+      method: "torrent-add",
+      arguments: {
+        filename: downloadLink 
+      }
+    };
+
+    try {
+      await axios.post(
+        host,
+        {
+          "method": "torrent-add",
+          "arguments": {
+            "filename": downloadLink 
+          }
+        },
+        {
+          auth: {
+            username: username,
+            password: secret
+          },
+        }
+      );
+    } catch (error: any) {
+      if (error.response && error.response.status === 409) {
+        const sessionId = error.response.headers['x-transmission-session-id'];
+        axiosConfig.headers['X-Transmission-Session-Id'] = sessionId;
+        try {
+          const retryRes = await axios.post(host, postData, axiosConfig);
+          return retryRes.data;
+        } catch (retryError) {
+          return false;
+        }
+      }
+      return false;
     }
   }
   return false
