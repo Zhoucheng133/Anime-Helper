@@ -23,6 +23,8 @@ const search=new Search();
 // JWT_SECRET在生产模式下使用nanoid生成
 setRefreshSecret(nanoid());
 setAccessSecret(nanoid());
+// setRefreshSecret("helper");
+// setAccessSecret("helper");
 
 const app = new Elysia()
 .use(staticPlugin({
