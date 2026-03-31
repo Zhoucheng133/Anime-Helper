@@ -48,13 +48,19 @@ interface Log{
 async function qbitLogin(link: string, username: string, password: string): Promise<string[] | undefined> {
   const body = new URLSearchParams({ username, password });
 
-  const res = await fetch(`${link}/api/v2/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body,
-  });
+  var res: any;
+
+  try {
+    res = await fetch(`${link}/api/v2/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body,
+    });
+  } catch (_) {
+    return [];
+  }
 
   const text = await res.text();
   if (text !== 'Ok.') {
