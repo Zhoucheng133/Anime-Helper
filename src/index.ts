@@ -72,6 +72,7 @@ const app = new Elysia()
 
 .get("/api/downloader/get", () => downloader.get(db))
 .post("/api/downloader/save", ({ body }) => downloader.save(body, db))
+.post("/api/downloader/check", ({ body }) => downloader.check(body))
 
 .post("/api/downloader/list/add", ({ body }) => downloader.addToList(body, db))
 .delete("/api/downloader/list/del/:id", ({params: { id }}) => downloader.delFromList(id, db))

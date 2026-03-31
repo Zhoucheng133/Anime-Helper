@@ -428,6 +428,77 @@ export class Downloader{
     );
   }
 
+  // 检查下载器配置
+  async check(body: any): Promise<ResponseType>{
+    if (!body || !body.data || !this.validConfigItem(body.data)) {
+      return ToResponse(false, "参数不正确");
+    }
+
+    switch (body.data.client) {
+      case "aria":
+        try {
+          const response=await axios.post(
+            `${body.data.link}`,
+            {
+              "jsonrpc": "2.0",
+              "method":"aria2.getVersion",
+              "id": 1,
+              "params":[`token:${body.data.secret}`,]
+            }
+          )
+          return ToResponse(true, response.data['result']['version']);
+        } catch (_) {
+          return ToResponse(false, "");
+        }
+
+      case "qbit":
+        const session=await qbitLogin(body.data.link, body.data.username, body.data.secret)
+        return ToResponse(session!=null && session.length!=0, "");
+
+      case "transmission":
+        const axiosConfig={
+          auth: {
+            username: body.data.username,
+            password: body.data.secret
+          },
+          headers: {
+            'X-Transmission-Session-Id': ''
+          }
+        }
+        try {
+          await axios.post(
+            `${body.data.link}`,
+            {
+              method: "session-get",
+            },
+            axiosConfig
+          )
+        } catch (error: any) {
+          if (error.response && error.response.status === 409) {
+            const sessionId = error.response.headers['x-transmission-session-id'];
+            axiosConfig.headers['X-Transmission-Session-Id'] = sessionId;
+            try {
+              const retryRes = await axios.post(
+                `${body.data.link}`,
+                {
+                  method: "session-get",
+                },
+                axiosConfig
+              );
+              return ToResponse(retryRes.data.result=='success', "");;
+            } catch (retryError) {
+              return ToResponse(false, "");;
+            }
+          }
+          return ToResponse(false, "");
+        }
+    
+      default:
+        return ToResponse(false, "客户端类型不合法");
+    }
+    
+  }
+
   // 保存表单
   async save(body: any, db: Database): Promise<ResponseType>{
     if (!body || !body.data || !this.validConfigItem(body.data)) {
