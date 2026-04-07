@@ -266,9 +266,6 @@ export class Downloader{
     // 注意这里改成官方链接
     if(this.form.type=='mikan'){
       url='https://mikanime.tv/RSS/Classic';
-      // url='http://127.0.0.1:8081'
-    }else if(this.form.type=='acgrip'){
-      url='https://acgrip.art/.xml';
     }else if(this.form.type=='kisssub'){
       url="https://kisssub.org/rss.xml";
     }
