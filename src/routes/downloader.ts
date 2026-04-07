@@ -421,7 +421,9 @@ export class Downloader{
       typeof data.secret === "string" &&
       typeof data.freq === "number" &&
       typeof data.type === "string" &&
-      typeof data.client == "string"
+      typeof data.client == "string" &&
+      (data.type=='mikan' || data.type=='kisssub') &&
+      (data.client=='aria' || data.client=='qbit' || data.client=='transmission')
     );
   }
 
