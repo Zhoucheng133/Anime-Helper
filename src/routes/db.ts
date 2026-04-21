@@ -25,9 +25,19 @@ function initListTable(db: Database){
       title TEXT,
       episode INTEGER,
       now INTEGER,
-      time INTEGER
+      time INTEGER,
+      bgmId TEXT
     )
-  `).run()
+  `).run();
+  
+  const tableInfo = db.prepare("PRAGMA table_info(list)").all() as any[];
+  const hasBgmId = tableInfo.some(column => column.name === 'bgmId');
+
+  if (!hasBgmId) {
+    try {
+      db.prepare("ALTER TABLE list ADD COLUMN bgmId TEXT").run();
+    } catch (_) {}
+  }
 }
 
 function initDownloaderConfigTable(db: Database){
