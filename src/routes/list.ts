@@ -17,6 +17,7 @@ interface ListItem{
   episode: number,
   now: number,
   time: number,
+  bgmId: string,
 }
 
 interface BangumiItem{
@@ -48,7 +49,8 @@ export class List{
       typeof data.title === "string" &&
       typeof data.episode === "number" &&
       typeof data.now === "number" &&
-      typeof data.time === "number"
+      typeof data.time === "number" &&
+      typeof data.bgmId === "string"
     );
   }
 
@@ -60,7 +62,7 @@ export class List{
 
     try {
       const data=body.data as ListItem;
-      db.prepare(`INSERT INTO list VALUES (?, ?, ?, ?, ?)`).run(data.id, data.title, data.episode, data.now, data.time);
+      db.prepare(`INSERT INTO list VALUES (?, ?, ?, ?, ?, ?)`).run(data.id, data.title, data.episode, data.now, data.time, data.bgmId);
     } catch (error) {
       return ToResponse(false, error);
     }
@@ -86,7 +88,7 @@ export class List{
     
     try {
       const data=body.data as ListItem;
-      db.prepare(`UPDATE list SET title = ?, episode = ?, now = ?, time = ? WHERE id = ?`).run(data.title, data.episode, data.now, data.time, data.id);
+      db.prepare(`UPDATE list SET title = ?, episode = ?, now = ?, time = ?, bgmId = ? WHERE id = ?`).run(data.title, data.episode, data.now, data.time, data.id, data.bgmId);
     } catch (error) {
       return ToResponse(false, error);
     }
