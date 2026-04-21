@@ -35,7 +35,7 @@ function initListTable(db: Database){
 
   if (!hasBgmId) {
     try {
-      db.prepare("ALTER TABLE list ADD COLUMN bgmId TEXT").run();
+      db.prepare("ALTER TABLE list ADD COLUMN bgmId TEXT DEFAULT ''").run();
     } catch (_) {}
   }
 }
