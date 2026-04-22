@@ -80,7 +80,7 @@ export class List{
     
     try {
       const data=body.data as ListItem;
-      db.prepare(`UPDATE list SET title = ?, episode = ?, now = ?, time = ?, bgmId = ? WHERE id = ?`).run(data.title, data.episode, data.now, data.time, data.id, data.bgmId);
+      db.prepare(`UPDATE list SET title = ?, episode = ?, now = ?, time = ?, bgmId = ? WHERE id = ?`).run(data.title, data.episode, data.now, data.time, data.bgmId, data.id);
     } catch (error) {
       return ToResponse(false, error);
     }
