@@ -1,8 +1,6 @@
 import Database from "bun:sqlite";
 import { ResponseType, ToResponse } from "./types";
 import { calCount, toSql } from "./list_filter";
-import axios from "axios";
-import dayjs from "dayjs";
 
 export interface ListQuery{
   offset: string | undefined,
@@ -18,12 +16,6 @@ interface ListItem{
   now: number,
   time: number,
   bgmId: string,
-}
-
-interface BangumiItem{
-  id: number,
-  title: string,
-  episode: number,
 }
 
 export class List{
@@ -121,66 +113,6 @@ export class List{
       }
     }else{
       return ToResponse(false, "缺少参数")
-    }
-  }
-
-  // 从BangumiAPI搜索
-  async getFromBangumi(keyword: any): Promise<ResponseType>{
-
-    if(!keyword){
-      return ToResponse(false, "缺少参数");
-    }
-
-    let list: BangumiItem[]=[];
-
-    try {
-      const {data: result}=await axios.post("https://api.bgm.tv/v0/search/subjects", {
-        keyword: keyword,
-        filter: {
-          type: [2],
-        },
-      }, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
-      });
-
-      list=result.data.map((item: any)=>{
-        return {
-          id: item['id'],
-          title: item['name_cn'].length==0 ? item['name'] : item['name_cn'],
-          episode: item['eps'],
-        }
-      })
-    } catch (error) {
-      return ToResponse(false, error);
-    }
-
-    return ToResponse(true, list);
-  }
-
-  async getBangumiItem(id: string): Promise<ResponseType>{
-    try {
-      const {data: result}=await axios.get(`https://api.bgm.tv/v0/episodes?subject_id=${id}`, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
-      });
-      const ls=result['data'];
-      let updates=0;
-      const airdate=ls[0]['airdate'];
-      const day=dayjs(airdate).day()
-      for(let item of ls){
-        if(this.isDatePassed(item['airdate'])){
-          updates+=1;
-        }
-      }
-      return ToResponse(true, {
-        day: day,
-        updates: updates,
-      });
-    } catch (error) {
-      return ToResponse(false, error);
     }
   }
 }

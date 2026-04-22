@@ -4,7 +4,6 @@ import { User } from "./routes/user";
 import { initDB } from "./routes/db";
 import { nanoid } from "nanoid";
 import { List } from "./routes/list";
-import { Calendar } from "./routes/calendar";
 import { Downloader } from "./routes/downloader";
 import { Recent } from "./routes/recent";
 import auth, { refresh } from "./routes/auth";
@@ -13,9 +12,10 @@ import { setAccessSecret, setRefreshSecret } from "./config";
 const pkg = await import("../package.json");
 
 import { Search } from "./routes/search";
+import { Bgm } from "./routes/bgm";
 const user=new User();
 const list=new List();
-const calendar=new Calendar();
+const bgm=new Bgm();
 const downloader=new Downloader();
 const recent=new Recent();
 const search=new Search();
@@ -63,12 +63,12 @@ const app = new Elysia()
 .get("/api/list/get", ({ query }) => list.get(db, query as any))
 .post("/api/list/edit", ({ body })=>list.edit(body, db))
 .post("/api/list/add", ({ body })=>list.add(body, db))
-.get("/api/list/bgm/search/:keyword", ({params: { keyword }})=>list.getFromBangumi(keyword))
-.get("/api/list/bgm/updates/:id", ({params: { id }}) => list.getBangumiItem(id))
+.get("/api/list/bgm/search/:keyword", ({params: { keyword }})=>bgm.search(keyword))
+.get("/api/list/bgm/updates/:id", ({params: { id }}) => bgm.info(id))
 .delete("/api/list/del/:id", ({params: { id }})=>list.del(id, db))
 
-.get("/api/calendar/get", () => calendar.get(db))
-.get("/api/calendar/info/:id", ({params: { id }})=>calendar.info(id))
+.get("/api/calendar/get", () => bgm.calendar(db))
+.get("/api/calendar/info/:id", ({params: { id }})=>bgm.info(id))
 
 .get("/api/downloader/get", () => downloader.get(db))
 .post("/api/downloader/save", ({ body }) => downloader.save(body, db))
