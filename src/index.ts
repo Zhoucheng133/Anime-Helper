@@ -65,6 +65,8 @@ const app = new Elysia()
 .post("/api/list/add", ({ body })=>list.add(body, db))
 .get("/api/list/bgm/search/:keyword", ({params: { keyword }})=>bgm.search(keyword))
 .get("/api/list/bgm/updates/:id", ({params: { id }}) => bgm.info(id))
+.post("/api/list/bind", ({ body })=>list.bind(body, db))
+.post("/api/list/unbind", ({ body })=>list.unbind(body, db))
 .delete("/api/list/del/:id", ({params: { id }})=>list.del(id, db))
 
 .get("/api/calendar/get", () => bgm.calendar(db))

@@ -115,4 +115,38 @@ export class List{
       return ToResponse(false, "缺少参数")
     }
   }
+
+  async bind(body: any, db: Database): Promise<ResponseType>{
+    if (!body || !body.data || !body.data.listId || !body.data.bgmId) {
+      return ToResponse(false, "参数不正确");
+    }
+
+    const {listId, bgmId} = body.data;
+    try {
+      const info = db.prepare(`UPDATE list SET bgmId = ? WHERE id = ?`).run(bgmId, listId);
+      if (info.changes === 0) {
+        return ToResponse(false, "找不到对应的列表记录");
+      }
+    } catch (error) {
+      return ToResponse(false, error);
+    }
+    return ToResponse(true, "");
+  }
+
+  async unbind(body: any, db: Database): Promise<ResponseType>{
+    if (!body || !body.data || !body.data.listId) {
+      return ToResponse(false, "参数不正确");
+    }
+
+    const { listId } = body.data;
+    try {
+      const info=db.prepare(`UPDATE list SET bgmId = "" WHERE id = ?`).run(listId);
+      if (info.changes === 0) {
+        return ToResponse(false, "未找到目标记录或无需解绑");
+      }
+    } catch (error) {
+      return ToResponse(false, error);
+    }
+    return ToResponse(true, "");
+  }
 }
