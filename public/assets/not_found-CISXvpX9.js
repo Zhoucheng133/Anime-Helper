@@ -1,1 +1,0 @@
-import{_ as o,c as t,h as e,o as a}from"./index-BiS1nyEX.js";const c={},n={class:"body"};function d(r,s){return a(),t("div",n,s[0]||(s[0]=[e("div",{class:"content"},[e("i",{class:"pi pi-times"}),e("div",{class:"label"},"404 Not Found")],-1)]))}const i=o(c,[["render",d],["__scopeId","data-v-ee0abaf4"]]);export{i as default};
