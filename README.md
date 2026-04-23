@@ -23,13 +23,14 @@
 ### 列表
 - 手动添加已完结的番剧，并且可以编辑观看进度
 - 手动添加更新中的番剧，你需要添加更新周和已更新的集数，自动计算已经更新的集数
+- 通过Bangmi搜索查看番剧信息
 - 从Bangumi中搜索标题自动添加
 - 你也可以从`每日放送`页面中自动添加更新中的番剧
 - 筛选番剧列表，分类方式有`所有`, `进行中`(没看完的), `更新中`, `已完结`, `已看完`, `搜索`和`更新周`
 
 ### 每日放送
 - 通过Bangumi API获取每周更新的番剧
-- 点击番剧可以自动添加到`列表`中
+- 点击番剧可以查看番剧信息和自动添加到`列表`中
 
 ### 最近更新
 - 显示最近更新的番剧（你可以选择来源是`蜜柑计划`或者`Kisssub`）
@@ -48,12 +49,29 @@
 - 支持添加排除关键字（比如遇到`720P`关键词不会下载）
 
 ## 截图
-<img src="./assets/截图1.png" height="400" />
-<img src="./assets/截图2.png" height="400" />
-<img src="./assets/截图3.png" height="400" />
-<img src="./assets/截图4.png" height="400" />
-<img src="./assets/截图5.png" height="400" />
-<img src="./assets/截图6.png" height="400" />
+
+### 列表
+
+<img src="./demo/list1.png" height="400" />
+<img src="./demo/list2.png" height="400" />
+
+### 每日放送
+
+<img src="./demo/calendar1.png" height="400" />
+<img src="./demo/calendar2.png" height="400" />
+
+### 最近更新
+
+<img src="./demo/recent1.png" height="400" />
+
+### 搜索
+
+<img src="./demo/search1.png" height="400" />
+
+### 下载器
+
+<img src="./demo/downloader1.png" height="400" />
+<img src="./demo/downloader2.png" height="400" />
 
 ## 快速开始
 
