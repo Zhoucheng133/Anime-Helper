@@ -7,8 +7,6 @@
 这个项目由ElysiaJS和Vue开发  
 前端页面的仓库[在这里](https://github.com/Zhoucheng133/Anime-Helper-UI)
 
-如果有帮助到了你，欢迎[给我投喂](https://blog.z-server.top/sponsor/)谢谢 🙏  
-
 ## 目录
 - [功能](#功能)
 - [截图](#截图)
@@ -18,6 +16,7 @@
 - [手动部署](#手动部署)
 - [下载器配置](#下载器配置)
 - [一些API](#一些api)
+- [赞助](#赞助)
 
 ## 功能
 
@@ -193,3 +192,7 @@ sudo docker run -d \
 [Mikan RSS](https://mikanime.tv/RSS/Classic)
 
 [Kisssub RSS](https://kisssub.org/rss.xml)
+
+## 赞助
+
+如果有帮助到了你，欢迎[给我投喂](https://blog.z-server.top/sponsor/)谢谢 🙏  
