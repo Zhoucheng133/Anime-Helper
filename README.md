@@ -4,9 +4,10 @@
 
 ![License](https://img.shields.io/badge/License-MIT-dark_green)
 
-这个项目由ElysiaJS和Vue开发
-
+这个项目由ElysiaJS和Vue开发  
 前端页面的仓库[在这里](https://github.com/Zhoucheng133/Anime-Helper-UI)
+
+如果有帮助到了你，欢迎[给我投喂](https://blog.z-server.top/sponsor/)谢谢 🙏  
 
 ## 目录
 - [功能](#功能)
