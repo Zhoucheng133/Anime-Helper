@@ -96,7 +96,7 @@ export class Bgm{
           title: item['name_cn'].length==0 ? item['name'] : item['name_cn'],
           id: item['id'].toString(),
           eps: item['eps'],
-          image: item['images']['large'],
+          image: item['images']['common'],
         }
       })
     } catch (error) {
@@ -154,7 +154,7 @@ export class Bgm{
           score: response['rating']['score'],
           updates: epData.updates,
           eps: epData.eps,
-          image: response['images']['large'],
+          image: response['images']['common'],
           weekday: epData.weekday,
         }
       }
