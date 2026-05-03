@@ -1,5 +1,4 @@
 .git
 .github
 frontend/node_modules
-frontend/src
 node_modules
