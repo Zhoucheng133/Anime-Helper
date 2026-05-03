@@ -20,6 +20,8 @@
 
 ## 功能
 
+✅ 已支持深色模式
+
 ### 列表
 - 手动添加已完结的番剧，并且可以编辑观看进度
 - 手动添加更新中的番剧，你需要添加更新周和已更新的集数，自动计算已经更新的集数
@@ -119,9 +121,14 @@ zhouc1230/anime-helper:latest
 
 ## 手动部署
 
-1. 下载源代码到你的服务器上
-2. 使用命令生成镜像`sudo docker build -t helper <文件夹目录>`
-3. 使用下面的命令生成容器
+若要手动在Docker上部署，你需要手动克隆仓库，并且获取子模块
+
+```bash
+git clone --recursive https://github.com/Zhoucheng133/Anime-Helper.git
+cd Anime-Helper
+```
+
+生成镜像：`sudo docker build -t helper <文件夹目录>`
 
 ```bash
 sudo docker run -d \
@@ -129,23 +136,6 @@ sudo docker run -d \
 -p <主机端口>:3000 \
 -v <主机上存储数据库的位置>:/app/db \
 --name helper helper
-```
-若要在Docker上部署，文件结构应该是这样
-```
-📁 项目根目录/
-├── 📄 bun.lockb
-├── 📄 Dockerfile
-├── 📄 package.json
-├── 📄 tsconfig.json
-├── 📁 src/
-│   ├── 📄 index.ts
-│   └── 📁 routes/
-│       └── ...其他文件
-├── 📁 public/
-│   ├── 📄 icon.svg
-│   ├── 📄 index.html
-│   └── 📁 assets/
-│       └── ...其他文件
 ```
 
 ## 下载器配置
