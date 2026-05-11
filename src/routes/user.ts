@@ -3,7 +3,7 @@ import { ResponseType, ToResponse } from "./types";
 import { nanoid } from "nanoid";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { getRefreshSecret, getAccessSecret, setRefreshSecret, setAccessSecret } from "../config";
+import { getRefreshSecret, getAccessSecret, updateSecrets } from "../config";
 
 export class User{
 
@@ -91,7 +91,6 @@ export class User{
 
   // 修改密码
   async changePassword(body: any, db: Database, headers: any): Promise<ResponseType>{
-
     if(!body || !body.password || !body.newPassword){
       return ToResponse(false, "参数不正确");
     }
@@ -102,9 +101,11 @@ export class User{
     if (!bcrypt.compareSync(password, user.password)) {
       return ToResponse(false, "旧密码不正确");
     }
-    db.prepare("UPDATE user SET password = ? WHERE username = ?").run(bcrypt.hashSync(newPassword, 10), username);
-    setRefreshSecret(nanoid());
-    setAccessSecret(nanoid());
-    return ToResponse(true, "");
-  }
+    db.prepare("UPDATE user SET password = ? WHERE username = ?")
+      .run(bcrypt.hashSync(newPassword, 10), username);
+    
+    updateSecrets();
+
+    return ToResponse(true, "修改成功，下次登录将生效");
+}
 }

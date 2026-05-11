@@ -2,17 +2,16 @@ import { Elysia, file } from "elysia";
 import { Database } from "bun:sqlite";
 import { User } from "./routes/user";
 import { initDB } from "./routes/db";
-import { nanoid } from "nanoid";
 import { List } from "./routes/list";
 import { Downloader } from "./routes/downloader";
 import { Recent } from "./routes/recent";
 import auth, { refresh } from "./routes/auth";
 import staticPlugin from "@elysiajs/static";
-import { setAccessSecret, setRefreshSecret } from "./config";
 const pkg = await import("../package.json");
 
 import { Search } from "./routes/search";
 import { Bgm } from "./routes/bgm";
+import { loadConfig } from "./config";
 const user=new User();
 const list=new List();
 const bgm=new Bgm();
@@ -20,11 +19,7 @@ const downloader=new Downloader();
 const recent=new Recent();
 const search=new Search();
 
-// JWT_SECRET在生产模式下使用nanoid生成
-setRefreshSecret(nanoid());
-setAccessSecret(nanoid());
-// setRefreshSecret("helper");
-// setAccessSecret("helper");
+loadConfig();
 
 const app = new Elysia()
 .use(staticPlugin({
