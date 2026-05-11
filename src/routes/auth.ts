@@ -29,7 +29,7 @@ export default async function auth(headers: any): Promise<ResponseType> {
 }
 
 export function refresh(cookie: any): ResponseType {  
-  const refresh_token = cookie.refresh_token;
+  const refresh_token = cookie.animehelper_refresh_token;
   if (!refresh_token.value) {
     return ToResponse(false, "没有登录");
   }

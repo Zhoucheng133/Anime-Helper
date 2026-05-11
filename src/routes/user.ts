@@ -79,7 +79,7 @@ export class User{
       }
     );
 
-    cookie.refresh_token.set({
+    cookie.animehelper_refresh_token.set({
       value: refreshToken,
       maxAge: 30 * 24 * 60 * 60,
       httpOnly: true,
