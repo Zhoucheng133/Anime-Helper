@@ -8,7 +8,7 @@ import { Downloader } from "./routes/downloader";
 import { Recent } from "./routes/recent";
 import auth, { refresh } from "./routes/auth";
 import staticPlugin from "@elysiajs/static";
-import { setAccessSecret, setRefreshSecret } from "./config";
+import { getAccessSecret, getRefreshSecret, setAccessSecret, setRefreshSecret } from "./config";
 const pkg = await import("../package.json");
 
 import { Search } from "./routes/search";
@@ -23,6 +23,10 @@ const search=new Search();
 // JWT_SECRET在生产模式下使用nanoid生成
 setRefreshSecret(nanoid());
 setAccessSecret(nanoid());
+
+console.log("[refresh secret]"+getRefreshSecret());
+console.log("[access secret]"+getAccessSecret());
+
 // setRefreshSecret("helper");
 // setAccessSecret("helper");
 
