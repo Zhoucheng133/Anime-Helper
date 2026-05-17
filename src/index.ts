@@ -36,6 +36,7 @@ const app = new Elysia()
       case "/api/auth":
       case "/api/refresh":
       case "/api/version":
+      case "/api/logout":
         break;
     
       default:
