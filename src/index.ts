@@ -50,6 +50,7 @@ const app = new Elysia()
 .get('/api/init', () => user.checkInit(db))
 .post("/api/register", ({ body }) => user.register(body, db))
 .post("/api/login", ({ body, cookie }) => user.login(body, db, cookie))
+.post("/api/logout", ({ cookie }) => user.logout(cookie))
 .get("/api/refresh", ({ cookie }) => refresh(cookie))
 .post("/api/changePassword", ({ body, headers }) => user.changePassword(body, db, headers))
 

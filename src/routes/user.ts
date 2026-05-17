@@ -96,16 +96,29 @@ export class User{
     }
 
     const { password, newPassword } = body;
-    const username = (jwt.decode(headers.token) as any).username;
-    const user = db.prepare("SELECT password FROM user WHERE username = ?").get(username) as any;
-    if (!bcrypt.compareSync(password, user.password)) {
-      return ToResponse(false, "旧密码不正确");
+    try {
+      const decoded = jwt.verify(headers.token, getAccessSecret()) as any;
+      const username = decoded.username;
+      const user = db.prepare("SELECT password FROM user WHERE username = ?").get(username) as any;
+      if (!user || !bcrypt.compareSync(password, user.password)) {
+        return ToResponse(false, "旧密码不正确");
+      }
+      db.prepare("UPDATE user SET password = ? WHERE username = ?")
+        .run(bcrypt.hashSync(newPassword, 10), username);
+      return ToResponse(true, "修改成功，请重新登录");
+    } catch (error) {
+      return ToResponse(false, "身份验证失败或已过期");
     }
-    db.prepare("UPDATE user SET password = ? WHERE username = ?")
-      .run(bcrypt.hashSync(newPassword, 10), username);
-    
-    updateSecrets();
+  }
 
-    return ToResponse(true, "修改成功，下次登录将生效");
-}
+  // 注销
+  logout(cookie: any){
+    cookie.animehelper_refresh_token.set({
+      value: "",
+      maxAge: 0,
+      httpOnly: true,
+      path: "/api/refresh",
+    })
+    return ToResponse(true, "");
+  }
 }
