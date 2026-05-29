@@ -7,6 +7,10 @@
 这个项目由ElysiaJS和Vue开发  
 前端页面的仓库[在这里](https://github.com/Zhoucheng133/Anime-Helper-UI)
 
+> [!NOTE]
+> 由于Bangumi API被墙，本项目使用CloudFlare进行代理，每日10万次请求限制  
+> 如果你有能力建议自行使用CloudFlare进行代理，Worker配置在`cf/index.js`
+
 ## 目录
 - [功能](#功能)
 - [截图](#截图)
@@ -19,9 +23,6 @@
 - [赞助](#赞助)
 
 ## 功能
-
-> [!IMPORTANT]
-> bangumi在2026年5月27日起无法在内地访问，需要使用代理，正在寻找替代方案
 
 ✅ 已支持深色模式
 
