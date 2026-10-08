@@ -27,7 +27,8 @@ loadConfig();
 const app = new Elysia()
 .use(staticPlugin({
   prefix: "/",
-  alwaysStatic: true,
+  assets: "frontend/dist",
+  alwaysStatic: true
 }))
 
 .onBeforeHandle(async ({path, headers})=>{
