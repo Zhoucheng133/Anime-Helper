@@ -1,4 +1,4 @@
-name: Build and Push Docker Image to Docker Hub
+name: Docker Hub Test
 
 on:
   workflow_dispatch:
