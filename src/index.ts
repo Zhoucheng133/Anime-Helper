@@ -93,7 +93,7 @@ const app = new Elysia()
 
 .get("/api/version", () => pkg.version)
 
-.get("/*", ()=>file("public/index.html"))
+.get("/*", ()=>file("frontend/dist/index.html"))
 
 .listen(3000)
 

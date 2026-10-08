@@ -1,14 +1,4 @@
-FROM oven/bun:latest AS frontend-builder
-
-WORKDIR /app/frontend
-
-COPY frontend/package.json frontend/bun.lockb ./
-RUN bun install
-
-COPY frontend/ ./
-RUN bun run build
-
-FROM oven/bun:latest AS final
+FROM oven/bun:latest
 WORKDIR /app
 ENV TZ=Asia/Shanghai
 
@@ -16,7 +6,12 @@ COPY package.json bun.lockb ./
 RUN bun install --production
 
 COPY . .
-COPY --from=frontend-builder /app/frontend/dist ./public
+
+RUN cd frontend \
+&& bun install \
+&& bun run build \
+&& find . -mindepth 1 -maxdepth 1 ! -name dist -exec rm -rf {} + \
+&& rm -rf /app/frontend/node_modules
 
 RUN bun build \
 --compile \
