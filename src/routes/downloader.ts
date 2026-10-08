@@ -177,6 +177,12 @@ export class Downloader{
 
   constructor(db: Database) {
     this.db = db;
+    try {
+      const config = this.db.prepare(`SELECT running, saverunning FROM config WHERE id = '0'`).get() as { running: number, saverunning: number } | undefined;
+      if (config && config.running === 1 && config.saverunning === 1) {
+        this.run();
+      }
+    } catch (_) {}
   }
 
   interval: any;
@@ -330,6 +336,10 @@ export class Downloader{
         this.mainloop()
       }, intervalTime);
 
+    try {
+      this.db.prepare(`UPDATE config SET running = 1 WHERE id = '0'`).run();
+    } catch (_) {}
+
     return ToResponse(true, "");
   }
 
@@ -340,6 +350,11 @@ export class Downloader{
     clearInterval(this.interval);
     this.interval=undefined;
     this.addLog(true, "停止运行");
+
+    try {
+      this.db.prepare(`UPDATE config SET running = 0 WHERE id = '0'`).run();
+    } catch (_) {}
+
     return ToResponse(true, "");
   }
 
