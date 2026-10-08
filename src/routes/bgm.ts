@@ -34,6 +34,12 @@ interface BgmEpisode{
 }
 
 export class Bgm{
+  private db: Database;
+
+  constructor(db: Database) {
+    this.db = db;
+  }
+
   isDatePassed(dateString: string): boolean {
     const inputDate = new Date(dateString);
     const today = new Date();
@@ -41,7 +47,7 @@ export class Bgm{
     return inputDate <= today;
   }
 
-  async calendar(db: Database): Promise<ResponseType>{
+  async calendar(): Promise<ResponseType>{
     let ls: CalendarItem[][] = [];
     try {
       const response = (await axios.get(`${bgmMirror}/calendar`, {
@@ -54,7 +60,7 @@ export class Bgm{
         item.name_cn.length === 0 ? item.name : item.name_cn
       ));
       const placeholders = allTitles.map(() => "?").join(", ");
-      const existingTitlesSet = new Set(db.prepare(
+      const existingTitlesSet = new Set(this.db.prepare(
         `SELECT title FROM list WHERE title IN (${placeholders})`
       ).all(...allTitles).map((row: any) => row.title));
       ls = response.map((day: any) => day.items.map((item: any) => ({

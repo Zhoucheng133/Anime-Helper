@@ -15,12 +15,18 @@ export interface DownloadItem{
 }
 
 export class Recent{
-  async download(body: any, db: Database): Promise<ResponseType>{
+  private db: Database;
+
+  constructor(db: Database) {
+    this.db = db;
+  }
+
+  async download(body: any): Promise<ResponseType>{
     if (!body || !body.link) {
       return ToResponse(false, "参数不正确");
     }
     const url=body.link;
-    const config=db.prepare(`SELECT link, secret, client, username FROM downloader_config`).get() as DownloaderConfigType;
+    const config=this.db.prepare(`SELECT link, secret, client, username FROM downloader_config`).get() as DownloaderConfigType;
     if(!config || !config.link || !config.client){
       return ToResponse(false, "没有配置下载器");
     }

@@ -21,6 +21,11 @@ interface ListItem{
 }
 
 export class List{
+  private db: Database;
+
+  constructor(db: Database) {
+    this.db = db;
+  }
 
   isDatePassed(dateString: string): boolean {
     const inputDate = new Date(dateString);
@@ -49,7 +54,7 @@ export class List{
   }
 
   // 添加项
-  async add(body: any, db: Database): Promise<ResponseType>{
+  async add(body: any): Promise<ResponseType>{
     if (!body || !body.data || !this.validItem(body.data)) {
       return ToResponse(false, "参数不正确");
     }
@@ -64,7 +69,7 @@ export class List{
         }
       );
       const pinyinResult = pinyinArray.flat().join("").toLowerCase().trim();
-      db.prepare(`INSERT INTO list (id, title, episode, now, time, bgmId, pinyin) VALUES (?, ?, ?, ?, ?, ?, ?)`).run(data.id, data.title, data.episode, data.now, data.time, data.bgmId, pinyinResult);
+      this.db.prepare(`INSERT INTO list (id, title, episode, now, time, bgmId, pinyin) VALUES (?, ?, ?, ?, ?, ?, ?)`).run(data.id, data.title, data.episode, data.now, data.time, data.bgmId, pinyinResult);
     } catch (error) {
       return ToResponse(false, error);
     }
@@ -73,9 +78,9 @@ export class List{
   }
 
   // 删除项
-  async del(id: string, db: Database): Promise<ResponseType>{
+  async del(id: string): Promise<ResponseType>{
     try {
-      db.prepare(`DELETE FROM list WHERE id = ?`).run(id);
+      this.db.prepare(`DELETE FROM list WHERE id = ?`).run(id);
     } catch (error) {
       return ToResponse(false, error);
     }
@@ -83,7 +88,7 @@ export class List{
   }
 
   // 编辑列表
-  async edit(body: any, db: Database): Promise<ResponseType>{
+  async edit(body: any): Promise<ResponseType>{
     if (!body || !body.data || !this.validItem(body.data)) {
       return ToResponse(false, "参数不正确");
     }
@@ -98,7 +103,7 @@ export class List{
         }
       );
       const pinyinResult = pinyinArray.flat().join("").toLowerCase().trim();
-      db.prepare(`UPDATE list SET title = ?, episode = ?, now = ?, time = ?, bgmId = ?, pinyin = ? WHERE id = ?`).run(data.title, data.episode, data.now, data.time, data.bgmId, pinyinResult, data.id);
+      this.db.prepare(`UPDATE list SET title = ?, episode = ?, now = ?, time = ?, bgmId = ?, pinyin = ? WHERE id = ?`).run(data.title, data.episode, data.now, data.time, data.bgmId, pinyinResult, data.id);
     } catch (error) {
       return ToResponse(false, error);
     }
@@ -106,7 +111,7 @@ export class List{
   }
 
   // 获取列表
-  async get(db: Database, query: ListQuery): Promise<ResponseType>{
+  async get(query: ListQuery): Promise<ResponseType>{
     if(query.filter && query.offset && query.limit){
       if(!this.validFilter(query.filter)){
         return ToResponse(false, "筛选方式不合法");
@@ -123,10 +128,10 @@ export class List{
         }
       }
       try {
-        const countResult = db.prepare(calCount(query.filter, query.param)).get() as any;
+        const countResult = this.db.prepare(calCount(query.filter, query.param)).get() as any;
         const totalCount = countResult ? countResult.count : 0;
 
-        const listData=db.prepare(toSql(query.filter, query.param, query.sort)).all(query.limit, query.offset)
+        const listData=this.db.prepare(toSql(query.filter, query.param, query.sort)).all(query.limit, query.offset)
         
         return ToResponse(true, {
           length: totalCount,
@@ -140,14 +145,14 @@ export class List{
     }
   }
 
-  async bind(body: any, db: Database): Promise<ResponseType>{
+  async bind(body: any): Promise<ResponseType>{
     if (!body || !body.data || !body.data.listId || !body.data.bgmId) {
       return ToResponse(false, "参数不正确");
     }
 
     const {listId, bgmId} = body.data;
     try {
-      const info = db.prepare(`UPDATE list SET bgmId = ? WHERE id = ?`).run(bgmId, listId);
+      const info = this.db.prepare(`UPDATE list SET bgmId = ? WHERE id = ?`).run(bgmId, listId);
       if (info.changes === 0) {
         return ToResponse(false, "找不到对应的列表记录");
       }
@@ -157,14 +162,14 @@ export class List{
     return ToResponse(true, "");
   }
 
-  async unbind(body: any, db: Database): Promise<ResponseType>{
+  async unbind(body: any): Promise<ResponseType>{
     if (!body || !body.data || !body.data.listId) {
       return ToResponse(false, "参数不正确");
     }
 
     const { listId } = body.data;
     try {
-      const info=db.prepare(`UPDATE list SET bgmId = "" WHERE id = ?`).run(listId);
+      const info=this.db.prepare(`UPDATE list SET bgmId = "" WHERE id = ?`).run(listId);
       if (info.changes === 0) {
         return ToResponse(false, "未找到目标记录或无需解绑");
       }

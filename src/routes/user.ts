@@ -6,18 +6,23 @@ import jwt from 'jsonwebtoken';
 import { getRefreshSecret, getAccessSecret, updateSecrets } from "../config";
 
 export class User{
+  private db: Database;
+
+  constructor(db: Database) {
+    this.db = db;
+  }
 
   // 检查是否需要注册(true/false)
-  checkInit(db: Database): ResponseType {
-    const rowCount = db
+  checkInit(): ResponseType {
+    const rowCount = this.db
       .prepare("SELECT COUNT(*) AS count FROM user")
       .get() as { count: number };
     return ToResponse(true, rowCount.count === 0);
   }
 
   // 注册
-  register(body: any, db: Database): ResponseType{
-    const rowCount = db
+  register(body: any): ResponseType{
+    const rowCount = this.db
       .prepare("SELECT COUNT(*) AS count FROM user")
       .get() as { count: number };
     if(rowCount.count != 0){
@@ -29,12 +34,12 @@ export class User{
     }
     const { username, password } = body;
     try {
-      const existingUser = db.prepare("SELECT * FROM user WHERE username = ?").get(username);
+      const existingUser = this.db.prepare("SELECT * FROM user WHERE username = ?").get(username);
       if (existingUser) {
         return ToResponse(false, "用户名已存在");
       }
       const id=nanoid();
-      db.prepare("INSERT INTO user (id, username, password) VALUES (?, ?, ?)")
+      this.db.prepare("INSERT INTO user (id, username, password) VALUES (?, ?, ?)")
         .run(id, username, bcrypt.hashSync(password, 10));
       return ToResponse(true, "");
     } catch (error) {
@@ -43,14 +48,14 @@ export class User{
   }
 
   // 登录
-  async login(body: any, db: Database, cookie: any): Promise<ResponseType>{
+  async login(body: any, cookie: any): Promise<ResponseType>{
     if (!body || !body.username || !body.password) {
       return ToResponse(false, "参数不正确");
     }
 
     const { username, password } = body;
 
-    const user = db.prepare("SELECT password FROM user WHERE username = ?").get(username) as any;
+    const user = this.db.prepare("SELECT password FROM user WHERE username = ?").get(username) as any;
     if (!user) {
       return ToResponse(false, "用户名或密码不正确");
     }
@@ -90,7 +95,7 @@ export class User{
   }
 
   // 修改密码
-  async changePassword(body: any, db: Database, headers: any): Promise<ResponseType>{
+  async changePassword(body: any, headers: any): Promise<ResponseType>{
     if(!body || !body.password || !body.newPassword){
       return ToResponse(false, "参数不正确");
     }
@@ -99,11 +104,11 @@ export class User{
     try {
       const decoded = jwt.verify(headers.token, getAccessSecret()) as any;
       const username = decoded.username;
-      const user = db.prepare("SELECT password FROM user WHERE username = ?").get(username) as any;
+      const user = this.db.prepare("SELECT password FROM user WHERE username = ?").get(username) as any;
       if (!user || !bcrypt.compareSync(password, user.password)) {
         return ToResponse(false, "旧密码不正确");
       }
-      db.prepare("UPDATE user SET password = ? WHERE username = ?")
+      this.db.prepare("UPDATE user SET password = ? WHERE username = ?")
         .run(bcrypt.hashSync(newPassword, 10), username);
       return ToResponse(true, "修改成功，请重新登录");
     } catch (error) {

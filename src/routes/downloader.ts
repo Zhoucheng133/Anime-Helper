@@ -173,6 +173,11 @@ export async function downloadItem(client: string, host: string, username: strin
 }
 
 export class Downloader{
+  private db: Database;
+
+  constructor(db: Database) {
+    this.db = db;
+  }
 
   interval: any;
 
@@ -188,9 +193,9 @@ export class Downloader{
     client: "",
   }
 
-  updateForm(db: Database): ResponseType{
+  updateForm(): ResponseType{
     try {
-      const sqlConfig = db.prepare(`SELECT * FROM downloader_config`).get() as DownloaderConfigType || null;
+      const sqlConfig = this.db.prepare(`SELECT * FROM downloader_config`).get() as DownloaderConfigType || null;
       if(sqlConfig!=null){
         this.form={
           ...this.form,
@@ -201,8 +206,8 @@ export class Downloader{
         }
       }
 
-      const sqlList=db.prepare(`SELECT * FROM downloader_list`).all() as DownloaderListType[];
-      const sqlExclude=db.prepare(`SELECT * FROM downloader_exclude`).all() as DownloaderExcludeType[];
+      const sqlList=this.db.prepare(`SELECT * FROM downloader_list`).all() as DownloaderListType[];
+      const sqlExclude=this.db.prepare(`SELECT * FROM downloader_exclude`).all() as DownloaderExcludeType[];
 
       this.form={
         ...this.form,
@@ -311,11 +316,11 @@ export class Downloader{
     return ToResponse(true, this.log);
   }
 
-  async run(db: Database): Promise<ResponseType>{
+  async run(): Promise<ResponseType>{
     if(this.interval!=undefined){
       return ToResponse(false, "在运行中");
     }
-    this.updateForm(db);
+    this.updateForm();
     this.addLog(true, "开始运行");
     this.mainloop()
       let intervalTime=this.form.freq*1000*60;
@@ -338,8 +343,8 @@ export class Downloader{
     return ToResponse(true, "");
   }
 
-  async get(db: Database): Promise<ResponseType> { 
-    return this.updateForm(db)
+  async get(): Promise<ResponseType> { 
+    return this.updateForm()
   }
 
   validListItem(data: any): boolean{
@@ -360,57 +365,57 @@ export class Downloader{
   }
 
   // 添加到下载列表
-  async addToList(body: any, db: Database): Promise<ResponseType>{
+  async addToList(body: any): Promise<ResponseType>{
     if (!body || !body.data || !this.validListItem(body.data)) {
       return ToResponse(false, "参数不正确");
     }
 
     try {
       const data=body.data as DownloaderListType;
-      db.prepare(`INSERT INTO downloader_list VALUES (?, ?, ?)`).run(data.id, data.title, data.ass);
+      this.db.prepare(`INSERT INTO downloader_list VALUES (?, ?, ?)`).run(data.id, data.title, data.ass);
     } catch (error) {
       return ToResponse(false, error);
     }
-    this.updateForm(db);
+    this.updateForm();
     return ToResponse(true, "");
 
   }
 
   // 从下载列表中删除
-  async delFromList(id: string, db: Database): Promise<ResponseType>{
+  async delFromList(id: string): Promise<ResponseType>{
     try {
-      db.prepare(`DELETE FROM downloader_list WHERE id = ?`).run(id);
+      this.db.prepare(`DELETE FROM downloader_list WHERE id = ?`).run(id);
     } catch (error) {
       return ToResponse(false, error);
     }
-    this.updateForm(db);
+    this.updateForm();
     return ToResponse(true, "");
   }
 
   // 添加排除项目
-  async addToExclude(body: any, db: Database): Promise<ResponseType>{
+  async addToExclude(body: any): Promise<ResponseType>{
     if (!body || !body.data || !this.validExcludeItem(body.data)) {
       return ToResponse(false, "参数不正确");
     }
 
     try {
       const data=body.data as DownloaderExcludeType;
-      db.prepare(`INSERT INTO downloader_exclude VALUES (?, ?)`).run(data.id, data.key);
+      this.db.prepare(`INSERT INTO downloader_exclude VALUES (?, ?)`).run(data.id, data.key);
     } catch (error) {
       return ToResponse(false, error);
     }
-    this.updateForm(db);
+    this.updateForm();
     return ToResponse(true, "");
   }
 
   // 删除排除项目
-  async delFromExclude(id: string, db: Database): Promise<ResponseType>{
+  async delFromExclude(id: string): Promise<ResponseType>{
     try {
-      db.prepare(`DELETE FROM downloader_exclude WHERE id = ?`).run(id);
+      this.db.prepare(`DELETE FROM downloader_exclude WHERE id = ?`).run(id);
     } catch (error) {
       return ToResponse(false, error);
     }
-    this.updateForm(db);
+    this.updateForm();
     return ToResponse(true, "");
   }
 
@@ -499,19 +504,19 @@ export class Downloader{
   }
 
   // 保存表单
-  async save(body: any, db: Database): Promise<ResponseType>{
+  async save(body: any): Promise<ResponseType>{
     if (!body || !body.data || !this.validConfigItem(body.data)) {
       return ToResponse(false, "参数不正确");
     }
     
     try {
       const data=body.data as DownloaderConfigType;
-      db.prepare(`INSERT OR REPLACE INTO downloader_config (id, link, secret, freq, type, client, username) VALUES (?, ?, ?, ?, ?, ?, ?)`)
+      this.db.prepare(`INSERT OR REPLACE INTO downloader_config (id, link, secret, freq, type, client, username) VALUES (?, ?, ?, ?, ?, ?, ?)`)
       .run("0", data.link, data.secret, data.freq, data.type, data.client, data.username??"");
     } catch (error) {
       return ToResponse(false, error);
     }
-    this.updateForm(db);
+    this.updateForm();
     return ToResponse(true, "");
   }
 }
