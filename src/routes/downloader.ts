@@ -45,6 +45,10 @@ interface Log{
   time: number
 }
 
+interface SaveRunning{
+  saverunning: number
+}
+
 async function qbitLogin(link: string, username: string, password: string): Promise<string[] | undefined> {
   const body = new URLSearchParams({ username, password });
 
@@ -214,16 +218,20 @@ export class Downloader{
 
       const sqlList=this.db.prepare(`SELECT * FROM downloader_list`).all() as DownloaderListType[];
       const sqlExclude=this.db.prepare(`SELECT * FROM downloader_exclude`).all() as DownloaderExcludeType[];
+      const saverunning=this.db.prepare(`SELECT saverunning FROM config WHERE id = '0'`).get() as SaveRunning;
 
       this.form={
         ...this.form,
         list: sqlList,
         exclude: sqlExclude,
       }
+      return ToResponse(true, {
+        ...this.form,
+        ...saverunning,
+      });
     } catch (error) {
       return ToResponse(false, error);
     }
-    return ToResponse(true, this.form);
   }
 
   log: Log[]=[];
