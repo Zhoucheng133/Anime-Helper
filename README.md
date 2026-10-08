@@ -92,6 +92,7 @@
 sudo docker run -d \
 --restart always \
 --name anime-helper \
+-e TZ=Asia/Shanghai \
 -p <主机端口>:3000 \
 -v <主机上存储数据库的位置*>:/app/db \
 zhouc1230/anime-helper:latest
@@ -118,28 +119,10 @@ docker rm anime-helper
 sudo docker run -d \
 --restart always \
 --name anime-helper \
+-e TZ=Asia/Shanghai \
 -p <主机端口>:3000 \
 -v <主机上存储数据库的位置>:/app/db \
 zhouc1230/anime-helper:latest
-```
-
-## 手动部署
-
-若要手动在Docker上部署，你需要手动克隆仓库，并且获取子模块
-
-```bash
-git clone --recursive https://github.com/Zhoucheng133/Anime-Helper.git
-cd Anime-Helper
-```
-
-生成镜像：`sudo docker build -t helper <文件夹目录>`
-
-```bash
-sudo docker run -d \
---restart always \
--p <主机端口>:3000 \
--v <主机上存储数据库的位置>:/app/db \
---name helper helper
 ```
 
 ## 下载器配置

@@ -1,6 +1,5 @@
 FROM oven/bun:latest
 WORKDIR /app
-ENV TZ=Asia/Shanghai
 
 COPY package.json bun.lockb ./
 RUN bun install --production
