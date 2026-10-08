@@ -47,3 +47,5 @@ src/routes/test.ts
 
 test
 public/**
+
+server
