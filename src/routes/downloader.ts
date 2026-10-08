@@ -542,4 +542,18 @@ export class Downloader{
     this.updateForm();
     return ToResponse(true, "");
   }
+
+  // 保存运行状态
+  async saveRunning(body: any){
+    if (!body || body.save==undefined || typeof body.save!="boolean") {
+      return ToResponse(false, "参数不正确");
+    }
+    try {
+      this.db.prepare(`UPDATE config SET saverunning = ? WHERE id = '0'`)
+      .run(body.save==true ? 1 : 0);
+    } catch (error) {
+      return ToResponse(false, error);
+    }
+    return ToResponse(true, "");
+  }
 }

@@ -75,12 +75,11 @@ const app = new Elysia()
 .get("/api/downloader/get", () => downloader.get())
 .post("/api/downloader/save", ({ body }) => downloader.save(body))
 .post("/api/downloader/check", ({ body }) => downloader.check(body))
-
 .post("/api/downloader/list/add", ({ body }) => downloader.addToList(body))
 .delete("/api/downloader/list/del/:id", ({params: { id }}) => downloader.delFromList(id))
-
 .post("/api/downloader/exclude/add", ({ body }) => downloader.addToExclude(body))
 .delete("/api/downloader/exclude/del/:id", ({params: { id }}) => downloader.delFromExclude(id))
+.post("/api/downloader/saverunning", ({ body }) => downloader.saveRunning(body))
 
 .post("/api/download/run", () => downloader.run())
 .post("/api/download/stop", () => downloader.stop())
