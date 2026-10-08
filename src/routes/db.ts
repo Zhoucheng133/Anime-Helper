@@ -4,6 +4,7 @@ import pinyin from "pinyin";
 export function initDB(db: Database){
   initUserTable(db);
   initListTable(db);
+  initConfigTable(db);
   initDownloaderConfigTable(db);
   initDownloaderListTable(db);
   initDownloaderExcludeTable(db);
@@ -75,6 +76,21 @@ function initListTable(db: Database){
     } catch (_) {}
   }
   syncHistoryPinyin(db);
+}
+
+function initConfigTable(db: Database){
+  db.prepare(`
+    CREATE TABLE IF NOT EXISTS config (
+      id TEXT PRIMARY KEY,
+      running INTEGER DEFAULT 0,
+      saverunning INTEGER DEFAULT 1
+    )
+  `).run();
+
+  const row = db.prepare(`SELECT * FROM config WHERE id = '0'`).get();
+  if (!row) {
+    db.prepare(`INSERT INTO config (id, running, saverunning) VALUES ('0', 0, 1)`).run();
+  }
 }
 
 function initDownloaderConfigTable(db: Database){
