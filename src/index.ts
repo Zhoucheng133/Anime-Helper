@@ -1,7 +1,7 @@
 import { Elysia, file } from "elysia";
 import { Database } from "bun:sqlite";
 import { User } from "./routes/user";
-import { initDB } from "./routes/db";
+import { initDB } from "./config/db";
 import { List } from "./routes/list";
 import { Downloader } from "./routes/downloader";
 import { Recent } from "./routes/recent";
