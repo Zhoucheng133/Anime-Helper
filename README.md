@@ -9,7 +9,7 @@
 前端页面的仓库[在这里](https://github.com/Zhoucheng133/Anime-Helper-UI)
 
 > [!NOTE]
-> 由于Bangumi API被墙，本项目使用CloudFlare进行代理，每日10万次请求限制
+> 由于Bangumi API被墙，你可以使用我的代理服务转发Bangumi API，每日10万次请求限制
 
 ## 目录
 - [功能](#功能)
@@ -83,45 +83,73 @@
 
 ### 部署
 
-本项目需要使用Docker进行配置
+本项目需要使用 Docker 进行配置。
 
 > [!NOTE]
-> 你需要修改下面命令中带有尖括号的内容（包括尖括号本身）
+> 你需要修改下面命令中带有尖括号的内容（包括尖括号本身）。
 
 ```bash
 sudo docker run -d \
 --restart always \
 --name anime-helper \
--e TZ=Asia/Shanghai \
+-e TZ=<时区> \
+-e bgmAPI=<bangumi api镜像> \
+-e bgmLain=<bangumi lain镜像> \
 -p <主机端口>:3000 \
 -v <主机上存储数据库的位置*>:/app/db \
 zhouc1230/anime-helper:latest
 ```
 
-*任意，保证存在并且可以读写的目录即可
+| 参数 | 内容说明 |
+| - | - |
+| `TZ` | 时区，例如 `Asia/Shanghai` |
+| `bgmAPI` | Bangumi API 镜像地址（**可选**，若网络环境可直接访问 Bangumi 则**不需要**设置） |
+| `bgmLain` | Bangumi Lain 镜像地址（**可选**，若网络环境可直接访问 Bangumi 则**不需要**设置） |
+| `<主机端口>` | 映射到宿主机的端口，例如 `3000` |
+| `<主机上存储数据库的位置*>` | 主机上存储数据库的绝对路径，保证存在并且可以读写的目录即可 |
+
+> [!TIP]
+> **部署示例**：
+> 如果你的网络环境可以直接访问 Bangumi，且希望将容器端口映射为 `3000`，数据库存放在 `/opt/anime-helper/db`，时区设为中国上海，使用我的代理服务，可以使用以下命令：
+> ```bash
+> sudo docker run -d \
+> --restart always \
+> --name anime-helper \
+> -e TZ=Asia/Shanghai \
+> -e bgmAPI=bgm.zhouc1230.top \
+> -e bgmLain=bgm.zhouc1230.top \
+> -p 5000:3000 \
+> -v /opt/anime-helper/db:/app/db \
+> zhouc1230/anime-helper:latest
+> ```
 
 > [!IMPORTANT]
-> 如果你使用Kisssub作为RSS源，会自动将获取到的列表翻译成简体中文，因此请以`最近更新`或者`搜索`页面的结果为准
+> 如果你使用 Kisssub 作为 RSS 源，会自动将获取到的列表翻译成简体中文，因此请以`最近更新`或者`搜索`页面的结果为准。
 
 ### 更新
 
 > [!NOTE]
-> 更新后会停止下载器监听RSS，更新后请重新启动下载器
+> 更新后可能会中断下载器的 RSS 监听，更新完成后请检查并根据需要重新启动下载器。
+
+你可以通过以下命令更新到最新版本（以部署示例中的配置为例）：
 
 ```bash
-# 拉取最新镜像
+# 1. 拉取最新镜像
 docker pull zhouc1230/anime-helper:latest
-# 停止旧容器
+
+# 2. 停止旧容器
 docker stop anime-helper
-# 删除旧容器
+
+# 3. 删除旧容器
 docker rm anime-helper
-# 启动新容器
+
+# 4. 使用原有配置启动新容器（请根据你的实际部署参数调整）
 sudo docker run -d \
 --restart always \
 --name anime-helper \
 -e TZ=Asia/Shanghai \
--p <主机端口>:3000 \
--v <主机上存储数据库的位置>:/app/db \
+-p 3000:3000 \
+-v /opt/anime-helper/db:/app/db \
 zhouc1230/anime-helper:latest
 ```
 
