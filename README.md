@@ -103,8 +103,8 @@ zhouc1230/anime-helper:latest
 | 参数 | 内容说明 |
 | - | - |
 | `TZ` | 时区，例如 `Asia/Shanghai` |
-| `bgmAPI` | Bangumi API 镜像地址（**可选**，若网络环境可直接访问 Bangumi 则**不需要**设置） |
-| `bgmLain` | Bangumi Lain 镜像地址（**可选**，若网络环境可直接访问 Bangumi 则**不需要**设置） |
+| `bgmAPI` | Bangumi API 镜像地址，结尾不要有`/`<br/>**可选**，若网络环境可直接访问 Bangumi 则**不需要**设置 |
+| `bgmLain` | Bangumi Lain 镜像地址，结尾不要有`/`<br/>**可选**，若网络环境可直接访问 Bangumi 则**不需要**设置 |
 | `<主机端口>` | 映射到宿主机的端口，例如 `3000` |
 | `<主机上存储数据库的位置*>` | 主机上存储数据库的绝对路径，保证存在并且可以读写的目录即可 |
 
@@ -116,8 +116,8 @@ zhouc1230/anime-helper:latest
 > --restart always \
 > --name anime-helper \
 > -e TZ=Asia/Shanghai \
-> -e bgmAPI=bgm.zhouc1230.top \
-> -e bgmLain=bgm.zhouc1230.top \
+> -e bgmAPI=https://bgm.zhouc1230.top \
+> -e bgmLain=https://bgm.zhouc1230.top \
 > -p 5000:3000 \
 > -v /opt/anime-helper/db:/app/db \
 > zhouc1230/anime-helper:latest
@@ -148,6 +148,8 @@ sudo docker run -d \
 --restart always \
 --name anime-helper \
 -e TZ=Asia/Shanghai \
+-e bgmAPI=https://bgm.zhouc1230.top \
+-e bgmLain=https://bgm.zhouc1230.top \
 -p 3000:3000 \
 -v /opt/anime-helper/db:/app/db \
 zhouc1230/anime-helper:latest
