@@ -9,7 +9,8 @@
 前端页面的仓库[在这里](https://github.com/Zhoucheng133/Anime-Helper-UI)
 
 > [!NOTE]
-> 由于Bangumi API被墙，你可以使用我的代理服务转发Bangumi API，每日10万次请求限制
+> 由于Bangumi API被墙，你可以使用我的代理服务转发Bangumi API，每日10万次请求限制  
+> 本人不确保镜像的速度和稳定性
 
 ## 目录
 - [功能](#功能)
@@ -128,9 +129,6 @@ zhouc1230/anime-helper:latest
 
 ### 更新
 
-> [!NOTE]
-> 更新后可能会中断下载器的 RSS 监听，更新完成后请检查并根据需要重新启动下载器。
-
 你可以通过以下命令更新到最新版本（以部署示例中的配置为例）：
 
 ```bash
@@ -150,7 +148,7 @@ sudo docker run -d \
 -e TZ=Asia/Shanghai \
 -e bgmAPI=https://bgm.zhouc1230.top \
 -e bgmLain=https://bgm.zhouc1230.top \
--p 3000:3000 \
+-p 5000:3000 \
 -v /opt/anime-helper/db:/app/db \
 zhouc1230/anime-helper:latest
 ```
