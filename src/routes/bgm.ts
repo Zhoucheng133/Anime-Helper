@@ -2,7 +2,7 @@ import axios from "axios";
 import Database from "bun:sqlite";
 import { ResponseType, ToResponse } from "./types";
 import dayjs from "dayjs";
-import { bgmMirror } from "../config/url";
+import { bgmAPI, bgmLain } from "../config/url";
 
 interface CalendarItem{
   id: number,
@@ -50,7 +50,7 @@ export class Bgm{
   async calendar(): Promise<ResponseType>{
     let ls: CalendarItem[][] = [];
     try {
-      const response = (await axios.get(`${bgmMirror}/calendar`, {
+      const response = (await axios.get(`${bgmAPI}/calendar`, {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
           'Content-Type': "application/json",
@@ -88,7 +88,7 @@ export class Bgm{
     let list: BgmSearchItem[]=[];
 
     try {
-      const {data: result}=await axios.post(`${bgmMirror}/v0/search/subjects`, {
+      const {data: result}=await axios.post(`${bgmAPI}/v0/search/subjects`, {
         keyword: keyword,
         filter: {
           type: [2],
@@ -104,7 +104,7 @@ export class Bgm{
           title: item['name_cn'].length==0 ? item['name'] : item['name_cn'],
           id: item['id'].toString(),
           eps: item['eps'],
-          image: item['images']['common'].replace("https://lain.bgm.tv", bgmMirror),
+          image: item['images']['common'].replace("https://lain.bgm.tv", bgmLain),
         }
       })
     } catch (error) {
@@ -119,7 +119,7 @@ export class Bgm{
     let updates=0;
     let day=0;
     try {
-      const response=(await axios.get(`${bgmMirror}/v0/episodes?subject_id=${id}`, {
+      const response=(await axios.get(`${bgmAPI}/v0/episodes?subject_id=${id}`, {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         }
@@ -146,7 +146,7 @@ export class Bgm{
   async info(id: string): Promise<ResponseType>{
 
     try {
-      const response=(await axios.get(`${bgmMirror}/v0/subjects/${id}`, {
+      const response=(await axios.get(`${bgmAPI}/v0/subjects/${id}`, {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         }
@@ -162,7 +162,7 @@ export class Bgm{
           score: response['rating']['score'],
           updates: epData.updates,
           eps: epData.eps,
-          image: response['images']['common'].replace("https://lain.bgm.tv", bgmMirror),
+          image: response['images']['common'].replace("https://lain.bgm.tv", bgmLain),
           weekday: epData.weekday,
         }
       }
