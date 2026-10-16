@@ -66,8 +66,8 @@ async function qbitLogin(link: string, username: string, password: string): Prom
     return [];
   }
 
-  const text = await res.text();
-  if (text !== 'Ok.') {
+  const status = await res.status;
+  if (status < 200 || status >= 300) {
     return [];
   }
 
@@ -91,7 +91,7 @@ async function qbitAddMagnetTask(link: string, cookie: string[], magnetLink: str
     body: form,
   });
 
-  return res.status === 200;
+  return res.status >= 200 && res.status < 300;
 }
 
 
