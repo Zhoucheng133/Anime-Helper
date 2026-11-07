@@ -68,7 +68,7 @@ export class Bgm{
         id: item.id,
         title: item.name_cn.length === 0 ? item.name : item.name_cn,
         added: existingTitlesSet.has(item.name_cn.length === 0 ? item.name : item.name_cn),
-        image: item.images?.common.replace("https://lain.bgm.tv", bgmLain) ?? ""
+        image: item.images?.common.replace(/^https?:\/\/lain\.bgm\.tv/, bgmLain)
       })));
       const lastDay = ls.pop();
       if (lastDay) {
@@ -106,7 +106,7 @@ export class Bgm{
           title: item['name_cn'].length==0 ? item['name'] : item['name_cn'],
           id: item['id'].toString(),
           eps: item['eps'],
-          image: item['images']['common'].replace("https://lain.bgm.tv", bgmLain),
+          image: item['images']['common'].replace(/^https?:\/\/lain\.bgm\.tv/, bgmLain)
         }
       })
     } catch (error) {
@@ -164,7 +164,7 @@ export class Bgm{
           score: response['rating']['score'],
           updates: epData.updates,
           eps: epData.eps,
-          image: response['images']['common'].replace("https://lain.bgm.tv", bgmLain),
+          image: response['images']['common'].replace(/^https?:\/\/lain\.bgm\.tv/, bgmLain),
           weekday: epData.weekday,
         }
       }
