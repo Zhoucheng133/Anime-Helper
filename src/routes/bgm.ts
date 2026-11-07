@@ -8,6 +8,7 @@ interface CalendarItem{
   id: number,
   title: string,
   added: boolean,
+  image: string,
 }
 
 interface BgmSearchItem{
@@ -67,6 +68,7 @@ export class Bgm{
         id: item.id,
         title: item.name_cn.length === 0 ? item.name : item.name_cn,
         added: existingTitlesSet.has(item.name_cn.length === 0 ? item.name : item.name_cn),
+        image: item.images?.common.replace("https://lain.bgm.tv", bgmLain) ?? ""
       })));
       const lastDay = ls.pop();
       if (lastDay) {
