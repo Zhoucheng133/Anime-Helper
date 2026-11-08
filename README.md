@@ -117,8 +117,8 @@ zhouc1230/anime-helper:latest
 > --restart always \
 > --name anime-helper \
 > -e TZ=Asia/Shanghai \
-> -e bgmAPI=https://bgm.zhouc1230.top \
-> -e bgmLain=https://bgm.zhouc1230.top \
+> -e bgmAPI=https://bangumi-6dg.pages.dev \
+> -e bgmLain=https://bangumi-6dg.pages.dev \
 > -p 5000:3000 \
 > -v /opt/anime-helper/db:/app/db \
 > zhouc1230/anime-helper:latest
@@ -147,8 +147,8 @@ sudo docker run -d \
 --restart always \
 --name anime-helper \
 -e TZ=Asia/Shanghai \
--e bgmAPI=https://bgm.zhouc1230.top \
--e bgmLain=https://bgm.zhouc1230.top \
+-e bgmAPI=https://bangumi-6dg.pages.dev \
+-e bgmLain=https://bangumi-6dg.pages.dev \
 -p 5000:3000 \
 -v /opt/anime-helper/db:/app/db \
 zhouc1230/anime-helper:latest
