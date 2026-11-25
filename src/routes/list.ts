@@ -7,7 +7,8 @@ export interface ListQuery{
   offset: string | undefined,
   limit: string | undefined,
   filter: string| undefined,
-  param: string | undefined,
+  keyword: string | undefined,
+  weekday: string | undefined,
   sort: string | undefined,
 }
 
@@ -35,7 +36,7 @@ export class List{
   }
 
   validFilter(filter: string): boolean{
-    if(filter=="none" || filter=="progress" || filter=="onUpdate" || filter=="updateDone" || filter=="watchDone" || filter=="search" || filter=="weekday" || filter=="unwatched"){
+    if(filter=="none" || filter=="progress" || filter=="onUpdate" || filter=="updateDone" || filter=="watchDone" || filter=="unwatched"){
       return true;
     }
     return false;
@@ -115,12 +116,9 @@ export class List{
     if(query.filter && query.offset && query.limit){
       if(!this.validFilter(query.filter)){
         return ToResponse(false, "筛选方式不合法");
-      }else if((query.filter=="search" || query.filter=="weekday") && query.param==undefined){
-        return ToResponse(false, "缺少参数");
-      }else if(query.filter=="weekday"){
-        if(!["0", "1", "2", "3", "4", "5", "6"].includes(query.param as string)){
-          return ToResponse(false, "参数不正确");
-        }
+      }
+      if(query.weekday !== undefined && query.weekday !== "" && !["-1", "0", "1", "2", "3", "4", "5", "6"].includes(query.weekday)){
+        return ToResponse(false, "参数不正确");
       }
       if(query.sort){
         if(!["az", "za", "add_new_old", "add_old_new", "update_first", "update_end"].includes(query.sort as string)){
@@ -128,10 +126,12 @@ export class List{
         }
       }
       try {
-        const countResult = this.db.prepare(calCount(query.filter, query.param)).get() as any;
+        const countQuery = calCount(query.filter, query.keyword, query.weekday);
+        const countResult = this.db.prepare(countQuery.sql).get(...countQuery.params) as any;
         const totalCount = countResult ? countResult.count : 0;
 
-        const listData=this.db.prepare(toSql(query.filter, query.param, query.sort)).all(query.limit, query.offset)
+        const listQuery = toSql(query.filter, query.keyword, query.weekday, query.sort);
+        const listData = this.db.prepare(listQuery.sql).all(...listQuery.params, query.limit, query.offset)
         
         return ToResponse(true, {
           length: totalCount,

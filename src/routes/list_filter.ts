@@ -1,163 +1,118 @@
-// 【filter】"none", "progress", "onUpdate", "updateDone", "watchDone", "search", "weekday"
+// 【filter】"none", "progress", "onUpdate", "updateDone", "watchDone", "unwatched"
+// 【weekday】"-1"（没有更新周）, "0" - "6"（周日 - 周六）
 // 【sort】"az", "za", "add_new_old", "add_old_new", "update_first", "update_end"
-const onUpdateCondition = `(time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) < episode)`;
+const releasedEpisodes = `(((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000)`;
+const onUpdateCondition = `(time != 0 AND ${releasedEpisodes} < episode)`;
 
-export function toSql(filter: string, param: string | undefined, sort: string | undefined): string {
+const filterConditions: Record<string, string> = {
+  none: "",
+  progress: `(
+    (time = 0 AND now < episode)
+    OR
+    (time != 0 AND ${releasedEpisodes} < episode)
+    OR
+    (time != 0 AND ${releasedEpisodes} >= episode AND now < episode)
+  )`,
+  onUpdate: onUpdateCondition,
+  updateDone: `(
+    (time = 0)
+    OR
+    (time != 0 AND ${releasedEpisodes} >= episode)
+  )`,
+  watchDone: `(
+    (time = 0 AND now = episode)
+    OR
+    (time != 0 AND ${releasedEpisodes} >= episode AND now = episode)
+  )`,
+  unwatched: `(
+    (time = 0 AND now < episode)
+    OR
+    (time != 0
+      AND ${releasedEpisodes} < episode
+      AND now < ${releasedEpisodes}
+    )
+    OR
+    (time != 0 AND ${releasedEpisodes} >= episode AND now < episode)
+  )`,
+};
 
-  let orderBy: string;
-  switch (sort) {
-    case "az":
-      orderBy = "ORDER BY pinyin ASC";
-      break;
-    case "za":
-      orderBy = "ORDER BY pinyin DESC";
-      break;
-    case "add_old_new":
-      orderBy = "ORDER BY ROWID ASC";
-      break;
-    case "update_first":
-      orderBy = `ORDER BY CASE WHEN ${onUpdateCondition} THEN 0 ELSE 1 END, ROWID DESC`;
-      break;
-    case "update_end":
-      orderBy = `ORDER BY CASE WHEN ${onUpdateCondition} THEN 1 ELSE 0 END, ROWID DESC`;
-      break;
-    default:
-      orderBy = "ORDER BY ROWID DESC";
+interface Condition {
+  where: string;
+  params: string[];
+}
+
+export interface FilterSql {
+  sql: string;
+  params: string[];
+}
+
+function buildCondition(filter: string, keyword: string | undefined, weekday: string | undefined): Condition {
+  const conditions: string[] = [];
+  const params: string[] = [];
+
+  const filterCondition = filterConditions[filter];
+  if (filterCondition) {
+    conditions.push(filterCondition);
   }
 
-  const limitClause = "LIMIT ? OFFSET ?";
+  if (keyword !== undefined && keyword !== "") {
+    const escapedKeyword = keyword.replace(/[\\%_]/g, "\\$&");
+    conditions.push(`title LIKE ? ESCAPE '\\'`);
+    params.push(`%${escapedKeyword}%`);
+  }
 
-  switch (filter){
-    case "none":
-      return `SELECT * FROM list ${orderBy} ${limitClause}`;
-    case "progress":
-      return `SELECT * FROM list
-      WHERE (
-        (time = 0 AND now < episode)
-        OR
-        (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) < episode)
-        OR
-        (time != 0 AND ((((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) >= episode) AND now < episode)
-      )
-      ${orderBy}
-      ${limitClause}`;
-    case "onUpdate":
-      return `SELECT * FROM list
-      WHERE ${onUpdateCondition}
-      ${orderBy}
-      ${limitClause}`;
-    case "updateDone":
-      return `SELECT * FROM list
-      WHERE (
-        (time = 0)
-        OR
-        (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) >= episode)
-      )
-      ${orderBy}
-      ${limitClause}`;
-    case "watchDone":
-      return `SELECT * FROM list
-      WHERE (
-        (time = 0 AND now = episode)
-        OR
-        (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) >= episode AND now = episode)
-      )
-      ${orderBy}
-      ${limitClause}`;
-    case "search":
-      return `SELECT * FROM list
-      WHERE title LIKE '%${param}%'
-      ${orderBy}
-      ${limitClause}`;
-    case "weekday":
-      return `SELECT * FROM list
-      WHERE (
-        strftime('%w', time / 1000, 'unixepoch', 'localtime') = '${param}'
+  if (weekday !== undefined && weekday !== "") {
+    if (weekday === "-1") {
+      conditions.push("(time = 0 OR time IS NULL)");
+    } else {
+      conditions.push(`(
+        strftime('%w', time / 1000, 'unixepoch', 'localtime') = ?
         AND
         (
           ${onUpdateCondition}
           OR
-          (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) = episode AND strftime('%w', 'now', 'localtime') = '${param}')
+          (time != 0 AND ${releasedEpisodes} = episode AND strftime('%w', 'now', 'localtime') = ?)
         )
-      )
-      ${orderBy}
-      ${limitClause}`;
-    case "unwatched":
-      return `SELECT * FROM list
-      WHERE (
-        (time = 0 AND now < episode)
-        OR
-        (time != 0
-          AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) < episode
-          AND now < (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000)
-        )
-        OR
-        (time != 0 AND ((((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) >= episode) AND now < episode)
-      )
-      ${orderBy}
-      ${limitClause}`;
+      )`);
+      params.push(weekday, weekday);
+    }
+  }
+
+  return {
+    where: conditions.length ? `WHERE ${conditions.map(condition => `(${condition})`).join(" AND ")}` : "",
+    params,
+  };
+}
+
+function orderBy(sort: string | undefined): string {
+  switch (sort) {
+    case "az":
+      return "ORDER BY pinyin ASC";
+    case "za":
+      return "ORDER BY pinyin DESC";
+    case "add_old_new":
+      return "ORDER BY ROWID ASC";
+    case "update_first":
+      return `ORDER BY CASE WHEN ${onUpdateCondition} THEN 0 ELSE 1 END, ROWID DESC`;
+    case "update_end":
+      return `ORDER BY CASE WHEN ${onUpdateCondition} THEN 1 ELSE 0 END, ROWID DESC`;
     default:
-      return "";
+      return "ORDER BY ROWID DESC";
   }
 }
 
-export function calCount(filter: string, param: string | undefined) {
-  switch (filter) {
-    case "none":
-      return `SELECT COUNT(*) as count FROM list`;
-    case "progress":
-      return `SELECT COUNT(*) as count FROM list
-      WHERE (
-        (time = 0 AND now < episode)
-        OR
-        (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) < episode)
-        OR
-        (time != 0 AND ((((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) >= episode) AND now < episode)
-      )`;
-    case "onUpdate":
-      return `SELECT COUNT(*) as count FROM list
-      WHERE (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) < episode)`;
-    case "updateDone":
-      return `SELECT COUNT(*) as count FROM list
-      WHERE (
-        (time = 0)
-        OR
-        (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) >= episode)
-      )`;
-    case "watchDone":
-      return `SELECT COUNT(*) as count FROM list
-      WHERE (
-        (time = 0 AND now = episode)
-        OR
-        (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) >= episode AND now = episode)
-      )`;
-    case "search":
-      return `SELECT COUNT(*) as count FROM list
-      WHERE title LIKE '%${param}%'`;
-    case "weekday":
-      return `SELECT COUNT(*) as count FROM list
-      WHERE (
-        strftime('%w', time / 1000, 'unixepoch', 'localtime') = '${param}'
-        AND
-        (
-          (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) < episode)
-          OR
-          (time != 0 AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) = episode AND strftime('%w', 'now', 'localtime') = '${param}')
-        )
-      )`;
-    case "unwatched":
-      return `SELECT COUNT(*) as count FROM list
-      WHERE (
-        (time = 0 AND now < episode)
-        OR
-        (time != 0
-          AND (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) < episode
-          AND now < (((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000)
-        )
-        OR
-        (time != 0 AND ((((strftime('%s','now') * 1000) - time + 604800000 - 1) / 604800000) >= episode) AND now < episode)
-      )`;
-    default:
-      return "";
-  }
+export function toSql(filter: string, keyword: string | undefined, weekday: string | undefined, sort: string | undefined): FilterSql {
+  const { where, params } = buildCondition(filter, keyword, weekday);
+  return {
+    sql: `SELECT * FROM list ${where} ${orderBy(sort)} LIMIT ? OFFSET ?`,
+    params,
+  };
+}
+
+export function calCount(filter: string, keyword: string | undefined, weekday: string | undefined): FilterSql {
+  const { where, params } = buildCondition(filter, keyword, weekday);
+  return {
+    sql: `SELECT COUNT(*) as count FROM list ${where}`,
+    params,
+  };
 }
