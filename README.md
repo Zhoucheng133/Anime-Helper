@@ -9,7 +9,7 @@
 前端页面的仓库[在这里](https://github.com/Zhoucheng133/Anime-Helper-UI)
 
 > [!NOTE]
-> 由于Bangumi API被墙，你可以使用我的代理服务转发Bangumi API，每日10万次请求限制  
+> 由于Bangumi API被墙，你可以使用我的代理服务转发Bangumi API（使用CloudFlare转发），每日10万次请求限制  
 > 本人不确保镜像的速度和稳定性
 
 ## 目录
@@ -111,7 +111,7 @@ zhouc1230/anime-helper:latest
 
 > [!TIP]
 > **部署示例**：
-> 如果你的网络环境无法直接访问 Bangumi，使用我的代理服务，且希望将容器端口映射为 `3000`，数据库存放在 `/opt/anime-helper/db`，时区设为中国上海，可以使用以下命令：
+> 如果你的网络环境无法直接访问 Bangumi，使用我的代理服务，且希望将容器端口映射为 `5000`，数据库存放在 `/opt/anime-helper/db`，时区设为中国上海，可以使用以下命令：
 > ```bash
 > sudo docker run -d \
 > --restart always \
